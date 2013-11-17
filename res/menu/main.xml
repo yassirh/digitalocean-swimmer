@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/action_sync"
+        android:icon="@drawable/ic_1_navigation_refresh"
+        android:title="@string/sync"
+        android:showAsAction="ifRoom" />
+    <item 
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_2_action_settings"
+        android:title="@string/settings"
+        android:showAsAction="ifRoom" />
+</menu>

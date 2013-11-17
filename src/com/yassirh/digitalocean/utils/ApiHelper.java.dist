@@ -1,0 +1,34 @@
+package com.yassirh.digitalocean.utils;
+
+import com.yassirh.digitalocean.R;
+
+public class ApiHelper {
+	
+	public static String API_KEY = "";
+	public static String CLIENT_ID = "";
+	public static final String API_STATUS_OK = "OK";
+	public static final String API_STATUS_ERROR = "ERROR";
+	
+	public static int getDistributionLogo(String distribution,String status){
+		if(distribution.equals("Ubuntu")){
+        	return status.equals("active") ? R.drawable.ubuntu_active : R.drawable.ubuntu;
+        }
+        else if(distribution.equals("Debian")){
+        	return status.equals("active") ? R.drawable.debian_active : R.drawable.debian;
+        }
+        else if(distribution.equals("CentOS")){
+        	return status.equals("active") ? R.drawable.centos_active : R.drawable.centos;
+        }
+        else if(distribution.equals("Fedora")){
+        	return status.equals("active") ? R.drawable.fedora_active : R.drawable.fedora;
+        }
+        else if(distribution.equals("Arch Linux")){
+        	return status.equals("active") ? R.drawable.arch_linux_active : R.drawable.arch_linux;
+        }		
+		return 0;
+	}
+	
+	public static int getLocationFlag(String region){
+		return region.equals("Amsterdam 1") ? R.drawable.nl_flag : R.drawable.us_flag;
+	}
+}
