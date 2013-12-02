@@ -3,10 +3,10 @@ package com.yassirh.digitalocean.model;
 public class Event {
 	
 	private long id;
-	private String action_status;
+	private String actionStatus;
 	private Droplet droplet;
 	private int eventTypeId;
-	private float percentage;
+	private int percentage;
 	
 	public long getId() {
 		return id;
@@ -14,11 +14,11 @@ public class Event {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getAction_status() {
-		return action_status;
+	public String getActionStatus() {
+		return actionStatus;
 	}
-	public void setAction_status(String action_status) {
-		this.action_status = action_status;
+	public void setActionStatus(String action_status) {
+		this.actionStatus = action_status;
 	}
 	public Droplet getDroplet() {
 		return droplet;
@@ -32,10 +32,10 @@ public class Event {
 	public void setEventTypeId(int eventTypeId) {
 		this.eventTypeId = eventTypeId;
 	}
-	public float getPercentage() {
+	public int getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(float percentage) {
+	public void setPercentage(int percentage) {
 		this.percentage = percentage;
 	}
 }

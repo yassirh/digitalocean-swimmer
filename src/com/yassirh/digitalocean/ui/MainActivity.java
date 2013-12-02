@@ -1,11 +1,13 @@
 package com.yassirh.digitalocean.ui;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
@@ -25,7 +25,7 @@ import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SizeService;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements Updatable {
 
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -96,17 +96,39 @@ public class MainActivity extends FragmentActivity {
         }
         switch(item.getItemId()) {
         case R.id.action_sync:
-        	RegionService regionService = new RegionService(this);
-    		regionService.getAllRegionFromAPI(true);
-    		SizeService sizeService = new SizeService(this);
-    		sizeService.getAllSizeFromAPI(true);
-        	ImageService imageService = new ImageService(this);
-    		imageService.getAllImagesFromAPI(true);
-    		DomainService domainService = new DomainService(this);
-    		domainService.getAllDomainFromAPI(true);
-    		DropletService dropletService = new DropletService(this);
-    		dropletService.getAllDropletsFromAPI(true);
+        	if(mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
+        		DropletService dropletService = new DropletService(this);
+        		dropletService.getAllDropletsFromAPI(true);
+        	}
+        	else if(mCurrentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
+        		DomainService domainService = new DomainService(this);
+        		domainService.getAllDomainFromAPI(true);
+        	}
+        	else if(mCurrentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
+        		ImageService imageService = new ImageService(this);
+        		imageService.getAllImagesFromAPI(true);	
+        	}
+        	else if(mCurrentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
+        		RegionService regionService = new RegionService(this);
+        		regionService.getAllRegionFromAPI(true);	
+        	}
+        	else{
+        		SizeService sizeService = new SizeService(this);
+        		sizeService.getAllSizeFromAPI(true);
+        	}    		
         	return true;
+        case R.id.action_add_droplet:
+        	CreateDropletDialogFragment createDropletDialogFragment = new CreateDropletDialogFragment();
+        	createDropletDialogFragment.show(getSupportFragmentManager(), "create_droplet_dialog");
+        	return true;
+        case R.id.action_add_domain:
+        	AlertDialog.Builder alertDialog = new Builder(this);
+        	alertDialog.setMessage(R.string.not_yet_implemented);
+        	alertDialog.show();
+        	return true;
+        case R.id.action_settings:
+        	Intent intent = new Intent(this, SettingsActivity.class);
+        	startActivity(intent);
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -115,31 +137,40 @@ public class MainActivity extends FragmentActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mCurrentSelected = position;
             selectItem(position);
         }
     }
     
-
+    public static class DrawerPositions{
+    	public static final Integer DROPLETS_FRAGMENT_POSITION = 0;
+    	public static final Integer DOMAINS_FRAGMENT_POSITION = 1;
+    	public static final Integer IMAGES_FRAGMENT_POSITION = 2;
+    	public static final Integer REGIONS_FRAGMENT_POSITION = 3;
+    	public static final Integer SIZES_FRAGMENT_POSITION = 4;
+    }
+    
+    Fragment mFragment = new Fragment();
+    Integer mCurrentSelected = 0;
     private void selectItem(int position) {
-    	Fragment fragment = new Fragment();
     	
-    	if(position == 0){
-    		fragment = new DropletsFragment();
+    	if(position == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
+    		mFragment = new DropletsFragment();
     	}
-    	else if(position == 1){
-    		fragment = new DomainsFragment();
+    	else if(position == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
+    		mFragment = new DomainsFragment();
     	}
-    	else if(position == 2){
-    		fragment = new ImagesFragment();
+    	else if(position == DrawerPositions.IMAGES_FRAGMENT_POSITION){
+    		mFragment = new ImagesFragment();
     	}
-    	else if(position == 3){
-    		fragment = new RegionsFragment();
+    	else if(position == DrawerPositions.REGIONS_FRAGMENT_POSITION){
+    		mFragment = new RegionsFragment();
     	}
-    	else if(position == 4){
-    		fragment = new SizesFragment();
+    	else if(position == DrawerPositions.SIZES_FRAGMENT_POSITION){
+    		mFragment = new SizesFragment();
     	}
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, mFragment).commit();
 
         mDrawerList.setItemChecked(position, true);
         setTitle(mNavigationTitles[position]);
@@ -163,4 +194,13 @@ public class MainActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+	@Override
+	public void update() {
+		try {
+			((Updatable)mFragment).update();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,6 +23,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.yassirh.digitalocean.ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

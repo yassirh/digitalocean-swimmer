@@ -19,24 +19,33 @@ public abstract class SqlDao<T> {
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), null, null, orderBy, null, null);
 		
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			T object = newInstance(cursor);
-			collection.add(object);
-			cursor.moveToNext();
+		if(cursor.moveToFirst()){
+			while (!cursor.isAfterLast()) {
+				T object = newInstance(cursor);
+				collection.add(object);
+				cursor.moveToNext();
+			}
 		}
 		cursor.close();
 		db.close();
 		return collection;
 	}
 	
+
+	public void deleteAll() {
+		SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
+		db.delete(getTableHelper().TABLE_NAME,null,null);
+		db.close();
+	}
+	
 	public T findById(long id) {
+		T t = null;
 		SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
 		getTableHelper();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), TableHelper.ID + " = " + id, null, null, null, null);
-		cursor.moveToNext();		
-		T t = newInstance(cursor);
+		if(cursor.moveToNext())		
+			t = newInstance(cursor);
 		db.close();
 		return t;
 	}

@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListFragment;
@@ -15,7 +16,7 @@ import com.yassirh.digitalocean.service.RegionService;
 public class RegionsFragment extends ListFragment{
 		
 	RegionAdapter regionAdapter;
-	List<Region> regions;
+	List<Region> regions = new ArrayList<Region>();
 	RegionService regionService;
 	
 	@Override

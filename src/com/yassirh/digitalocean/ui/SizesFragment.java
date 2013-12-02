@@ -40,7 +40,7 @@ public class SizesFragment extends ListFragment{
 
 	public void update() {
 		sizes = new SizeService(this.getActivity()).getAllSizes(SizeTable.MEMORY);
-		sizeAdapter = new SizeAdapter(this.getActivity(), sizes);
+		sizeAdapter = new SizeAdapter(this.getActivity(), sizes, true);
 		setListAdapter(sizeAdapter);
 	}
 }

@@ -3,14 +3,16 @@ package com.yassirh.digitalocean.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
-import android.app.ProgressDialog;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -18,6 +20,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.ui.Updatable;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class ImageService {
@@ -27,37 +30,51 @@ public class ImageService {
 	public ImageService(Context context) {
 		this.context = context;
 	}
+	
+	public void UpdateUi(){
+		try {
+			((Updatable)context).update();
+		} catch (Exception e) {
+		}
+	}
 
 	public void getAllImagesFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/images/?client_id=" + ApiHelper.CLIENT_ID + "&api_key=" + ApiHelper.API_KEY; 
+		String url = "https://api.digitalocean.com/images/?client_id=" + ApiHelper.getClientId(context)+ "&api_key=" + ApiHelper.getAPIKey(context); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
-			ProgressDialog mProgressDialog;
+			NotificationManager mNotifyManager;
+			NotificationCompat.Builder mBuilder;
+			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mProgressDialog = new ProgressDialog(context);
-					mProgressDialog.setIndeterminate(false);
-					mProgressDialog.setMax(100);
-					mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					mProgressDialog.setTitle(context.getResources().getString(R.string.synchronising));
-					mProgressDialog.setMessage(context.getResources().getString(R.string.synchronising_images));
-					mProgressDialog.show();
-					mProgressDialog.setProgress(0);
+					mNotifyManager =
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_images))
+					    .setSmallIcon(R.drawable.ic_launcher);
+
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
-				if(showProgress && mProgressDialog != null){
-					mProgressDialog.dismiss();
-				}
+				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
+				UpdateUi();
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {				
-				if(mProgressDialog != null){
-					mProgressDialog.setProgress((int)100*bytesWritten/totalSize);
+			public void onProgress(int bytesWritten, int totalSize) {	
+				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
+			}
+			
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				if(statusCode == 401){
+					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			

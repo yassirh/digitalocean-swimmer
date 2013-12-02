@@ -49,4 +49,5 @@ public class DomainDao extends SqlDao<Domain> {
 	public TableHelper getTableHelper() {
 		return new DomainTable();
 	}
+	
 }

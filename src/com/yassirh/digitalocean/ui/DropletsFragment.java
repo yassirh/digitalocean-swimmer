@@ -1,8 +1,13 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ListFragment;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,10 +26,10 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.DropletService;
 
-public class DropletsFragment extends ListFragment implements OnItemClickListener{
+public class DropletsFragment extends ListFragment implements OnItemClickListener,Updatable{
 		
 	DropletAdapter mDropletAdapter;
-	List<Droplet> mDroplets;
+	List<Droplet> mDroplets = new ArrayList<Droplet>();
 	DropletService mDropletService;
 	
 	@Override
@@ -48,6 +53,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		registerForContextMenu(getListView());
 	}
 	
+	@Override
 	public void update() {
 		mDroplets = new DropletService(this.getActivity()).getAllDroplets();
 		mDropletAdapter = new DropletAdapter(this.getActivity(), mDroplets);
@@ -58,24 +64,90 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	Droplet mDroplet;
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+
+		AlertDialog.Builder alertDialog = new Builder(getActivity());
+		alertDialog.setNegativeButton(R.string.no, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 		switch (item.getItemId()) {
 		case R.id.action_power_cycle:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON);
+			alertDialog.setTitle(getString(R.string.power_cycle) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.power_cycle_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_CYCLE);
+				}
+			});
+			alertDialog.show();
+			break;
+		case R.id.action_reboot:
+			alertDialog.setTitle(getString(R.string.reboot) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.reboot_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBOOT);
+				}
+			});
+			alertDialog.show();
 			break;
 		case R.id.action_shutdown:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SHUTDOWN);
+			alertDialog.setTitle(getString(R.string.shut_down) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.shut_down_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SHUTDOWN);
+				}
+			});
+			alertDialog.show();
 			break;
 		case R.id.action_power_off:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_OFF);
+			alertDialog.setTitle(getString(R.string.power_off) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.power_off_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_OFF);
+				}
+			});
+			alertDialog.show();
 			break;
 		case R.id.action_power_on:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON);
+			alertDialog.setTitle(getString(R.string.power_on) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.power_on_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON);
+				}
+			});
+			alertDialog.show();
 			break;
 		case R.id.action_password_reset:
 			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.PASSWORD_RESET);
 			break;
 		case R.id.action_destroy:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY);
+			alertDialog.setTitle(getString(R.string.destroy) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.destroy_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY);
+				}
+			});
+			alertDialog.show();
 			break;
 		default:
 			break;

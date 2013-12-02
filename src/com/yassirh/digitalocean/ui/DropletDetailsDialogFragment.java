@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -31,7 +33,9 @@ public class DropletDetailsDialogFragment extends DialogFragment {
 		mDropletService = new DropletService(this.getActivity());
 		long id = getArguments().getLong("id");
 		Droplet droplet = mDropletService.findById(id);
+		Region region = droplet.getRegion();
 		Size size = droplet.getSize();
+		Image image = droplet.getImage();
 		
 		getDialog().setTitle(droplet.getName());
 		
@@ -50,7 +54,14 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         TextView imageTextView = (TextView)view.findViewById(R.id.imageTextView);
 
         nameTextView.setText(droplet.getName());
-        flagImageView.setImageResource(ApiHelper.getLocationFlag(droplet.getRegion().getName()));
+        if(region != null){
+        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
+        	regionTextView.setText(region.getName());
+        }
+        else{
+        	flagImageView.setVisibility(View.GONE);
+            regionTextView.setText("");
+        }
     	distroImageView.setImageResource(ApiHelper.getDistributionLogo(droplet.getImage().getDistribution(), droplet.getStatus()));
         ipAddressTextView.setText(droplet.getIpAddress());
         backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
@@ -60,8 +71,7 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         memoryTextView.setText(size.getMemory()  +"MB");
         diskTextView.setText(size.getDisk() +"GB");
         cpusTextView.setText(size.getCpu() + "");
-        regionTextView.setText(droplet.getRegion().getName());
-        imageTextView.setText(droplet.getImage().getName());
+    	imageTextView.setText(image.getName());
 		return view;
 	}
 	

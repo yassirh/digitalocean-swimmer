@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory
+            android:title="@string/api_settings_title">
+            
+		<EditTextPreference
+			android:key="client_id_preference"
+			android:title="@string/client_id_label"
+			android:summary="@string/summary_client_id"
+			/>
+ 
+		<EditTextPreference
+			android:key="api_key_preference"
+			android:title="@string/api_key_label"
+			android:summary="@string/summary_api_key" 
+			android:inputType="textPassword"
+			/>
+        
+    </PreferenceCategory>
+   
+</PreferenceScreen>  

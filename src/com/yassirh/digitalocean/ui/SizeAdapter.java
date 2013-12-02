@@ -19,10 +19,11 @@ public class SizeAdapter extends BaseAdapter {
     
     private List<Size> data;
     private static LayoutInflater inflater=null;
-    
-    public SizeAdapter(Activity activity, List<Size> data) {
+    private boolean mShowPrice;
+    public SizeAdapter(Activity activity, List<Size> data,boolean showPrice) {
         this.data=data;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mShowPrice = showPrice;
     }
 
     public int getCount() {
@@ -54,7 +55,8 @@ public class SizeAdapter extends BaseAdapter {
 
         pricingTextView.setText(vi.getResources().getString(R.string.monthly) + ": $" + size.getCostPerMonth() +", " + vi.getResources().getString(R.string.hourly) + ": $" + formatter.format("%1.5f", size.getCostPerHour()));
         formatter.close();
-
+        if(!mShowPrice)
+        	pricingTextView.setVisibility(View.GONE);
         return vi;
     }
 }

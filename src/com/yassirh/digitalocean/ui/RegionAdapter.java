@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Region;
+import com.yassirh.digitalocean.utils.ApiHelper;
 
 
 public class RegionAdapter extends BaseAdapter {
@@ -48,12 +49,7 @@ public class RegionAdapter extends BaseAdapter {
         TextView slugTextView = (TextView)vi.findViewById(R.id.slugTextView);
         ImageView flagImageView = (ImageView)vi.findViewById(R.id.flagImageView);
         
-        if(region.getName().equals("Amsterdam 1")){
-        	flagImageView.setImageResource(R.drawable.nl_flag);
-        }
-        else{
-        	flagImageView.setImageResource(R.drawable.us_flag);
-        }
+        flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
         
         nameTextView.setText(region.getName());    
     	slugTextView.setText(region.getSlug());        

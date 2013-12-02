@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 
@@ -44,14 +45,18 @@ public class DropletAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.droplet_list_row, null);
 
         final Droplet droplet = data.get(position);
+        Region region = droplet.getRegion();
         
         TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
         TextView ipAddressTextView = (TextView)vi.findViewById(R.id.ipAddressTextView);
         TextView statusTextView = (TextView)vi.findViewById(R.id.statusTextView);
         ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
         ImageView flagImageView = (ImageView)vi.findViewById(R.id.flagImageView);
-        
-        flagImageView.setImageResource(ApiHelper.getLocationFlag(droplet.getRegion().getName()));
+        if(region != null)
+        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
+        else{
+        	flagImageView.setVisibility(View.GONE);
+        }
     	distroImageView.setImageResource(ApiHelper.getDistributionLogo(droplet.getImage().getDistribution(), droplet.getStatus()));
         nameTextView.setText(droplet.getName());
         ipAddressTextView.setText(droplet.getIpAddress());
