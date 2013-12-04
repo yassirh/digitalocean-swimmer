@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,7 +19,6 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Image;
-import com.yassirh.digitalocean.ui.Updatable;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class ImageService {
@@ -31,13 +29,6 @@ public class ImageService {
 		this.context = context;
 	}
 	
-	public void UpdateUi(){
-		try {
-			((Updatable)context).update();
-		} catch (Exception e) {
-		}
-	}
-
 	public void getAllImagesFromAPI(final boolean showProgress){
 		String url = "https://api.digitalocean.com/images/?client_id=" + ApiHelper.getClientId(context)+ "&api_key=" + ApiHelper.getAPIKey(context); 
 		AsyncHttpClient client = new AsyncHttpClient();
@@ -61,14 +52,16 @@ public class ImageService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
-				UpdateUi();
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
+			public void onProgress(int bytesWritten, int totalSize) {
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
+				}
 			}
 			
 			@Override
@@ -84,7 +77,6 @@ public class ImageService {
 					JSONObject jsonObject = new JSONObject(response);
 					String status = jsonObject.getString("status");
 					List<Image> images = new ArrayList<Image>();
-					Log.v("api", "status : " + status);
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						JSONArray imageJSONArray = jsonObject.getJSONArray("images");
 						for(int i = 0; i < imageJSONArray.length(); i++){
@@ -100,6 +92,7 @@ public class ImageService {
 							image.setPublic(imageJSONObject.getBoolean("public"));
 							images.add(image);
 						}
+						ImageService.this.deleteAll();
 						ImageService.this.saveAll(images);
 					}
 					else{
@@ -128,5 +121,12 @@ public class ImageService {
 		List<Image> images = imageDao.getAll(null);
 		databaseHelper.close();
 		return images;
+	}
+
+	public void deleteAll() {
+		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		ImageDao imageDao = new ImageDao(databaseHelper);
+		imageDao.deleteAll();
+		databaseHelper.close();		
 	}	
 }

@@ -5,34 +5,21 @@ import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Event;
-import com.yassirh.digitalocean.ui.Updatable;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class EventService {
 
 	private Context mContext;
-	private Handler mHandler;
 	
-	public EventService(Context context, Handler handler) {
+	public EventService(Context context) {
 		this.mContext = context;
-		mHandler = handler;
-	}
-		
-	public void UpdateUi(){
-		try {
-			((Updatable)mContext).update();
-		} catch (Exception e) {
-		}
 	}
 
 	public void trackEvent(final long eventId,final String name,final String message){
@@ -60,7 +47,8 @@ public class EventService {
 				while(!done){
 					if(sleep){
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(2000);
+							sleep = false;
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
@@ -88,19 +76,17 @@ public class EventService {
 									mEvent = new Event();
 									if(ApiHelper.API_STATUS_OK.equals(status)){
 										JSONObject eventJsonObject = jsonObject.getJSONObject("event");
-										Droplet droplet = new Droplet();
-										droplet.setId(eventJsonObject.getLong("droplet_id"));
+										Droplet mDroplet = new Droplet();
+										mDroplet.setId(eventJsonObject.getLong("droplet_id"));
 										mEvent.setActionStatus(eventJsonObject.getString("action_status"));
 										mEvent.setId(eventJsonObject.getLong("id"));
 										mEvent.setPercentage(eventJsonObject.getString("percentage").equals("null") ? 100 : eventJsonObject.getInt("percentage"));
-										mEvent.setDroplet(droplet);
+										mEvent.setDroplet(mDroplet);
 										mBuilder.setProgress(100, mEvent.getPercentage(), false);
 										mNotifyManager.notify((int)eventId, mBuilder.build());
-										Log.v("test", "Progress : " + mEvent.getPercentage());
 										if(mEvent.getPercentage() == 100){
 											done = true;
 											mNotifyManager.cancel((int)eventId);
-											mHandler.handleMessage(new Message());
 										}
 									}
 									else{
@@ -110,10 +96,15 @@ public class EventService {
 								} catch (JSONException e) {
 									e.printStackTrace();
 									done = true;
+									mNotifyManager.cancel((int)eventId);
 								}
 							}
 						});
 					}
+				}
+				if(mEvent != null){
+					DropletService dropletService = new DropletService(mContext);
+					dropletService.getDropletFromAPI(mEvent.getDroplet().getId(),false);
 				}
 				mNotifyManager.cancel((int)eventId);
 			}

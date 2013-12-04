@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Digital Ocean</string>
+    <string name="app_name">DO Swimmer</string>
 
     <string-array name="main_navigation_array">
         <item>Droplets</item>
@@ -37,6 +37,8 @@
     <string name="image_label">Image:</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="reboot">Reboot</string>
     <string name="power_cycle">Power cycle</string>
     <string name="power_off">Power off</string>
@@ -73,6 +75,7 @@
     <string name="select_region_label">Select region:</string>
     <string name="private_networking_label">Private networking</string>
     <string name="create_droplet">Create droplet</string>
+    <string name="creating_droplet">Creating droplet</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
     <string name="shut_down_alert">This will shutdown your droplet.\n\nDo you wish to proceed?</string>
@@ -80,9 +83,10 @@
     <string name="power_on_alert">This will boot your droplet.\n\nDo you wish to proceed?</string>
     <string name="destroy_alert">This is irreversible. We will destroy your droplet and all associated backups.\n\nDo you wish to proceed?</string>
     
-    
+    <string name="name">Name</string>
     <string name="title_activity_settings">Settings</string>
-    
+    <string name="title_resize_droplet">Resize droplet</string>
+    <string name="title_snapshot_droplet">Take droplet snapshot</string>
     <string name="summary_client_id">Client ID</string>
     <string name="client_id_label">Client ID</string>
     <string name="summary_api_key">API Key</string>

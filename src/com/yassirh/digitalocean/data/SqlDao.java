@@ -13,7 +13,7 @@ public abstract class SqlDao<T> {
 	public abstract T newInstance(Cursor cursor);
 	
 	public List<T> getAll(String orderBy) {
-		SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
+		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
 
 		List<T> collection = new ArrayList<T>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
@@ -40,7 +40,7 @@ public abstract class SqlDao<T> {
 	
 	public T findById(long id) {
 		T t = null;
-		SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
+		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
 		getTableHelper();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), TableHelper.ID + " = " + id, null, null, null, null);

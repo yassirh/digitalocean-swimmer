@@ -30,7 +30,7 @@ public class SizeService {
 		this.context = context;
 	}
 
-	public void getAllSizeFromAPI(final boolean showProgress){
+	public void getAllSizesFromAPI(final boolean showProgress){
 		String url = "https://api.digitalocean.com/sizes/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -122,5 +122,12 @@ public class SizeService {
 		List<Size> sizes = sizeDao.getAll(orderBy);
 		databaseHelper.close();
 		return sizes;
+	}
+
+	public void deleteAll() {
+		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		SizeDao sizeDao = new SizeDao(databaseHelper);
+		sizeDao.deleteAll();
+		databaseHelper.close();
 	}	
 }

@@ -1,13 +1,15 @@
 package com.yassirh.digitalocean.ui;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
@@ -34,7 +37,27 @@ public class MainActivity extends FragmentActivity implements Updatable {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mNavigationTitles;
-	
+    
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            update(MainActivity.this);
+        }
+    };
+    
+    Thread t = new Thread(new Runnable() {	
+		@Override
+		public void run() {
+			for (;;) {
+				try {
+					Thread.sleep(5000);
+					mUiHandler.sendMessage(new Message());
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	});
+    	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,9 +95,28 @@ public class MainActivity extends FragmentActivity implements Updatable {
 
         if (savedInstanceState == null) {
             selectItem(0);
-        }		
+            update(this);
+            t.start();
+        }
 	}
-
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		t.interrupt();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onStop() {
+		t.interrupt();
+		super.onStop();
+	}
+	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -102,7 +144,7 @@ public class MainActivity extends FragmentActivity implements Updatable {
         	}
         	else if(mCurrentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
         		DomainService domainService = new DomainService(this);
-        		domainService.getAllDomainFromAPI(true);
+        		domainService.getAllDomainsFromAPI(true);
         	}
         	else if(mCurrentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
         		ImageService imageService = new ImageService(this);
@@ -110,11 +152,11 @@ public class MainActivity extends FragmentActivity implements Updatable {
         	}
         	else if(mCurrentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
         		RegionService regionService = new RegionService(this);
-        		regionService.getAllRegionFromAPI(true);	
+        		regionService.getAllRegionsFromAPI(true);	
         	}
         	else{
         		SizeService sizeService = new SizeService(this);
-        		sizeService.getAllSizeFromAPI(true);
+        		sizeService.getAllSizesFromAPI(true);
         	}    		
         	return true;
         case R.id.action_add_droplet:
@@ -129,6 +171,8 @@ public class MainActivity extends FragmentActivity implements Updatable {
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);
         	startActivity(intent);
+        	finish();
+        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -193,12 +237,14 @@ public class MainActivity extends FragmentActivity implements Updatable {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+        selectItem(mCurrentSelected);
+        update(this);
     }
 
 	@Override
-	public void update() {
+	public void update(Context context) {
 		try {
-			((Updatable)mFragment).update();
+			((Updatable)mFragment).update(context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

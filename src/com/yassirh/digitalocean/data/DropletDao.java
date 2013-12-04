@@ -19,9 +19,10 @@ public class DropletDao extends SqlDao<Droplet> {
 		this.databaseHelper = databaseHelper;
 	}
 
-	public long create(Droplet droplet) {
+	public long createOrUpdate(Droplet droplet) {
 		SQLiteDatabase db = databaseHelper.getWritableDatabase();
-		
+		boolean update = findById(droplet.getId()) != null;
+		db = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(DropletTable.ID, droplet.getId());
 		values.put(DropletTable.NAME, droplet.getName());
@@ -34,10 +35,17 @@ public class DropletDao extends SqlDao<Droplet> {
 		values.put(DropletTable.PRIVATE_IP_ADDRESS, droplet.getPrivateIpAddress());
 		values.put(DropletTable.LOCKED, droplet.isLocked());
 		values.put(DropletTable.STATUS, droplet.getStatus());
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
+		long id = droplet.getId();
+		if(update){
+			db.updateWithOnConflict(getTableHelper().TABLE_NAME,values,DropletTable.ID +"= ?",new String[]{droplet.getId()+""},SQLiteDatabase.CONFLICT_REPLACE);
+		}else{
+			id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
+		}
+		
 		db.close();
 		return id;
 	}	
+
 
 	public Droplet newInstance(Cursor c) {
 		Image image = new ImageDao(databaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));

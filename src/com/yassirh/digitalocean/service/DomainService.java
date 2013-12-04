@@ -29,7 +29,7 @@ public class DomainService {
 		this.context = context;
 	}
 
-	public void getAllDomainFromAPI(final boolean showProgress){
+	public void getAllDomainsFromAPI(final boolean showProgress){
 		String url = "https://api.digitalocean.com/domains/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -106,7 +106,7 @@ public class DomainService {
 		databaseHelper.close();
 	}
 	
-	protected void deleteAll() {
+	public void deleteAll() {
 		DatabaseHelper databaseHelper = new DatabaseHelper(context);
 		DomainDao domainDao = new DomainDao(databaseHelper);
 		domainDao.deleteAll();

@@ -2,7 +2,6 @@ package com.yassirh.digitalocean.ui;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +21,9 @@ public class DropletAdapter extends BaseAdapter {
     private List<Droplet> data;
     private static LayoutInflater inflater=null;
     
-    public DropletAdapter(Activity activity, List<Droplet> data) {
+    public DropletAdapter(Context context, List<Droplet> data) {
         this.data=data;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {

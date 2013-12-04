@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -30,7 +29,7 @@ public class RegionService {
 		this.context = context;
 	}
 
-	public void getAllRegionFromAPI(final boolean showProgress){
+	public void getAllRegionsFromAPI(final boolean showProgress){
 		String url = "https://api.digitalocean.com/regions/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -53,7 +52,8 @@ public class RegionService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS);
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS);
 			}
 			
 			@Override
@@ -64,9 +64,11 @@ public class RegionService {
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
+			public void onProgress(int bytesWritten, int totalSize) {
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
+				}
 			}
 			
 		    @Override
@@ -75,7 +77,6 @@ public class RegionService {
 					JSONObject jsonObject = new JSONObject(response);
 					String status = jsonObject.getString("status");
 					List<Region> regions = new ArrayList<Region>();
-					Log.v("api", "status : " + status);
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
 						for(int i = 0; i < regionJSONArray.length(); i++){
@@ -89,6 +90,7 @@ public class RegionService {
 								region.setSlug(regionJSONObject.getString("slug"));
 							regions.add(region);
 						}
+						RegionService.this.deleteAll();
 						RegionService.this.saveAll(regions);
 					}
 					else{
@@ -100,6 +102,13 @@ public class RegionService {
 				}  
 		    }
 		});
+	}
+
+	public void deleteAll() {
+		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		RegionDao regionDao = new RegionDao(databaseHelper);
+		regionDao.deleteAll();
+		databaseHelper.close();
 	}
 
 	protected void saveAll(List<Region> regions) {
