@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
@@ -38,7 +39,8 @@ public class MainActivity extends FragmentActivity implements Updatable {
     private CharSequence mTitle;
     private String[] mNavigationTitles;
     
-    Handler mUiHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	Handler mUiHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){
             update(MainActivity.this);
@@ -51,7 +53,35 @@ public class MainActivity extends FragmentActivity implements Updatable {
 			for (;;) {
 				try {
 					Thread.sleep(5000);
-					mUiHandler.sendMessage(new Message());
+					Boolean update = false;
+					if(MainActivity.this.mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
+						DropletService dropletService = new DropletService(MainActivity.this);
+						update = dropletService.requiresRefresh();
+						dropletService.setRequiresRefresh(false);
+					}
+					else if(MainActivity.this.mCurrentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
+						ImageService imageService = new ImageService(MainActivity.this);
+						update = imageService.requiresRefresh();
+						imageService.setRequiresRefresh(false);
+					}
+					else if(MainActivity.this.mCurrentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
+						DomainService domainService = new DomainService(MainActivity.this);
+						update = domainService.requiresRefresh();
+						domainService.setRequiresRefresh(false);
+					}
+					else if(MainActivity.this.mCurrentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
+						SizeService sizeService = new SizeService(MainActivity.this);
+						update = sizeService.requiresRefresh();
+						sizeService.setRequiresRefresh(false);
+					}
+					else if(MainActivity.this.mCurrentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
+						RegionService regionService = new RegionService(MainActivity.this);
+						update = regionService.requiresRefresh();
+						regionService.setRequiresRefresh(false);
+					}
+					if(update)
+						mUiHandler.sendMessage(new Message());
+					
 				} catch (InterruptedException e) {
 				}
 			}

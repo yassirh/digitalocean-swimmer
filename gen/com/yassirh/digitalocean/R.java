@@ -122,21 +122,23 @@ public final class R {
         public static final int activity_settings=0x7f030001;
         public static final int dialog_droplet_create=0x7f030002;
         public static final int dialog_droplet_details=0x7f030003;
-        public static final int dialog_droplet_resize=0x7f030004;
-        public static final int dialog_droplet_snapshot=0x7f030005;
-        public static final int domain_list_row=0x7f030006;
-        public static final int drawer_list_item=0x7f030007;
-        public static final int droplet_list_row=0x7f030008;
-        public static final int fragment_domains=0x7f030009;
-        public static final int fragment_droplets=0x7f03000a;
-        public static final int fragment_images=0x7f03000b;
-        public static final int fragment_planet=0x7f03000c;
-        public static final int fragment_regions=0x7f03000d;
-        public static final int fragment_sizes=0x7f03000e;
-        public static final int image_list_row=0x7f03000f;
-        public static final int navigation_list_row=0x7f030010;
-        public static final int region_list_row=0x7f030011;
-        public static final int size_list_row=0x7f030012;
+        public static final int dialog_droplet_rebuild=0x7f030004;
+        public static final int dialog_droplet_resize=0x7f030005;
+        public static final int dialog_droplet_restore=0x7f030006;
+        public static final int dialog_droplet_snapshot=0x7f030007;
+        public static final int domain_list_row=0x7f030008;
+        public static final int drawer_list_item=0x7f030009;
+        public static final int droplet_list_row=0x7f03000a;
+        public static final int fragment_domains=0x7f03000b;
+        public static final int fragment_droplets=0x7f03000c;
+        public static final int fragment_images=0x7f03000d;
+        public static final int fragment_planet=0x7f03000e;
+        public static final int fragment_regions=0x7f03000f;
+        public static final int fragment_sizes=0x7f030010;
+        public static final int image_list_row=0x7f030011;
+        public static final int navigation_list_row=0x7f030012;
+        public static final int region_list_row=0x7f030013;
+        public static final int size_list_row=0x7f030014;
     }
     public static final class menu {
         public static final int droplet_context=0x7f090000;
@@ -148,12 +150,12 @@ public final class R {
         public static final int action_add_domain=0x7f06003a;
         public static final int action_add_droplet=0x7f060039;
         public static final int action_settings=0x7f06000d;
-        public static final int api_key_label=0x7f06004f;
-        public static final int api_settings_title=0x7f060050;
+        public static final int api_key_label=0x7f060053;
+        public static final int api_settings_title=0x7f060054;
         public static final int app_name=0x7f060000;
         public static final int backups_active_label=0x7f060011;
         public static final int cancel=0x7f06001c;
-        public static final int client_id_label=0x7f06004d;
+        public static final int client_id_label=0x7f060051;
         public static final int cpus_label=0x7f060016;
         public static final int create_droplet=0x7f060040;
         public static final int created_at_label=0x7f060013;
@@ -173,7 +175,7 @@ public final class R {
         public static final int locked_label=0x7f060012;
         public static final int memory_label=0x7f060014;
         public static final int monthly=0x7f06000b;
-        public static final int name=0x7f060048;
+        public static final int name=0x7f06004a;
         public static final int no=0x7f060019;
         public static final int no_domains=0x7f060007;
         public static final int no_droplets=0x7f060008;
@@ -195,10 +197,12 @@ public final class R {
         public static final int reboot=0x7f06001d;
         public static final int reboot_alert=0x7f060043;
         public static final int rebuild=0x7f060026;
+        public static final int rebuild_alert=0x7f060049;
         public static final int region_label=0x7f060017;
         public static final int rename=0x7f060029;
         public static final int resize=0x7f060023;
         public static final int restore=0x7f060025;
+        public static final int restore_alert=0x7f060048;
         public static final int select_image_label=0x7f06003d;
         public static final int select_region_label=0x7f06003e;
         public static final int select_size_label=0x7f06003c;
@@ -207,8 +211,8 @@ public final class R {
         public static final int shut_down_alert=0x7f060044;
         public static final int size_info=0x7f06000f;
         public static final int snapshot=0x7f060024;
-        public static final int summary_api_key=0x7f06004e;
-        public static final int summary_client_id=0x7f06004c;
+        public static final int summary_api_key=0x7f060052;
+        public static final int summary_client_id=0x7f060050;
         public static final int sync=0x7f06002b;
         public static final int synchronising=0x7f06002d;
         public static final int synchronising_domains=0x7f060030;
@@ -221,9 +225,11 @@ public final class R {
         public static final int synchronising_regions_completed=0x7f060037;
         public static final int synchronising_sizes=0x7f060034;
         public static final int synchronising_sizes_completed=0x7f060035;
-        public static final int title_activity_settings=0x7f060049;
-        public static final int title_resize_droplet=0x7f06004a;
-        public static final int title_snapshot_droplet=0x7f06004b;
+        public static final int title_activity_settings=0x7f06004b;
+        public static final int title_rebuild_droplet=0x7f06004f;
+        public static final int title_resize_droplet=0x7f06004c;
+        public static final int title_restore_droplet=0x7f06004e;
+        public static final int title_snapshot_droplet=0x7f06004d;
         public static final int yes=0x7f06001a;
     }
     public static final class style {

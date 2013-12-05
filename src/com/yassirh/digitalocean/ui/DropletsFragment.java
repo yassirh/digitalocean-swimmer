@@ -30,6 +30,7 @@ import com.yassirh.digitalocean.data.DropletTable;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.DropletService;
+import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.SizeService;
 
 public class DropletsFragment extends ListFragment implements OnItemClickListener,Updatable{
@@ -37,6 +38,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	DropletAdapter mDropletAdapter;
 	List<Droplet> mDroplets = new ArrayList<Droplet>();
 	DropletService mDropletService;
+	ImageService mImageService;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mDropletService = new DropletService(this.getActivity());
+		mImageService = new ImageService(getActivity());
 		update(this.getActivity());
 		return inflater.inflate(R.layout.fragment_droplets, container, false);
 	}
@@ -209,6 +212,58 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			});
 			builder.show();
 			break;			
+		case R.id.action_restore:
+			builder = new AlertDialog.Builder(getActivity());
+		    inflater = getActivity().getLayoutInflater();
+		    view = inflater.inflate(R.layout.dialog_droplet_restore,null);
+			builder.setTitle(R.string.title_restore_droplet);
+			final Spinner restoreImageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
+			restoreImageSpinner.setAdapter(new ImageAdapter(getActivity(), mImageService.getSnapshotsOnly()));
+			builder.setView(view);
+			builder.setPositiveButton(R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("image_id", restoreImageSpinner.getSelectedItemId()+"");
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESTORE, params);
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.show();
+			break;
+		case R.id.action_rebuild:
+			builder = new AlertDialog.Builder(getActivity());
+		    inflater = getActivity().getLayoutInflater();
+		    view = inflater.inflate(R.layout.dialog_droplet_rebuild,null);
+			builder.setTitle(R.string.title_rebuild_droplet);
+			final Spinner rebuildImageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
+			rebuildImageSpinner.setAdapter(new ImageAdapter(getActivity(), mImageService.getImagesOnly()));
+			builder.setView(view);
+			builder.setPositiveButton(R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("image_id", rebuildImageSpinner.getSelectedItemId()+"");
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBUILD, params);
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.show();
+			break;
 		default:
 			break;
 		}

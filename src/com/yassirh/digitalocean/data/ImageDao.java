@@ -1,5 +1,9 @@
 package com.yassirh.digitalocean.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.ActionBar.Tab;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,5 +50,43 @@ public class ImageDao extends SqlDao<Image> {
 	@Override
 	public TableHelper getTableHelper() {
 		return new ImageTable();
+	}
+
+	public List<Image> getSnapshotsOnly(Object object) {
+		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
+
+		List<Image> snapshots = new ArrayList<Image>();
+		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "0", null, null, null, null);
+		
+		if(cursor.moveToFirst()){
+			while (!cursor.isAfterLast()) {
+				Image snapshot = newInstance(cursor);
+				snapshots.add(snapshot);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		db.close();
+		return snapshots;
+	}
+	
+	public List<Image> getImagesOnly(Object object) {
+		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
+
+		List<Image> images = new ArrayList<Image>();
+		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, null);
+		
+		if(cursor.moveToFirst()){
+			while (!cursor.isAfterLast()) {
+				Image image = newInstance(cursor);
+				images.add(image);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		db.close();
+		return images;
 	}
 }

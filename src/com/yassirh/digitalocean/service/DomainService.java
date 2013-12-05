@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -23,14 +24,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class DomainService {
 
-	private Context context;
+	private Context mContext;
 		
 	public DomainService(Context context) {
-		this.context = context;
+		this.mContext = context;
 	}
 
 	public void getAllDomainsFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/domains/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context);
+		String url = "https://api.digitalocean.com/domains/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -40,10 +41,10 @@ public class DomainService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_domains))
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
+					    .setContentText(mContext.getResources().getString(R.string.synchronising_domains))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, mBuilder.build());
@@ -64,7 +65,7 @@ public class DomainService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -89,6 +90,7 @@ public class DomainService {
 						}
 						DomainService.this.deleteAll();
 						DomainService.this.saveAll(domains);
+						DomainService.this.setRequiresRefresh(true);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -98,7 +100,7 @@ public class DomainService {
 	}
 
 	protected void saveAll(List<Domain> domains) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DomainDao domainDao = new DomainDao(databaseHelper);
 		for (Domain domain : domains) {
 			domainDao.create(domain);
@@ -107,17 +109,28 @@ public class DomainService {
 	}
 	
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DomainDao domainDao = new DomainDao(databaseHelper);
 		domainDao.deleteAll();
 		databaseHelper.close();
 	}
 	
 	public List<Domain> getAllDomains(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DomainDao domainDao = new DomainDao(databaseHelper);
 		List<Domain> domains = domainDao.getAll(null);
 		databaseHelper.close();
 		return domains;
-	}	
+	}
+
+	public void setRequiresRefresh(Boolean requireRefresh){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("domain_require_refresh", requireRefresh);
+		editor.commit();
+	}
+	public Boolean requiresRefresh(){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		return settings.getBoolean("domain_require_refresh", true);
+	}
 }

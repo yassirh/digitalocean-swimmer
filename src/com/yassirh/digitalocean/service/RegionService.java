@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -23,14 +24,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class RegionService {
 
-	private Context context;
+	private Context mContext;
 		
 	public RegionService(Context context) {
-		this.context = context;
+		mContext = context;
 	}
 
 	public void getAllRegionsFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/regions/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
+		String url = "https://api.digitalocean.com/regions/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -40,10 +41,10 @@ public class RegionService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_regions))
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
+					    .setContentText(mContext.getResources().getString(R.string.synchronising_regions))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
@@ -59,7 +60,7 @@ public class RegionService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -92,6 +93,7 @@ public class RegionService {
 						}
 						RegionService.this.deleteAll();
 						RegionService.this.saveAll(regions);
+						RegionService.this.setRequiresRefresh(true);
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -105,14 +107,14 @@ public class RegionService {
 	}
 
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		RegionDao regionDao = new RegionDao(databaseHelper);
 		regionDao.deleteAll();
 		databaseHelper.close();
 	}
 
 	protected void saveAll(List<Region> regions) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		RegionDao regionDao = new RegionDao(databaseHelper);
 		for (Region region : regions) {
 			regionDao.create(region);
@@ -121,10 +123,22 @@ public class RegionService {
 	}
 	
 	public List<Region> getAllRegions(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		RegionDao regionDao = new RegionDao(databaseHelper);
 		List<Region> regions = regionDao.getAll(null);
 		databaseHelper.close();
 		return regions;
-	}	
+	}
+
+	public void setRequiresRefresh(Boolean requireRefresh){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("region_require_refresh", requireRefresh);
+		editor.commit();
+	}
+	
+	public Boolean requiresRefresh(){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		return settings.getBoolean("region_require_refresh", true);
+	}
 }

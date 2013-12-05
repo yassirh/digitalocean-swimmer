@@ -6,20 +6,18 @@
     android:padding="10dip">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/name" />
+        android:textAlignment="center"
+        android:text="@string/restore_alert" />
 
-    <EditText
-        android:id="@+id/nameEditText"
+
+    <Spinner
+        android:id="@+id/imageSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:inputType="text">
-
-        <requestFocus />
-    </EditText>
+        tools:listitem="@layout/image_list_row" />
     
 </LinearLayout>

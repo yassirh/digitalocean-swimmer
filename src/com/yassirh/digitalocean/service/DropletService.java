@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -33,7 +33,7 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class DropletService {
 
-	private Context context;
+	private Context mContext;
 	
 	public enum DropletActions{
 		REBOOT, POWER_CYCLE, SHUTDOWN, POWER_OFF, POWER_ON,
@@ -42,29 +42,38 @@ public class DropletService {
 	}
 		
 	public DropletService(Context context) {
-		this.context = context;
+		mContext = context;
 	}
 	
 	@SuppressLint("SimpleDateFormat")
 	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
 	
+	public void setRequiresRefresh(Boolean requireRefresh){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("droplet_require_refresh", requireRefresh);
+		editor.commit();
+	}
+	public Boolean requiresRefresh(){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		return settings.getBoolean("droplet_require_refresh", true);
+	}
+	
 	public void ExecuteAction(final long dropletId,final DropletActions dropletAction, HashMap<String,String> params){
 		
 		String action = getAction(dropletAction);
 		String url = getActionUrl(dropletId,action,params);
-		Log.v("test",url); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 		    @Override
 		    public void onSuccess(String response) {
 		        try {
-		        	Log.v("test",response);
 					JSONObject jsonObject = new JSONObject(response);
 					String status = jsonObject.getString("status");
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						Long eventId = jsonObject.getLong("event_id");
-						new EventService(context).trackEvent(eventId, DropletService.this.findById(dropletId).getName(),getActionName(dropletAction));
+						new EventService(mContext).trackEvent(eventId, DropletService.this.findById(dropletId).getName(),getActionName(dropletAction));
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -78,12 +87,13 @@ public class DropletService {
 		    @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 		    
 		    @Override
 		    public void onFinish() {
+		    	getDropletFromAPI(dropletId, false);
 		    }
 		});
 	}
@@ -118,6 +128,12 @@ public class DropletService {
 		case SNAPSHOT:
 			action = "snapshot";
 			break;
+		case RESTORE:
+			action = "restore";
+			break;
+		case REBUILD:
+			action = "rebuild";
+			break;
 		default:
 			break;
 		}
@@ -128,31 +144,37 @@ public class DropletService {
 		String action = "";
 		switch (dropletAction) {
 		case REBOOT:
-			action = context.getResources().getString(R.string.reboot);
+			action = mContext.getResources().getString(R.string.reboot);
 			break;
 		case POWER_CYCLE:
-			action = context.getResources().getString(R.string.power_cycle);
+			action = mContext.getResources().getString(R.string.power_cycle);
 			break;
 		case SHUTDOWN:
-			action = context.getResources().getString(R.string.shut_down);
+			action = mContext.getResources().getString(R.string.shut_down);
 			break;
 		case POWER_OFF:
-			action = context.getResources().getString(R.string.power_off);
+			action = mContext.getResources().getString(R.string.power_off);
 			break;
 		case POWER_ON:
-			action = context.getResources().getString(R.string.power_on);
+			action = mContext.getResources().getString(R.string.power_on);
 			break;
 		case PASSWORD_RESET:
-			action = context.getResources().getString(R.string.password_reset);
+			action = mContext.getResources().getString(R.string.password_reset);
 			break;
 		case DESTROY:
-			action = context.getResources().getString(R.string.destroy);
+			action = mContext.getResources().getString(R.string.destroy);
 			break;
 		case RESIZE:
-			action = context.getResources().getString(R.string.resize);
+			action = mContext.getResources().getString(R.string.resize);
 			break;
 		case SNAPSHOT:
-			action = context.getResources().getString(R.string.snapshot);
+			action = mContext.getResources().getString(R.string.snapshot);
+			break;
+		case RESTORE:
+			action = mContext.getResources().getString(R.string.restore);
+			break;
+		case REBUILD:
+			action = mContext.getResources().getString(R.string.rebuild);
 			break;
 		default:
 			break;
@@ -161,7 +183,7 @@ public class DropletService {
 	}
 
 	private String getActionUrl(long dropletId,String action, HashMap<String,String> params) {
-		String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context);
+		String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -171,7 +193,7 @@ public class DropletService {
 	}
 
 	public void getAllDropletsFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/droplets/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
+		String url = "https://api.digitalocean.com/droplets/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -181,10 +203,10 @@ public class DropletService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
+					    .setContentText(mContext.getResources().getString(R.string.synchronising_droplets))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, mBuilder.build());
@@ -199,7 +221,7 @@ public class DropletService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -225,6 +247,7 @@ public class DropletService {
 						}
 						DropletService.this.deleteAll();
 						DropletService.this.saveAll(droplets);
+						DropletService.this.setRequiresRefresh(true);
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -237,7 +260,7 @@ public class DropletService {
 	}
 	
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DropletDao dropletDao = new DropletDao(databaseHelper);
 		dropletDao.deleteAll();
 		databaseHelper.close();
@@ -271,16 +294,17 @@ public class DropletService {
 	}
 
 	protected void saveAll(List<Droplet> droplets) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DropletDao dropletDao = new DropletDao(databaseHelper);
 		for (Droplet droplet : droplets) {
 			dropletDao.createOrUpdate(droplet);
 		}
+		DropletService.this.setRequiresRefresh(true);
 		databaseHelper.close();
 	}
 	
 	public List<Droplet> getAllDroplets(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DropletDao dropletDao = new DropletDao(databaseHelper);
 		List<Droplet> droplets = dropletDao.getAll(null);
 		databaseHelper.close();
@@ -288,7 +312,7 @@ public class DropletService {
 	}
 
 	public Droplet findById(long id) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DropletDao dropletDao = new DropletDao(databaseHelper);
 		Droplet droplet = dropletDao.findById(id);
 		databaseHelper.close();
@@ -297,7 +321,7 @@ public class DropletService {
 
 	public void createDroplet(String hostname,Long imageId, Long regionId, Long sizeId,
 			boolean virtualNetworking) {
-		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context) + "&name=" + hostname + "&size_id=" + sizeId + "&image_id=" + imageId + "&region_id=" + regionId;
+		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext) + "&name=" + hostname + "&size_id=" + sizeId + "&image_id=" + imageId + "&region_id=" + regionId;
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 		    @Override
@@ -308,7 +332,7 @@ public class DropletService {
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						JSONObject dropletJsonObject = jsonObject.getJSONObject("droplet");
 						Long eventId = dropletJsonObject.getLong("event_id");
-						new EventService(context).trackEvent(eventId, context.getString(R.string.creating_droplet),"");
+						new EventService(mContext).trackEvent(eventId, mContext.getString(R.string.creating_droplet),"");
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -325,7 +349,7 @@ public class DropletService {
 	}
 
 	public void getDropletFromAPI(long dropletId, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
+		String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -335,10 +359,10 @@ public class DropletService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
+					    .setContentText(mContext.getResources().getString(R.string.synchronising_droplets))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, mBuilder.build());
@@ -347,13 +371,14 @@ public class DropletService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_DROPLET);
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_DROPLET);
 			}
 			
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -376,6 +401,7 @@ public class DropletService {
 						Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
 						droplets.add(droplet);
 						DropletService.this.update(droplet);
+						DropletService.this.setRequiresRefresh(true);
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -389,7 +415,7 @@ public class DropletService {
 	}
 
 	protected void update(Droplet droplet) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		DropletDao dropletDao = new DropletDao(databaseHelper);
 		dropletDao.createOrUpdate(droplet);
 		databaseHelper.close();

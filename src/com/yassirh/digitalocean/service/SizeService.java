@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -24,14 +25,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class SizeService {
 
-	private Context context;
+	private Context mContext;
 		
 	public SizeService(Context context) {
-		this.context = context;
+		mContext = context;
 	}
 
 	public void getAllSizesFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/sizes/?client_id=" + ApiHelper.getClientId(context) + "&api_key=" + ApiHelper.getAPIKey(context); 
+		String url = "https://api.digitalocean.com/sizes/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -41,10 +42,10 @@ public class SizeService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_sizes))
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
+					    .setContentText(mContext.getResources().getString(R.string.synchronising_sizes))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
@@ -65,7 +66,7 @@ public class SizeService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(context, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -75,7 +76,6 @@ public class SizeService {
 					JSONObject jsonObject = new JSONObject(response);
 					String status = jsonObject.getString("status");
 					List<Size> sizes = new ArrayList<Size>();
-					Log.v("api", "status : " + status);
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
 						for(int i = 0; i < sizeJSONArray.length(); i++){
@@ -94,7 +94,9 @@ public class SizeService {
 							size.setCostPerMonth(regionJSONObject.getDouble("cost_per_month"));
 							sizes.add(size);
 						}
+						SizeService.this.deleteAll();
 						SizeService.this.saveAll(sizes);
+						SizeService.this.setRequiresRefresh(true);
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -108,7 +110,7 @@ public class SizeService {
 	}
 
 	protected void saveAll(List<Size> sizes) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		SizeDao sizeDao = new SizeDao(databaseHelper);
 		for (Size size : sizes) {
 			sizeDao.create(size);
@@ -117,7 +119,7 @@ public class SizeService {
 	}
 	
 	public List<Size> getAllSizes(String orderBy){
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		SizeDao sizeDao = new SizeDao(databaseHelper);
 		List<Size> sizes = sizeDao.getAll(orderBy);
 		databaseHelper.close();
@@ -125,9 +127,20 @@ public class SizeService {
 	}
 
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(context);
+		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
 		SizeDao sizeDao = new SizeDao(databaseHelper);
 		sizeDao.deleteAll();
 		databaseHelper.close();
-	}	
+	}
+
+	public void setRequiresRefresh(Boolean requireRefresh){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("size_require_refresh", requireRefresh);
+		editor.commit();
+	}
+	public Boolean requiresRefresh(){
+		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		return settings.getBoolean("size_require_refresh", true);
+	}
 }
