@@ -134,6 +134,12 @@ public class DropletService {
 		case REBUILD:
 			action = "rebuild";
 			break;
+		case ENABLE_BACKUPS:
+			action = "enable_backups";
+			break;
+		case DISABLE_BACKUPS:
+			action = "disable_backups";
+			break;
 		default:
 			break;
 		}
@@ -175,6 +181,12 @@ public class DropletService {
 			break;
 		case REBUILD:
 			action = mContext.getResources().getString(R.string.rebuild);
+			break;
+		case ENABLE_BACKUPS:
+			action = mContext.getResources().getString(R.string.enable_backups);
+			break;
+		case DISABLE_BACKUPS:
+			action = mContext.getResources().getString(R.string.disable_backups);
 			break;
 		default:
 			break;

@@ -151,12 +151,12 @@ public final class R {
         public static final int action_add_domain=0x7f06003c;
         public static final int action_add_droplet=0x7f06003b;
         public static final int action_settings=0x7f06000e;
-        public static final int api_key_label=0x7f060055;
-        public static final int api_settings_title=0x7f060056;
+        public static final int api_key_label=0x7f060057;
+        public static final int api_settings_title=0x7f060058;
         public static final int app_name=0x7f060000;
         public static final int backups_active_label=0x7f060012;
         public static final int cancel=0x7f06001d;
-        public static final int client_id_label=0x7f060053;
+        public static final int client_id_label=0x7f060055;
         public static final int cpus_label=0x7f060017;
         public static final int create_droplet=0x7f060042;
         public static final int created_at_label=0x7f060014;
@@ -164,10 +164,12 @@ public final class R {
         public static final int destroy=0x7f06002c;
         public static final int destroy_alert=0x7f060049;
         public static final int disable_backups=0x7f06002a;
+        public static final int disable_backups_alert=0x7f06004d;
         public static final int disk_label=0x7f060016;
         public static final int drawer_close=0x7f060004;
         public static final int drawer_open=0x7f060003;
         public static final int enable_backups=0x7f060029;
+        public static final int enable_backups_alert=0x7f06004c;
         public static final int hello_world=0x7f06000f;
         public static final int hostname_label=0x7f06003d;
         public static final int hourly=0x7f06000d;
@@ -176,7 +178,7 @@ public final class R {
         public static final int locked_label=0x7f060013;
         public static final int memory_label=0x7f060015;
         public static final int monthly=0x7f06000c;
-        public static final int name=0x7f06004c;
+        public static final int name=0x7f06004e;
         public static final int no=0x7f06001a;
         public static final int no_domains=0x7f060008;
         public static final int no_droplets=0x7f060009;
@@ -214,8 +216,8 @@ public final class R {
         public static final int size_info=0x7f060010;
         public static final int snapshot=0x7f060026;
         public static final int ssh_to_droplet=0x7f06001e;
-        public static final int summary_api_key=0x7f060054;
-        public static final int summary_client_id=0x7f060052;
+        public static final int summary_api_key=0x7f060056;
+        public static final int summary_client_id=0x7f060054;
         public static final int sync=0x7f06002d;
         public static final int synchronising=0x7f06002f;
         public static final int synchronising_domains=0x7f060032;
@@ -228,11 +230,11 @@ public final class R {
         public static final int synchronising_regions_completed=0x7f060039;
         public static final int synchronising_sizes=0x7f060036;
         public static final int synchronising_sizes_completed=0x7f060037;
-        public static final int title_activity_settings=0x7f06004d;
-        public static final int title_rebuild_droplet=0x7f060051;
-        public static final int title_resize_droplet=0x7f06004e;
-        public static final int title_restore_droplet=0x7f060050;
-        public static final int title_snapshot_droplet=0x7f06004f;
+        public static final int title_activity_settings=0x7f06004f;
+        public static final int title_rebuild_droplet=0x7f060053;
+        public static final int title_resize_droplet=0x7f060050;
+        public static final int title_restore_droplet=0x7f060052;
+        public static final int title_snapshot_droplet=0x7f060051;
         public static final int yes=0x7f06001b;
     }
     public static final class style {

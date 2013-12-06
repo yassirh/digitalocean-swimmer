@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ListFragment;
@@ -13,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -163,6 +161,30 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, new HashMap<String, String>());
+				}
+			});
+			alertDialog.show();
+			break;
+		case R.id.action_enable_backups:
+			alertDialog.setTitle(getString(R.string.enable_backups) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.enable_backups_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
+				}
+			});
+			alertDialog.show();
+			break;
+		case R.id.action_disable_backups:
+			alertDialog.setTitle(getString(R.string.disable_backups) + " : " + mDroplet.getName());
+			alertDialog.setMessage(R.string.disable_backups_alert);
+			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
