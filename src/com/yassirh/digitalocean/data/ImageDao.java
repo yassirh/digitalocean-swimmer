@@ -3,7 +3,6 @@ package com.yassirh.digitalocean.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ActionBar.Tab;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

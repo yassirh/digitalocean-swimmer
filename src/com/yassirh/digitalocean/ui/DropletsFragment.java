@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ListFragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +30,8 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DropletTable;
 import com.yassirh.digitalocean.data.SizeTable;
@@ -264,6 +271,14 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			});
 			builder.show();
 			break;
+		case R.id.action_ssh:
+			try {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + mDroplet.getIpAddress() + "/#" + mDroplet.getName())));
+				getActivity().finish();	
+			} catch (ActivityNotFoundException e) {
+				Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
+			}
+			break;
 		default:
 			break;
 		}
@@ -287,6 +302,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			menu.removeItem(R.id.action_shutdown);
 			menu.removeItem(R.id.action_reboot);
 			menu.removeItem(R.id.action_power_cycle);
+			menu.removeItem(R.id.action_ssh);
 		}		
 		if(mDroplet.isBackupsActive())
 			menu.removeItem(R.id.action_enable_backups);

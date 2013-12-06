@@ -1,4 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_ssh" android:title="@string/ssh_to_droplet"></item>
     <item android:id="@+id/action_reboot" android:title="@string/reboot"></item>
     <item android:id="@+id/action_power_cycle" android:title="@string/power_cycle"></item>
     <item android:id="@+id/action_shutdown" android:title="@string/shut_down"></item>
@@ -13,5 +14,4 @@
     <item android:id="@+id/action_disable_backups" android:title="@string/disable_backups"></item>
     <item android:id="@+id/action_rename" android:title="@string/rename"></item>
     <item android:id="@+id/action_destroy" android:title="@string/destroy"></item>
-    
 </menu>

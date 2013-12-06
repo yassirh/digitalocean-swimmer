@@ -12,6 +12,7 @@
     </string-array>
 
     <string name="not_yet_implemented">Not yet implemented</string>
+    <string name="no_ssh_client">No ssh client found! Please intall one to get this feature.</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="no_images">No images!</string>
@@ -39,6 +40,7 @@
     <string name="yes">Yes</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="ssh_to_droplet">SSH to droplet</string>
     <string name="reboot">Reboot</string>
     <string name="power_cycle">Power cycle</string>
     <string name="power_off">Power off</string>
