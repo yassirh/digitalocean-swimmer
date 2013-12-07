@@ -53,13 +53,16 @@ public class DomainService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS);
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS);
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, mBuilder.build());
+			public void onProgress(int bytesWritten, int totalSize) {
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, mBuilder.build());
+				}
 			}
 			
 			@Override
@@ -132,5 +135,68 @@ public class DomainService {
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("domain_require_refresh", true);
+	}
+
+	// TODO : show progress
+	public void createDomain(String domainName, String ipAddress, final boolean showProgress) {
+		String url = "https://api.digitalocean.com/domains/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext) + "&name=" + domainName + "&ip_address=" + ipAddress;
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.get(url, new AsyncHttpResponseHandler() {
+			NotificationManager mNotifyManager;
+			NotificationCompat.Builder mBuilder;
+			
+			@Override
+			public void onStart() {
+				if(showProgress){
+					mNotifyManager =
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.creating_domain))
+					    .setContentText("")
+					    .setSmallIcon(R.drawable.ic_launcher);
+
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, mBuilder.build());
+				}
+			}
+			
+		    @Override
+		    public void onSuccess(String response) {
+		        try {
+					JSONObject jsonObject = new JSONObject(response);
+					String status = jsonObject.getString("status");
+					if(ApiHelper.API_STATUS_OK.equals(status)){
+						
+					}
+					else{
+						// TODO handle error Access Denied/Not Found
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+		    }
+		    
+		    @Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				if(statusCode == 401){
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+				}
+			}
+		    
+		    @Override
+			public void onProgress(int bytesWritten, int totalSize) {	
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, mBuilder.build());
+				}
+			}
+		    
+		    @Override
+		    public void onFinish() {
+		    	if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN);
+		    	DomainService.this.getAllDomainsFromAPI(false);
+		    }
+		});
 	}
 }

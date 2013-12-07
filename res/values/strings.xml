@@ -38,7 +38,7 @@
     <string name="image_label">Image:</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="ssh_to_droplet">SSH to droplet</string>
     <string name="reboot">Reboot</string>
@@ -75,9 +75,13 @@
     <string name="select_size_label">Select size:</string>
     <string name="select_image_label">Select image:</string>
     <string name="select_region_label">Select region:</string>
+    <string name="select_droplet_label">Select droplet:</string>
     <string name="private_networking_label">Private networking</string>
+    <string name="domain_name_label">Domain name</string>
     <string name="create_droplet">Create droplet</string>
+    <string name="create_domain">Create domain</string>
     <string name="creating_droplet">Creating droplet</string>
+    <string name="creating_domain">Creating domain</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
     <string name="shut_down_alert">This will shutdown your droplet.\n\nDo you wish to proceed?</string>

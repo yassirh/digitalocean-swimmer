@@ -19,9 +19,9 @@ public class DomainAdapter extends BaseAdapter {
     private List<Domain> data;
     private static LayoutInflater inflater=null;
     
-    public DomainAdapter(Activity activity, List<Domain> data) {
+    public DomainAdapter(Context context, List<Domain> data) {
         this.data=data;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {

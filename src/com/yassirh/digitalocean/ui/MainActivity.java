@@ -1,8 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -194,9 +192,8 @@ public class MainActivity extends FragmentActivity implements Updatable {
         	createDropletDialogFragment.show(getSupportFragmentManager(), "create_droplet_dialog");
         	return true;
         case R.id.action_add_domain:
-        	AlertDialog.Builder alertDialog = new Builder(this);
-        	alertDialog.setMessage(R.string.not_yet_implemented);
-        	alertDialog.show();
+        	CreateDomainDialogFragment createDomainDialogFragment = new CreateDomainDialogFragment();
+        	createDomainDialogFragment.show(getSupportFragmentManager(), "create_domain_dialog");
         	return true;
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);

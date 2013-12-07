@@ -7,4 +7,6 @@ public class NotificationsIndexes {
 	public static int NOTIFICATION_GET_ALL_REGIONS = 3;
 	public static int NOTIFICATION_GET_ALL_DOMAINS = 4;
 	public static int NOTIFICATION_GET_DROPLET = 5;
+	public static int NOTIFICATION_CREATE_DROPLET = 6;
+	public static int NOTIFICATION_CREATE_DOMAIN = 7;
 }
