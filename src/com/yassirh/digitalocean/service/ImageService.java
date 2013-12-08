@@ -109,27 +109,21 @@ public class ImageService {
 	}
 
 	protected void saveAll(List<Image> images) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		ImageDao imageDao = new ImageDao(databaseHelper);
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
 		for (Image image : images) {
 			imageDao.create(image);
 		}
-		databaseHelper.close();
 	}
 	
 	public List<Image> getAllImages(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		ImageDao imageDao = new ImageDao(databaseHelper);
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
 		List<Image> images = imageDao.getAll(null);
-		databaseHelper.close();
 		return images;
 	}
 
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		ImageDao imageDao = new ImageDao(databaseHelper);
-		imageDao.deleteAll();
-		databaseHelper.close();		
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
+		imageDao.deleteAll();	
 	}
 
 	public void setRequiresRefresh(Boolean requireRefresh){
@@ -145,18 +139,14 @@ public class ImageService {
 	}
 
 	public List<Image> getSnapshotsOnly() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		ImageDao imageDao = new ImageDao(databaseHelper);
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
 		List<Image> images = imageDao.getSnapshotsOnly(null);
-		databaseHelper.close();
 		return images;
 	}
 	
 	public List<Image> getImagesOnly() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		ImageDao imageDao = new ImageDao(databaseHelper);
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
 		List<Image> images = imageDao.getImagesOnly(null);
-		databaseHelper.close();
 		return images;
 	}
 }

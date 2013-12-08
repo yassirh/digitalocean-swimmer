@@ -107,26 +107,20 @@ public class RegionService {
 	}
 
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		RegionDao regionDao = new RegionDao(databaseHelper);
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
 		regionDao.deleteAll();
-		databaseHelper.close();
 	}
 
 	protected void saveAll(List<Region> regions) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		RegionDao regionDao = new RegionDao(databaseHelper);
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
 		for (Region region : regions) {
 			regionDao.create(region);
 		}
-		databaseHelper.close();
 	}
 	
 	public List<Region> getAllRegions(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		RegionDao regionDao = new RegionDao(databaseHelper);
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
 		List<Region> regions = regionDao.getAll(null);
-		databaseHelper.close();
 		return regions;
 	}
 

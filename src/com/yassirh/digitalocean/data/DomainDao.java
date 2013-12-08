@@ -8,15 +8,14 @@ import com.yassirh.digitalocean.model.Domain;
 
 public class DomainDao extends SqlDao<Domain> {
 
-	private DatabaseHelper databaseHelper;
+	private DatabaseHelper mDatabaseHelper;
 
 	public DomainDao(DatabaseHelper databaseHelper) {
-		this.databaseHelper = databaseHelper;
+		super();
+		this.mDatabaseHelper = databaseHelper;
 	}
 
-	public long create(Domain domain) {
-		SQLiteDatabase db = databaseHelper.getWritableDatabase();
-		
+	public long create(Domain domain) {		
 		ContentValues values = new ContentValues();
 		values.put(DomainTable.ID, domain.getId());
 		values.put(DomainTable.NAME, domain.getName());
@@ -25,7 +24,6 @@ public class DomainDao extends SqlDao<Domain> {
 		values.put(DomainTable.ERROR, domain.getError());
 		values.put(DomainTable.ZONE_FILE_WITH_ERROR, domain.getZoneFileWithError());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		db.close();
 		return id;
 	}	
 
@@ -42,7 +40,7 @@ public class DomainDao extends SqlDao<Domain> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.databaseHelper;
+		return this.mDatabaseHelper;
 	}
 
 	@Override

@@ -11,10 +11,13 @@ public abstract class SqlDao<T> {
 	public abstract DatabaseHelper getDatabaseHelper();
 	public abstract TableHelper getTableHelper();
 	public abstract T newInstance(Cursor cursor);
+	protected SQLiteDatabase db;
+	
+	public SqlDao(){
+		db = DatabaseHelper.getWritableDatabaseInstance();
+	}
 	
 	public List<T> getAll(String orderBy) {
-		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
-
 		List<T> collection = new ArrayList<T>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), null, null, orderBy, null, null);
@@ -27,26 +30,22 @@ public abstract class SqlDao<T> {
 			}
 		}
 		cursor.close();
-		db.close();
 		return collection;
 	}
 	
 
 	public void deleteAll() {
-		SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
 		db.delete(getTableHelper().TABLE_NAME,null,null);
-		db.close();
 	}
 	
 	public T findById(long id) {
 		T t = null;
-		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
 		getTableHelper();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), TableHelper.ID + " = " + id, null, null, null, null);
 		if(cursor.moveToNext())		
 			t = newInstance(cursor);
-		db.close();
+		cursor.close();
 		return t;
 	}
 }

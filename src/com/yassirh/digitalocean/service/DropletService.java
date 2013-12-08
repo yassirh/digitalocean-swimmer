@@ -272,10 +272,8 @@ public class DropletService {
 	}
 	
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DropletDao dropletDao = new DropletDao(databaseHelper);
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		dropletDao.deleteAll();
-		databaseHelper.close();
 	}
 
 	private Droplet jsonObjectToDroplet(JSONObject dropletJSONObject) throws JSONException {
@@ -306,28 +304,22 @@ public class DropletService {
 	}
 
 	protected void saveAll(List<Droplet> droplets) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DropletDao dropletDao = new DropletDao(databaseHelper);
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		for (Droplet droplet : droplets) {
 			dropletDao.createOrUpdate(droplet);
 		}
 		DropletService.this.setRequiresRefresh(true);
-		databaseHelper.close();
 	}
 	
 	public List<Droplet> getAllDroplets(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DropletDao dropletDao = new DropletDao(databaseHelper);
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		List<Droplet> droplets = dropletDao.getAll(null);
-		databaseHelper.close();
 		return droplets;
 	}
 
 	public Droplet findById(long id) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DropletDao dropletDao = new DropletDao(databaseHelper);
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		Droplet droplet = dropletDao.findById(id);
-		databaseHelper.close();
 		return droplet;
 	}
 
@@ -427,9 +419,7 @@ public class DropletService {
 	}
 
 	protected void update(Droplet droplet) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DropletDao dropletDao = new DropletDao(databaseHelper);
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		dropletDao.createOrUpdate(droplet);
-		databaseHelper.close();
 	}	
 }

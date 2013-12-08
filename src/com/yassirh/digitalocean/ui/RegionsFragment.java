@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.service.RegionService;
 
-public class RegionsFragment extends ListFragment{
+public class RegionsFragment extends ListFragment implements Updatable{
 		
 	RegionAdapter regionAdapter;
 	List<Region> regions = new ArrayList<Region>();
@@ -22,7 +23,6 @@ public class RegionsFragment extends ListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		update();
 	}
 	
 	@Override
@@ -37,9 +37,9 @@ public class RegionsFragment extends ListFragment{
 		registerForContextMenu(getListView());
 	}
 
-
-	public void update() {
-		regions = new RegionService(this.getActivity()).getAllRegions();
+	@Override
+	public void update(Context context) {
+		regions = new RegionService(context).getAllRegions();
 		regionAdapter = new RegionAdapter(this.getActivity(), regions);
 		setListAdapter(regionAdapter);
 	}

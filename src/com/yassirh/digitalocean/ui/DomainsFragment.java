@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +52,11 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		
+		Bundle args = new Bundle();
+        args.putLong("id", id);
+		DomainDetailsDialogFragment domainDetailsDialogFragment = new DomainDetailsDialogFragment();
+		domainDetailsDialogFragment.setArguments(args);
+		FragmentManager supportFragment = ((FragmentActivity)this.getActivity()).getSupportFragmentManager();
+		domainDetailsDialogFragment.show(supportFragment, "droplet_domain_fragment");
 	}
 }

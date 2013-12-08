@@ -1,48 +1,57 @@
 package com.yassirh.digitalocean.model;
 
+import java.util.List;
+
 public class Domain {
 	
-	private long id;
-	private String name;
-	private int ttl;
-	private String liveZoneFile;
-	private String error;
-	private String zoneFileWithError;
+	private long mId;
+	private String mName;
+	private int mTtl;
+	private String mLiveZoneFile;
+	private String mError;
+	private String mZoneFileWithError;
+	private List<Record> mRecords;
 	
 	public long getId() {
-		return id;
+		return mId;
 	}
 	public void setId(long id) {
-		this.id = id;
+		this.mId = id;
 	}
 	public String getName() {
-		return name;
+		return mName;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.mName = name;
 	}
 	public int getTtl() {
-		return ttl;
+		return mTtl;
 	}
 	public void setTtl(int ttl) {
-		this.ttl = ttl;
+		this.mTtl = ttl;
 	}
 	public String getLiveZoneFile() {
-		return liveZoneFile;
+		return mLiveZoneFile;
 	}
 	public void setLiveZoneFile(String liveZoneFile) {
-		this.liveZoneFile = liveZoneFile;
+		this.mLiveZoneFile = liveZoneFile;
 	}
 	public String getError() {
-		return error;
+		return mError;
 	}
 	public void setError(String error) {
-		this.error = error;
+		this.mError = error;
 	}
 	public String getZoneFileWithError() {
-		return zoneFileWithError;
+		return mZoneFileWithError;
 	}
 	public void setZoneFileWithError(String zoneFileWithError) {
-		this.zoneFileWithError = zoneFileWithError;
+		this.mZoneFileWithError = zoneFileWithError;
+	}
+	public List<Record> getRecords() {
+		return mRecords;
+	}
+	public void setRecords(List<Record> records) {
+		this.mRecords = records;
 	}
 }

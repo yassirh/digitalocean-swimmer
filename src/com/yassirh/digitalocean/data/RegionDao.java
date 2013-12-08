@@ -8,21 +8,19 @@ import com.yassirh.digitalocean.model.Region;
 
 public class RegionDao extends SqlDao<Region> {
 
-	private DatabaseHelper databaseHelper;
+	private DatabaseHelper mDatabaseHelper;
 
 	public RegionDao(DatabaseHelper databaseHelper) {
-		this.databaseHelper = databaseHelper;
+		super();
+		this.mDatabaseHelper = databaseHelper;
 	}
 
 	public long create(Region region) {
-		SQLiteDatabase db = databaseHelper.getWritableDatabase();
-		
 		ContentValues values = new ContentValues();
 		values.put(RegionTable.ID, region.getId());
 		values.put(RegionTable.NAME, region.getName());
 		values.put(RegionTable.SLUG, region.getSlug());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		db.close();
 		return id;
 	}	
 
@@ -36,7 +34,7 @@ public class RegionDao extends SqlDao<Region> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.databaseHelper;
+		return this.mDatabaseHelper;
 	}
 
 	@Override

@@ -8,15 +8,14 @@ import com.yassirh.digitalocean.model.Size;
 
 public class SizeDao extends SqlDao<Size> {
 
-	private DatabaseHelper databaseHelper;
-
+	private DatabaseHelper mDatabaseHelper;
+	
 	public SizeDao(DatabaseHelper databaseHelper) {
-		this.databaseHelper = databaseHelper;
+		super();
+		this.mDatabaseHelper = databaseHelper;
 	}
 
 	public long create(Size size) {
-		SQLiteDatabase db = databaseHelper.getWritableDatabase();
-		
 		ContentValues values = new ContentValues();
 		values.put(SizeTable.ID, size.getId());
 		values.put(SizeTable.NAME, size.getName());
@@ -27,7 +26,6 @@ public class SizeDao extends SqlDao<Size> {
 		values.put(SizeTable.COST_PER_HOUR, size.getCostPerHour());
 		values.put(SizeTable.COST_PER_MONTH, size.getCostPerMonth());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		db.close();
 		return id;
 	}	
 
@@ -46,7 +44,7 @@ public class SizeDao extends SqlDao<Size> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.databaseHelper;
+		return this.mDatabaseHelper;
 	}
 
 	@Override

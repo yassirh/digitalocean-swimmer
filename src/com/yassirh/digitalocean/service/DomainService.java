@@ -19,7 +19,10 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DomainDao;
+import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.RecordDao;
 import com.yassirh.digitalocean.model.Domain;
+import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class DomainService {
@@ -93,6 +96,9 @@ public class DomainService {
 						}
 						DomainService.this.deleteAll();
 						DomainService.this.saveAll(domains);
+						for (Domain domain : domains) {
+							new RecordService(mContext).getRecordsByDomainFromAPI(domain.getId(),false);
+						}
 						DomainService.this.setRequiresRefresh(true);
 					}
 				} catch (JSONException e) {
@@ -103,26 +109,24 @@ public class DomainService {
 	}
 
 	protected void saveAll(List<Domain> domains) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DomainDao domainDao = new DomainDao(databaseHelper);
+		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
 		for (Domain domain : domains) {
 			domainDao.create(domain);
 		}
-		databaseHelper.close();
 	}
 	
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DomainDao domainDao = new DomainDao(databaseHelper);
+		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
 		domainDao.deleteAll();
-		databaseHelper.close();
 	}
 	
 	public List<Domain> getAllDomains(){
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		DomainDao domainDao = new DomainDao(databaseHelper);
+		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
+		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
 		List<Domain> domains = domainDao.getAll(null);
-		databaseHelper.close();
+		for (Domain domain : domains) {
+			domain.setRecords(recordDao.getAllByDomain(domain.getId()));
+		}
 		return domains;
 	}
 
@@ -198,5 +202,14 @@ public class DomainService {
 		    	DomainService.this.getAllDomainsFromAPI(false);
 		    }
 		});
+	}
+	
+	public Domain findById(long id) {
+		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
+		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
+		Domain domain = domainDao.findById(id);
+		domain.setRecords(recordDao.getAllByDomain(domain.getId()));
+		
+		return domain;
 	}
 }

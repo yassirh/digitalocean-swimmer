@@ -109,27 +109,21 @@ public class SizeService {
 	}
 
 	protected void saveAll(List<Size> sizes) {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		SizeDao sizeDao = new SizeDao(databaseHelper);
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
 		for (Size size : sizes) {
 			sizeDao.create(size);
 		}
-		databaseHelper.close();
 	}
 	
 	public List<Size> getAllSizes(String orderBy){
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		SizeDao sizeDao = new SizeDao(databaseHelper);
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
 		List<Size> sizes = sizeDao.getAll(orderBy);
-		databaseHelper.close();
 		return sizes;
 	}
 
 	public void deleteAll() {
-		DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-		SizeDao sizeDao = new SizeDao(databaseHelper);
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
 		sizeDao.deleteAll();
-		databaseHelper.close();
 	}
 
 	public void setRequiresRefresh(Boolean requireRefresh){

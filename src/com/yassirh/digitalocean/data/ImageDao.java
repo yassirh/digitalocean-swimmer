@@ -11,15 +11,14 @@ import com.yassirh.digitalocean.model.Image;
 
 public class ImageDao extends SqlDao<Image> {
 
-	private DatabaseHelper databaseHelper;
+	private DatabaseHelper mDatabaseHelper;
 
 	public ImageDao(DatabaseHelper databaseHelper) {
-		this.databaseHelper = databaseHelper;
+		super();
+		this.mDatabaseHelper = databaseHelper;
 	}
 
 	public long create(Image image) {
-		SQLiteDatabase db = databaseHelper.getWritableDatabase();
-		
 		ContentValues values = new ContentValues();
 		values.put(ImageTable.ID, image.getId());
 		values.put(ImageTable.NAME, image.getName());
@@ -27,7 +26,6 @@ public class ImageDao extends SqlDao<Image> {
 		values.put(ImageTable.SLUG, image.getSlug());
 		values.put(ImageTable.PUBLIC, image.isPublic() ? 1 : 0);
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		db.close();
 		return id;
 	}	
 
@@ -43,7 +41,7 @@ public class ImageDao extends SqlDao<Image> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.databaseHelper;
+		return this.mDatabaseHelper;
 	}
 
 	@Override
@@ -52,8 +50,6 @@ public class ImageDao extends SqlDao<Image> {
 	}
 
 	public List<Image> getSnapshotsOnly(Object object) {
-		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
-
 		List<Image> snapshots = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "0", null, null, null, null);
@@ -66,13 +62,10 @@ public class ImageDao extends SqlDao<Image> {
 			}
 		}
 		cursor.close();
-		db.close();
 		return snapshots;
 	}
 	
 	public List<Image> getImagesOnly(Object object) {
-		SQLiteDatabase db = getDatabaseHelper().getReadableDatabase();
-
 		List<Image> images = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, null);
@@ -85,7 +78,6 @@ public class ImageDao extends SqlDao<Image> {
 			}
 		}
 		cursor.close();
-		db.close();
 		return images;
 	}
 }
