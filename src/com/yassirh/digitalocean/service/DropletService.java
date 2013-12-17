@@ -245,7 +245,6 @@ public class DropletService {
 			
 		    @Override
 		    public void onSuccess(String response) {
-		    	// TODO delete previous droplets 
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
 					String status = jsonObject.getString("status");

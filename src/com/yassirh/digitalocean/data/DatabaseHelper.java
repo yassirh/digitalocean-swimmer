@@ -56,14 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO : restore the previous data
-		db.execSQL(imageTable.getDeleteSql());
-		db.execSQL(regionTable.getDeleteSql());
-		db.execSQL(sizeTable.getDeleteSql());
-		db.execSQL(domainTable.getDeleteSql());
-		db.execSQL(dropletTable.getDeleteSql());
-		db.execSQL(recordTable.getDeleteSql());
-		onCreate(db);
+		if(oldVersion < 9)
+			db.execSQL(recordTable.getCreateSql());
 	}
 
 }

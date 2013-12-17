@@ -52,7 +52,8 @@ public final class R {
         public static final int txt=0x7f020019;
         public static final int ubuntu=0x7f02001a;
         public static final int ubuntu_active=0x7f02001b;
-        public static final int us_flag=0x7f02001c;
+        public static final int unknown=0x7f02001c;
+        public static final int us_flag=0x7f02001d;
     }
     public static final class id {
         public static final int action_add_domain=0x7f0a0049;

@@ -28,6 +28,7 @@ public class RegionsFragment extends ListFragment implements Updatable{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		update(this.getActivity());
 		return inflater.inflate(R.layout.fragment_regions, container, false);
 	}
 	

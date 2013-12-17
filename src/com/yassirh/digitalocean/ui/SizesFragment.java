@@ -3,6 +3,7 @@ package com.yassirh.digitalocean.ui;
 import java.util.List;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.service.SizeService;
 
-public class SizesFragment extends ListFragment{
+public class SizesFragment extends ListFragment implements Updatable{
 		
 	SizeAdapter sizeAdapter;
 	List<Size> sizes;
@@ -22,12 +23,12 @@ public class SizesFragment extends ListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		update();
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		update(this.getActivity());
 		return inflater.inflate(R.layout.fragment_sizes, container, false);
 	}
 	
@@ -37,8 +38,8 @@ public class SizesFragment extends ListFragment{
 		registerForContextMenu(getListView());
 	}
 
-
-	public void update() {
+	@Override
+	public void update(Context context) {
 		sizes = new SizeService(this.getActivity()).getAllSizes(SizeTable.MEMORY);
 		sizeAdapter = new SizeAdapter(this.getActivity(), sizes, true);
 		setListAdapter(sizeAdapter);

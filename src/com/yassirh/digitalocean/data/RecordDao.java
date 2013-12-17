@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.yassirh.digitalocean.model.Domain;
-import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Record;
 
 public class RecordDao extends SqlDao<Record> {

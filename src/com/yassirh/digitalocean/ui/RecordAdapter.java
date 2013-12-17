@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.model.Record;
 import com.yassirh.digitalocean.utils.ApiHelper;
 

@@ -62,7 +62,12 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         	flagImageView.setVisibility(View.GONE);
             regionTextView.setText("");
         }
-    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(droplet.getImage().getDistribution(), droplet.getStatus()));
+    	    	
+    	if(image != null){	
+	    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), droplet.getStatus()));
+    		imageTextView.setText(image.getName());
+    	}
+    	
         ipAddressTextView.setText(droplet.getIpAddress());
         backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         lockedTextView.setText(droplet.isLocked() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
@@ -71,7 +76,6 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         memoryTextView.setText(size.getMemory()  +"MB");
         diskTextView.setText(size.getDisk() +"GB");
         cpusTextView.setText(size.getCpu() + "");
-    	imageTextView.setText(image.getName());
 		return view;
 	}
 	
