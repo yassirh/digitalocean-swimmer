@@ -146,7 +146,7 @@ public class ImageService {
 	
 	public List<Image> getImagesOnly() {
 		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
-		List<Image> images = imageDao.getImagesOnly(null);
+		List<Image> images = imageDao.getImagesOnly();
 		return images;
 	}
 }

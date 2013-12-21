@@ -62,7 +62,6 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		registerForContextMenu(getListView());
 		getListView().setOnItemClickListener(this);
 		registerForContextMenu(getListView());
 	}
@@ -155,7 +154,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			break;
 		case R.id.action_destroy:
 			alertDialog.setTitle(getString(R.string.destroy) + " : " + mDroplet.getName());
-			alertDialog.setMessage(R.string.destroy_alert);
+			alertDialog.setMessage(R.string.destroy_droplet_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override

@@ -38,6 +38,10 @@ public abstract class SqlDao<T> {
 		db.delete(getTableHelper().TABLE_NAME,null,null);
 	}
 	
+	public void delete(long id) {
+		db.delete(getTableHelper().TABLE_NAME,TableHelper.ID + " = " + id,null);
+	}
+	
 	public T findById(long id) {
 		T t = null;
 		getTableHelper();

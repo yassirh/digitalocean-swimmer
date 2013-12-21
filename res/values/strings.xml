@@ -40,6 +40,7 @@
     <string name="yes">Yes</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="add_record">Add record</string>
     <string name="ssh_to_droplet">SSH to droplet</string>
     <string name="reboot">Reboot</string>
     <string name="power_cycle">Power cycle</string>
@@ -82,16 +83,18 @@
     <string name="create_domain">Create domain</string>
     <string name="creating_droplet">Creating droplet</string>
     <string name="creating_domain">Creating domain</string>
+    <string name="destroying_domain">Destroying domain</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
     <string name="shut_down_alert">This will shutdown your droplet.\n\nDo you wish to proceed?</string>
     <string name="power_off_alert">This will power off your droplet.\n\nWe recommend powering off your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="power_on_alert">This will boot your droplet.\n\nDo you wish to proceed?</string>
-    <string name="destroy_alert">This is irreversible. We will destroy your droplet and all associated backups.\n\nDo you wish to proceed?</string>
+    <string name="destroy_droplet_alert">This is irreversible. We will destroy your droplet and all associated backups.\n\nDo you wish to proceed?</string>
     <string name="restore_alert">This method allows you to restore a droplet with a previous image or snapshot. This will be a mirror copy of the image or snapshot to your droplet. Be sure you have backed up any necessary information prior to restore.</string>
     <string name="rebuild_alert">This method allows you to reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet.</string>
     <string name="enable_backups_alert">This method enables automatic backups which run in the background daily to backup your droplet\'s data.</string>
     <string name="disable_backups_alert">This method disables automatic backups from running to backup your droplet\'s data.</string>
+    <string name="destroy_domain_alert">This will distroy your domain. Are you sure?</string>
     <string name="name">Name</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_resize_droplet">Resize droplet</string>

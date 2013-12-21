@@ -19,10 +19,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DomainDao;
-import com.yassirh.digitalocean.data.DropletDao;
 import com.yassirh.digitalocean.data.RecordDao;
 import com.yassirh.digitalocean.model.Domain;
-import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class DomainService {
@@ -211,5 +209,69 @@ public class DomainService {
 		domain.setRecords(recordDao.getAllByDomain(domain.getId()));
 		
 		return domain;
+	}
+
+	public void deleteDomain(final long id, final boolean showProgress) {
+		String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.get(url, new AsyncHttpResponseHandler() {
+			NotificationManager mNotifyManager;
+			NotificationCompat.Builder mBuilder;
+			
+			@Override
+			public void onStart() {
+				if(showProgress){
+					mNotifyManager =
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.destroying_domain))
+					    .setContentText("")
+					    .setSmallIcon(R.drawable.ic_launcher);
+
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN, mBuilder.build());
+				}
+			}
+			
+		    @Override
+		    public void onSuccess(String response) {
+		        try {
+					JSONObject jsonObject = new JSONObject(response);
+					String status = jsonObject.getString("status");
+					if(ApiHelper.API_STATUS_OK.equals(status)){
+						
+					}
+					else{
+						// TODO handle error Access Denied/Not Found
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+		    }
+		    
+		    @Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				if(statusCode == 401){
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+				}
+			}
+		    
+		    @Override
+			public void onProgress(int bytesWritten, int totalSize) {	
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN, mBuilder.build());
+				}
+			}
+		    
+		    @Override
+		    public void onFinish() {
+		    	if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN);
+		    	DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
+		    	domainDao.delete(id);
+		    	DomainService.this.setRequiresRefresh(true);
+		    }
+		});
 	}
 }

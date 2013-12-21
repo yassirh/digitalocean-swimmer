@@ -46,6 +46,5 @@ public class DomainDao extends SqlDao<Domain> {
 	@Override
 	public TableHelper getTableHelper() {
 		return new DomainTable();
-	}
-	
+	}	
 }

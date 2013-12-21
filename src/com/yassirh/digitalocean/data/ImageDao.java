@@ -65,7 +65,7 @@ public class ImageDao extends SqlDao<Image> {
 		return snapshots;
 	}
 	
-	public List<Image> getImagesOnly(Object object) {
+	public List<Image> getImagesOnly() {
 		List<Image> images = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, null);
