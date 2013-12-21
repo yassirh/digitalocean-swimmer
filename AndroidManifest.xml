@@ -29,6 +29,7 @@
             android:name="com.yassirh.digitalocean.ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+		<receiver android:name="com.yassirh.digitalocean.utils.MyBroadcastReceiver" ></receiver>
     </application>
 
 </manifest>

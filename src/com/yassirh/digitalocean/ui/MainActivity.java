@@ -1,14 +1,19 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.Calendar;
+
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.Preference;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +31,8 @@ import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
+import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 public class MainActivity extends FragmentActivity implements Updatable {
 
@@ -126,6 +133,16 @@ public class MainActivity extends FragmentActivity implements Updatable {
             update(this);
             t.start();
         }
+        
+        Intent myBroadcastReceiver = new Intent(this, MyBroadcastReceiver.class);
+    	myBroadcastReceiver.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, myBroadcastReceiver, PendingIntent.FLAG_CANCEL_CURRENT);
+        int interval = PreferencesHelper.getSynchronizationInterval(this);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        if(interval == 0)
+        	alarmManager.cancel(pendingIntent);
+        else
+        	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), interval * 60 * 1000, pendingIntent);
 	}
 	
 	@Override
@@ -154,8 +171,6 @@ public class MainActivity extends FragmentActivity implements Updatable {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        /*boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);*/
         return super.onPrepareOptionsMenu(menu);
     }
 

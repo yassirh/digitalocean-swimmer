@@ -227,7 +227,8 @@ public class DropletService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
 			}
 			
 			@Override
@@ -239,8 +240,10 @@ public class DropletService {
 			
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {	
-				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, mBuilder.build());
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, mBuilder.build());
+				}
 			}
 			
 		    @Override

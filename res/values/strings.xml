@@ -10,7 +10,24 @@
         <item>Regions</item>
         <item>Sizes</item>
     </string-array>
-
+    <string-array name="pref_sync_frequency_entries">
+        <item name="0">Never (Update maually)</item>
+        <item name="1">Every minute</item>
+        <item name="30">Every 30 minutes</item>
+        <item name="60">Every hour</item>
+        <item name="240">Every four hours</item>
+        <item name="1440">Every day</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="30">30</item>
+        <item name="60">60</item>
+        <item name="240">240</item>
+        <item name="1440">1440</item>
+    </string-array>
+    <string name="pref_sync_frequency_key_label">Synchronization interval</string>
+    <string name="summary_sync_frequency">Frequency of synchronization</string>
     <string name="not_yet_implemented">Not yet implemented</string>
     <string name="no_ssh_client">No ssh client found! Please intall one to get this feature.</string>
     <string name="drawer_open">Open navigation drawer</string>
@@ -106,5 +123,6 @@
     <string name="summary_api_key">API Key</string>
     <string name="api_key_label">API Key</string>
     <string name="api_settings_title">API Settings</string>
+    <string name="preferences_title">Preferences</string>
     <string name="records">Records</string>     
 </resources>

@@ -17,5 +17,14 @@
 			/>
         
     </PreferenceCategory>
-   
+	<PreferenceCategory 
+	    android:title="@string/preferences_title">
+		<ListPreference
+            android:key="pref_sync_frequency"
+            android:entries="@array/pref_sync_frequency_entries"
+            android:summary="@string/summary_sync_frequency"
+            android:entryValues="@array/pref_sync_frequency_values"
+            android:title="@string/pref_sync_frequency_key_label" />
+	</PreferenceCategory>
+	
 </PreferenceScreen>  
