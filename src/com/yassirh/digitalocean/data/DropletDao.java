@@ -42,8 +42,6 @@ public class DropletDao extends SqlDao<Droplet> {
 		}else{
 			id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 		}
-		
-		db.close();
 		return id;
 	}	
 
