@@ -124,5 +124,6 @@
     <string name="api_key_label">API Key</string>
     <string name="api_settings_title">API Settings</string>
     <string name="preferences_title">Preferences</string>
-    <string name="records">Records</string>     
+    <string name="records">Records</string>
+    <string name="scrub_data">Scrub Data</string>     
 </resources>

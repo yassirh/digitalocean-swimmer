@@ -10,4 +10,18 @@ This application allows you to :
 
 * Manage your droplets : create, reboot, boot, shutdown, reset password, resize, take snapshots, enable/disable backups, rename and destroy.
 
-* Manage domains : create and more coming soon.
+*  Manage domains : create and destroy domains.
+
+Coming soon : 
+
+* Home screen widget.
+
+* Domain records management.
+
+* Better support for tablets.
+
+* Much more
+
+Source code : https://github.com/yassirh/digital-ocean-swimmer
+
+For issues or feature requests open a new issue here : https://github.com/yassirh/digital-ocean-swimmer/issues

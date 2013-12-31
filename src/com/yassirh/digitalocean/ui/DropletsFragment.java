@@ -23,9 +23,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -153,16 +155,32 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
 			break;
 		case R.id.action_destroy:
-			alertDialog.setTitle(getString(R.string.destroy) + " : " + mDroplet.getName());
-			alertDialog.setMessage(R.string.destroy_droplet_alert);
-			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+			builder = new AlertDialog.Builder(getActivity());
+			inflater = getActivity().getLayoutInflater();
+			view = inflater.inflate(R.layout.dialog_droplet_destroy, null);
+			builder.setTitle(getString(R.string.destroy) + " : " + mDroplet.getName());
+			final CheckBox scrubDataCheckBox = (CheckBox) view.findViewById(R.id.scrubDataCheckBox);
+			builder.setView(view);
+			builder.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, new HashMap<String, String>());
+					HashMap<String, String> params = new HashMap<String, String>();
+					if(scrubDataCheckBox.isChecked())
+						params.put("scrub_data", "true");
+					else
+						params.put("scrub_data", "false");
+					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, params);
 				}
 			});
-			alertDialog.show();
+			builder.setNegativeButton(R.string.no, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.show();
 			break;
 		case R.id.action_enable_backups:
 			alertDialog.setTitle(getString(R.string.enable_backups) + " : " + mDroplet.getName());
