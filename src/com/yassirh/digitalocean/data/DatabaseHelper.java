@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();
@@ -58,6 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if(oldVersion < 9)
 			db.execSQL(recordTable.getCreateSql());
+		if(oldVersion < 10){
+			db.execSQL(recordTable.getDropSql());
+			db.execSQL(recordTable.getCreateSql());
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ public class TableHelper{
 		return sql;
 	}
 	
-	public String getDeleteSql(){
+	public String getDropSql(){
 		return "DROP TABLE IF EXISTS " + TABLE_NAME;
 	}
 

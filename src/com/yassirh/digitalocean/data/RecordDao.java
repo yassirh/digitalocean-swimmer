@@ -27,6 +27,9 @@ public class RecordDao extends SqlDao<Record> {
 		record.setDomain(domain);
 		record.setRecordType(c.getString(c.getColumnIndex(RecordTable.RECORD_TYPE)));
 		record.setData(c.getString(c.getColumnIndex(RecordTable.DATA)));
+		record.setPort(c.getInt(c.getColumnIndex(RecordTable.PORT)));
+		record.setPriority(c.getInt(c.getColumnIndex(RecordTable.PRIORITY)));
+		record.setWeight(c.getInt(c.getColumnIndex(RecordTable.WEIGHT)));
 		return record;
 	}
 
@@ -49,6 +52,9 @@ public class RecordDao extends SqlDao<Record> {
 		values.put(RecordTable.DOMAIN_ID, record.getDomain().getId());
 		values.put(RecordTable.RECORD_TYPE, record.getRecordType());
 		values.put(RecordTable.DATA, record.getData());
+		values.put(RecordTable.PORT, record.getPort());
+		values.put(RecordTable.PRIORITY, record.getPriority());
+		values.put(RecordTable.WEIGHT, record.getWeight());
 
 		if(update){
 			db.updateWithOnConflict(getTableHelper().TABLE_NAME,values,DropletTable.ID +"= ?",new String[]{record.getId()+""},SQLiteDatabase.CONFLICT_REPLACE);

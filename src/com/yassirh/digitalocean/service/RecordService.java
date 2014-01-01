@@ -43,15 +43,29 @@ public class RecordService {
 	}
 
 	private Record jsonObjectToRecord(JSONObject recordJSONObject) throws JSONException {
-		Record record = new Record();
 		Domain domain = new Domain();
 		domain.setId(recordJSONObject.getLong("domain_id"));
-				
+		Integer priority = null;
+	    Integer port = null;
+	    Integer weight = null;
+	    if(!recordJSONObject.getString("priority").equals("null")){
+	    	priority = Integer.parseInt(recordJSONObject.getString("priority"));
+	    }
+		if(!recordJSONObject.getString("port").equals("null")){
+			port = Integer.parseInt(recordJSONObject.getString("port"));    	
+	    }
+		if(!recordJSONObject.getString("weight").equals("null")){
+			weight = Integer.parseInt(recordJSONObject.getString("weight"));
+		}
+	    Record record = new Record();
 		record.setId(recordJSONObject.getLong("id"));
 		record.setName(recordJSONObject.getString("name"));
 		record.setData(recordJSONObject.getString("data"));
-		record.setDomain(domain);
 		record.setRecordType(recordJSONObject.getString("record_type"));
+		record.setPriority(priority);
+		record.setPort(port);
+		record.setWeight(weight);
+		record.setDomain(domain);
 		
 		return record;
 	}

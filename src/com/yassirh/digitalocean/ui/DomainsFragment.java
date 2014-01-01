@@ -49,7 +49,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 			Bundle savedInstanceState) {
 		mDomainService = new DomainService(getActivity());
 		update(this.getActivity());
-		return inflater.inflate(R.layout.fragment_regions, container, false);
+		return inflater.inflate(R.layout.fragment_domains, container, false);
 	}
 	
 	@Override

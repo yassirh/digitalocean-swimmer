@@ -46,10 +46,38 @@ public class RecordAdapter extends BaseAdapter {
         
         TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
         TextView dataTextView = (TextView)vi.findViewById(R.id.dataTextView);
+        TextView portTextView = (TextView)vi.findViewById(R.id.portTextView);
+        TextView weightTextView = (TextView)vi.findViewById(R.id.weightTextView);
+        TextView priorityTextView = (TextView)vi.findViewById(R.id.priorityTextView);
+        
         ImageView recordTypeImageView = (ImageView)vi.findViewById(R.id.recordTypeImageView);
-        if(!record.getName().equals("null"))
+        
+        nameTextView.setVisibility(View.VISIBLE);
+        dataTextView.setVisibility(View.VISIBLE);
+        portTextView.setVisibility(View.VISIBLE);
+        weightTextView.setVisibility(View.VISIBLE);
+        priorityTextView.setVisibility(View.VISIBLE);
+        
+        if(record.getName().equals("null"))
+        	nameTextView.setVisibility(View.GONE);
+        else
         	nameTextView.setText(record.getName());
         dataTextView.setText(record.getData());
+        
+        if(record.getPort() == 0)
+        	portTextView.setVisibility(View.GONE);
+        else
+        	portTextView.setText(record.getPort().toString());
+        
+        if(record.getPriority() == 0)
+        	priorityTextView.setVisibility(View.GONE);
+        else
+        	priorityTextView.setText(record.getPriority().toString());
+        
+        if(record.getWeight() == 0)
+        	weightTextView.setVisibility(View.GONE);
+        else
+        	weightTextView.setText(record.getWeight().toString());
         recordTypeImageView.setImageResource(ApiHelper.getRecordLabel(record.getRecordType()));
         
         return vi;
