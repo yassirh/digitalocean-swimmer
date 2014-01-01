@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ListFragment;
@@ -23,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -77,6 +77,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	
 	// droplet that holds the selected droplet from the contextual menu
 	Droplet mDroplet;
+	@SuppressLint("CutPasteId")
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		View view;

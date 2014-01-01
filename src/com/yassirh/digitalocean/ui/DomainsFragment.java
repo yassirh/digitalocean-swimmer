@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -19,12 +20,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.service.DomainService;
+import com.yassirh.digitalocean.service.RecordService;
 
 public class DomainsFragment extends ListFragment implements OnItemClickListener, Updatable{
 		
@@ -94,6 +100,115 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 					}
 				});
 				alertDialog.show();
+				break;
+			case R.id.action_add_record:
+				builder = new AlertDialog.Builder(getActivity());
+				inflater = getActivity().getLayoutInflater();
+				final View view = inflater.inflate(R.layout.dialog_record_create, null);
+				builder.setTitle(getString(R.string.add_record));
+				final Spinner domainSpinner = (Spinner) view.findViewById(R.id.domainSpinner);
+				domainSpinner.setAdapter(new DomainAdapter(getActivity(), new DomainService(getActivity()).getAllDomains()));
+				final Spinner recordTypeSpinner = (Spinner) view.findViewById(R.id.recordTypeSpinner);
+				final RecordTypeAdapter recordTypeAdapter = new RecordTypeAdapter(getActivity());
+				recordTypeSpinner.setAdapter(recordTypeAdapter);
+				recordTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+						LinearLayout aLinearLayout = (LinearLayout) view.findViewById(R.id.aLinearLayout);
+						LinearLayout cnameLinearLayout = (LinearLayout) view.findViewById(R.id.cnameLinearLayout);
+						LinearLayout mxLinearLayout = (LinearLayout) view.findViewById(R.id.mxLinearLayout);
+						LinearLayout nsLinearLayout = (LinearLayout) view.findViewById(R.id.nsLinearLayout);
+						LinearLayout txtLinearLayout = (LinearLayout) view.findViewById(R.id.txtLinearLayout);
+						LinearLayout srvLinearLayout = (LinearLayout) view.findViewById(R.id.srvLinearLayout);
+						aLinearLayout.setVisibility(View.GONE);
+						cnameLinearLayout.setVisibility(View.GONE);
+						mxLinearLayout.setVisibility(View.GONE);
+						nsLinearLayout.setVisibility(View.GONE);
+						txtLinearLayout.setVisibility(View.GONE);
+						srvLinearLayout.setVisibility(View.GONE);
+						switch ((Integer)recordTypeAdapter.getItem(position)) {
+						case R.drawable.a:
+							aLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						case R.drawable.cname:
+							cnameLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						case R.drawable.mx:
+							mxLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						case R.drawable.txt:
+							txtLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						case R.drawable.srv:
+							srvLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						case R.drawable.ns:
+							nsLinearLayout.setVisibility(View.VISIBLE);
+							break;
+						default:
+							break;
+						}
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parentView) {
+					}
+				});
+				builder.setView(view);
+				builder.setPositiveButton(R.string.create_record, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						RecordService recordService = new RecordService(getActivity());
+						HashMap<String, String> params = new HashMap<String, String>();
+						switch ((Integer)recordTypeAdapter.getItem(recordTypeSpinner.getSelectedItemPosition())) {
+						case R.drawable.a:
+							params.put("record_type", "A");
+							params.put("name", ((EditText) view.findViewById(R.id.aHostnameEditText)).getText().toString());
+							params.put("data", ((EditText) view.findViewById(R.id.aIpAddressEditText)).getText().toString());
+							break;
+						case R.drawable.cname:
+							params.put("record_type", "CNAME");
+							params.put("name", ((EditText) view.findViewById(R.id.cnameNameEditText)).getText().toString());
+							params.put("data", ((EditText) view.findViewById(R.id.cnameHostnameEditText)).getText().toString());
+							break;
+						case R.drawable.mx:
+							params.put("record_type", "MX");
+							params.put("data", ((EditText) view.findViewById(R.id.mxHostnameEditText)).getText().toString());
+							params.put("priority", ((EditText) view.findViewById(R.id.mxPriorityEditText)).getText().toString());
+							break;
+						case R.drawable.txt:
+							params.put("record_type", "TXT");
+							params.put("name", ((EditText) view.findViewById(R.id.txtNameEditText)).getText().toString());
+							params.put("data", ((EditText) view.findViewById(R.id.txtTextEditText)).getText().toString());
+							break;
+						case R.drawable.srv:
+							params.put("record_type", "SRV");
+							params.put("name", ((EditText) view.findViewById(R.id.srvNameEditText)).getText().toString());
+							params.put("data", ((EditText) view.findViewById(R.id.srvHostnameEditText)).getText().toString());
+							params.put("priority", ((EditText) view.findViewById(R.id.srvPriorityEditText)).getText().toString());
+							params.put("port", ((EditText) view.findViewById(R.id.srvPortEditText)).getText().toString());
+							params.put("weight", ((EditText) view.findViewById(R.id.srvWeightEditText)).getText().toString());
+							break;
+						case R.drawable.ns:
+							params.put("record_type", "NS");
+							params.put("data", ((EditText) view.findViewById(R.id.nsHostnameEditText)).getText().toString());
+							break;
+						default:
+							break;
+						}
+						recordService.createRecord(domainSpinner.getSelectedItemId(), params, true);
+					}
+				});
+				builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.show();
 				break;
 		}
 		

@@ -43,8 +43,8 @@
     <string name="monthly">Monthly</string>
     <string name="hourly">Hourly</string>
     <string name="action_settings">Settings</string>
-    <string name="size_info">Size Info:</string>
-    <string name="image_info">Image Info:</string>
+    <string name="size_info">Size info:</string>
+    <string name="image_info">Image info:</string>
     <string name="backups_active_label">Backups active:</string>
     <string name="locked_label">Locked:</string>
     <string name="created_at_label">Created at:</string>
@@ -53,6 +53,7 @@
     <string name="cpus_label">CPUs:</string>
     <string name="region_label">Region:</string>
     <string name="image_label">Image:</string>
+    <string name="record_type_label">Record type:</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="ok">OK</string>
@@ -100,6 +101,7 @@
     <string name="create_domain">Create domain</string>
     <string name="creating_droplet">Creating droplet</string>
     <string name="creating_domain">Creating domain</string>
+    <string name="creating_record">Creating record</string>
     <string name="destroying_domain">Destroying domain</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
@@ -125,5 +127,12 @@
     <string name="api_settings_title">API Settings</string>
     <string name="preferences_title">Preferences</string>
     <string name="records">Records</string>
-    <string name="scrub_data">Scrub Data</string>     
+    <string name="scrub_data">Scrub Data</string>
+    <string name="ip_address_label">IP Address:</string>
+    <string name="name_label">Name:</string>
+    <string name="priority_label">Priority:</string> 
+    <string name="text_label">Text:</string> 
+    <string name="port_label">Port:</string> 
+    <string name="weight_label">Weight:</string> 
+    <string name="create_record">Create record</string>    
 </resources>

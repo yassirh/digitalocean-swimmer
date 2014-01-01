@@ -72,5 +72,9 @@ public class RecordDao extends SqlDao<Record> {
 		cursor.close();
 		return records;
 	}
+
+	public void deleteAllRecordsByDomain(long domainId) {
+		db.delete(getTableHelper().TABLE_NAME, RecordTable.DOMAIN_ID + " = " + domainId, null);
+	}
 	
 }
