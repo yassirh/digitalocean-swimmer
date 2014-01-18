@@ -1,76 +1,76 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dip">
+    android:padding="10dip" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/hostname_label" />
-
-    <EditText
-        android:id="@+id/hostnameEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/select_size_label" />
-
-    <Spinner
-        android:id="@+id/sizeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/size_list_row" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/select_region_label" />
-
-    <Spinner
-        android:id="@+id/regionSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/region_list_row" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/select_image_label" />
-
-    <Spinner
-        android:id="@+id/imageSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/image_list_row" />
-
-    <CheckBox
-        android:id="@+id/privateNetworkingCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/private_networking_label" />
-
-    <Button
-        android:id="@+id/createDropletButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_droplet" />
-    
-</LinearLayout>
+	<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="@string/hostname_label" />
+		
+		    <EditText
+		        android:id="@+id/hostnameEditText"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:inputType="text"
+		        android:ems="10" >
+		
+		        <requestFocus />
+		    </EditText>
+		
+		    <TextView
+		        android:id="@+id/textView2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="@string/select_size_label" />
+		
+		    <Spinner
+		        android:id="@+id/sizeSpinner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        tools:listitem="@layout/size_list_row" />
+		
+		    <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="@string/select_region_label" />
+		
+		    <Spinner
+		        android:id="@+id/regionSpinner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        tools:listitem="@layout/region_list_row" />
+		
+		    <TextView
+		        android:id="@+id/textView4"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="@string/select_image_label" />
+		
+		    <Spinner
+		        android:id="@+id/imageSpinner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        tools:listitem="@layout/image_list_row" />
+		
+		    <CheckBox
+		        android:id="@+id/privateNetworkingCheckBox"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/private_networking_label" />
+		    
+	</LinearLayout>
+</ScrollView>

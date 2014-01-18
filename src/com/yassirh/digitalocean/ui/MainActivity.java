@@ -4,10 +4,13 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,14 +20,20 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.data.SizeTable;
+import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -42,6 +51,9 @@ public class MainActivity extends FragmentActivity implements Updatable {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mNavigationTitles;
+    
+    private DropletService mDropletService;
+    private DomainService mDomainService;
     
     @SuppressLint("HandlerLeak")
 	Handler mUiHandler = new Handler(){
@@ -202,12 +214,75 @@ public class MainActivity extends FragmentActivity implements Updatable {
         	}    		
         	return true;
         case R.id.action_add_droplet:
-        	CreateDropletDialogFragment createDropletDialogFragment = new CreateDropletDialogFragment();
-        	createDropletDialogFragment.show(getSupportFragmentManager(), "create_droplet_dialog");
+        	ImageService mImageService;
+        	SizeService mSizeService;
+        	RegionService mRegionService;
+        	
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	    LayoutInflater inflater = getLayoutInflater();
+    		View view = inflater.inflate(R.layout.dialog_droplet_create, null);
+    		mDropletService = new DropletService(this);
+    		mImageService = new ImageService(this);
+    		mSizeService = new SizeService(this);
+    		mRegionService = new RegionService(this);
+    		builder.setTitle(getResources().getString(R.string.create_droplet));	
+    		builder.setView(view);
+    		final Spinner imageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
+    		final Spinner regionSpinner = (Spinner)view.findViewById(R.id.regionSpinner);
+    		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
+    		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
+    		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
+    				
+    		imageSpinner.setAdapter(new ImageAdapter(this, mImageService.getAllImages()));
+    		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegions()));
+    		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
+    		builder.setPositiveButton(R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Long imageId = imageSpinner.getSelectedItemId();
+    				Long regionId = regionSpinner.getSelectedItemId();
+    				Long sizeId = sizeSpinner.getSelectedItemId();
+    				String hostname = hostnameEditText.getText().toString();
+    				boolean virtualNetworking = privateNetworkingCheckBox.isChecked(); 
+    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking);
+				}
+			});
+    		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+    		builder.show();
         	return true;
         case R.id.action_add_domain:
-        	CreateDomainDialogFragment createDomainDialogFragment = new CreateDomainDialogFragment();
-        	createDomainDialogFragment.show(getSupportFragmentManager(), "create_domain_dialog");
+        	builder = new AlertDialog.Builder(this);
+    	    inflater = getLayoutInflater();
+    		view = inflater.inflate(R.layout.dialog_domain_create, null);
+    		mDropletService = new DropletService(this);
+    		getResources().getString(R.string.create_domain);
+    		builder.setView(view);
+    		
+    		final EditText domainNameEditText = (EditText)view.findViewById(R.id.domainNameEditText);
+    		final Spinner dropletSpinner = (Spinner)view.findViewById(R.id.dropletSpinner);
+    		dropletSpinner.setAdapter(new DropletAdapter(this, mDropletService.getAllDroplets()));
+    		builder.setPositiveButton(R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mDomainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getIpAddress(),true);
+				}
+			});
+    		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+    		builder.show();
         	return true;
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);
@@ -233,6 +308,8 @@ public class MainActivity extends FragmentActivity implements Updatable {
     	public static final Integer IMAGES_FRAGMENT_POSITION = 2;
     	public static final Integer REGIONS_FRAGMENT_POSITION = 3;
     	public static final Integer SIZES_FRAGMENT_POSITION = 4;
+    	public static final Integer SETTINGS_POSITION = 5;
+    	
     }
     
     Fragment mFragment = new Fragment();
@@ -253,6 +330,11 @@ public class MainActivity extends FragmentActivity implements Updatable {
     	}
     	else if(position == DrawerPositions.SIZES_FRAGMENT_POSITION){
     		mFragment = new SizesFragment();
+    	}
+    	else if(position == DrawerPositions.SETTINGS_POSITION){
+    		Intent intent = new Intent(this, SettingsActivity.class);
+        	startActivity(intent);
+        	finish();
     	}
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, mFragment).commit();

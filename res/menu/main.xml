@@ -5,14 +5,14 @@
         android:title="@string/sync"
         android:showAsAction="ifRoom" />
     <item 
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_2_action_settings"
-        android:title="@string/settings"
-        android:showAsAction="ifRoom" />
-    <item 
         android:id="@+id/action_add_droplet" 
         android:title="@string/action_add_droplet" />
     <item 
         android:id="@+id/action_add_domain" 
         android:title="@string/action_add_domain" />
+    <item 
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_2_action_settings"
+        android:title="@string/settings"
+        android:showAsAction="ifRoom" />
 </menu>

@@ -44,7 +44,6 @@ public abstract class SqlDao<T> {
 	
 	public T findById(long id) {
 		T t = null;
-		getTableHelper();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), TableHelper.ID + " = " + id, null, null, null, null);
 		if(cursor.moveToNext())		

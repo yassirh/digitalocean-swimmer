@@ -9,6 +9,7 @@
         <item>Images</item>
         <item>Regions</item>
         <item>Sizes</item>
+        <item>Preferences</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">Never (Update maually)</item>

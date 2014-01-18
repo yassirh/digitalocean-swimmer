@@ -35,10 +35,4 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/size_list_row" />
 
-    <Button
-        android:id="@+id/createDomainButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_domain" />
-    
 </LinearLayout>
