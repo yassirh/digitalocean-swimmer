@@ -1,6 +1,8 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -34,6 +36,7 @@ import android.widget.Spinner;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -233,8 +236,10 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
     		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
     		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
-    				
-    		imageSpinner.setAdapter(new ImageAdapter(this, mImageService.getAllImages()));
+    		List<Image> images = new ArrayList<Image>();
+    		images.addAll(mImageService.getSnapshotsOnly());
+    		images.addAll(mImageService.getImagesOnly());
+    		imageSpinner.setAdapter(new ImageAdapter(this, images));
     		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegions()));
     		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {

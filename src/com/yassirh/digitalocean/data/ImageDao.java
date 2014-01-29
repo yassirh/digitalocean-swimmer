@@ -49,10 +49,10 @@ public class ImageDao extends SqlDao<Image> {
 		return new ImageTable();
 	}
 
-	public List<Image> getSnapshotsOnly(Object object) {
+	public List<Image> getSnapshotsOnly() {
 		List<Image> snapshots = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
-				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "0", null, null, null, null);
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "0", null, null, null, ImageTable.NAME);
 		
 		if(cursor.moveToFirst()){
 			while (!cursor.isAfterLast()) {
@@ -68,7 +68,7 @@ public class ImageDao extends SqlDao<Image> {
 	public List<Image> getImagesOnly() {
 		List<Image> images = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
-				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, null);
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, ImageTable.NAME);
 		
 		if(cursor.moveToFirst()){
 			while (!cursor.isAfterLast()) {
