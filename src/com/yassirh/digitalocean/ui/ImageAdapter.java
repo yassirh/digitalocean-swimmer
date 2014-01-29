@@ -66,7 +66,7 @@ public class ImageAdapter extends BaseAdapter {
         }
         
         nameTextView.setText(image.getName());
-        if(image.getSlug().isEmpty())
+        if(image.getSlug().equals(""))
         	slugTextView.setVisibility(View.GONE);
         else
         	slugTextView.setText(image.getSlug());

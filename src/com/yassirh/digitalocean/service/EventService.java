@@ -4,7 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -41,7 +43,7 @@ public class EventService {
 				mBuilder.setContentTitle(name)
 				    .setContentText(message)
 				    .setSmallIcon(R.drawable.ic_launcher);
-
+				mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 				mNotifyManager.notify((int)eventId, mBuilder.build());
 				AsyncHttpClient client = new AsyncHttpClient();
 				while(!done){

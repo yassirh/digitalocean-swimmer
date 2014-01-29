@@ -1,11 +1,11 @@
 package com.yassirh.digitalocean.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v4.preference.PreferenceFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.yassirh.digitalocean.R;
@@ -16,7 +16,7 @@ import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.MyApplication;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends ActionBarActivity{
 
 	static SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = 
 			new OnSharedPreferenceChangeListener() {
@@ -53,8 +53,8 @@ public class SettingsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getFragmentManager().beginTransaction()
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportFragmentManager().beginTransaction()
         	.replace(android.R.id.content, new PrefsFragment()).commit();
 	}	
 	

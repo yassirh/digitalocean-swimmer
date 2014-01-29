@@ -10,7 +10,7 @@ This application allows you to :
 
 * Manage your droplets : create, reboot, boot, shutdown, reset password, resize, take snapshots, enable/disable backups, rename and destroy.
 
-*  Manage domains : create and destroy domains.
+* Manage domains : create and destroy domains.
 
 Coming soon : 
 

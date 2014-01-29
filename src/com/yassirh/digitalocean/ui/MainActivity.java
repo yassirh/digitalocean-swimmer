@@ -5,8 +5,6 @@ import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,9 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +42,7 @@ import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
-public class MainActivity extends FragmentActivity implements Updatable {
+public class MainActivity extends ActionBarActivity implements Updatable {
 
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -117,8 +117,8 @@ public class MainActivity extends FragmentActivity implements Updatable {
         mDrawerList.setAdapter(new NavigationDrawerAdapter(this, mNavigationTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -128,13 +128,13 @@ public class MainActivity extends FragmentActivity implements Updatable {
                 R.string.drawer_close
                 ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu();
+            	getSupportActionBar().setTitle(mTitle);
+            	supportInvalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu();
+            	getSupportActionBar().setTitle(mDrawerTitle);
+            	supportInvalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -146,8 +146,9 @@ public class MainActivity extends FragmentActivity implements Updatable {
         }
         
         Intent myBroadcastReceiver = new Intent(this, MyBroadcastReceiver.class);
-    	myBroadcastReceiver.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	//myBroadcastReceiver.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, myBroadcastReceiver, PendingIntent.FLAG_CANCEL_CURRENT);
+        
         int interval = PreferencesHelper.getSynchronizationInterval(this);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         if(interval == 0)
@@ -336,7 +337,7 @@ public class MainActivity extends FragmentActivity implements Updatable {
         	startActivity(intent);
         	finish();
     	}
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, mFragment).commit();
 
         mDrawerList.setItemChecked(position, true);
@@ -347,7 +348,7 @@ public class MainActivity extends FragmentActivity implements Updatable {
     @Override
     public void setTitle(CharSequence title) {
         this.mTitle = title;
-        getActionBar().setTitle(title);
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

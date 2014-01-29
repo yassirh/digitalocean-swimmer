@@ -136,4 +136,12 @@
     <string name="port_label">Port:</string> 
     <string name="weight_label">Weight:</string> 
     <string name="create_record">Create record</string>    
+    
+    
+    <!--  Strings for possible PreferenceActivity Back/Next buttons -->
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+
+    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
+    <string name="skip_button_label">Skip</string>
 </resources>

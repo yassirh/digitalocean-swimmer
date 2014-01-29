@@ -1,9 +1,10 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item 
         android:id="@+id/action_sync"
         android:icon="@drawable/ic_1_navigation_refresh"
         android:title="@string/sync"
-        android:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
     <item 
         android:id="@+id/action_add_droplet" 
         android:title="@string/action_add_droplet" />
@@ -14,5 +15,5 @@
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_2_action_settings"
         android:title="@string/settings"
-        android:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
 </menu>

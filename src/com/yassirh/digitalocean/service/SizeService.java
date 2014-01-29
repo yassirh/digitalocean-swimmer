@@ -9,7 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
@@ -46,7 +48,7 @@ public class SizeService {
 					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
 					    .setContentText(mContext.getResources().getString(R.string.synchronising_sizes))
 					    .setSmallIcon(R.drawable.ic_launcher);
-
+					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
 				}
 			}

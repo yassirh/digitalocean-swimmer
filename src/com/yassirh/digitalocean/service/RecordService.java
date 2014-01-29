@@ -13,7 +13,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -96,7 +98,7 @@ public class RecordService {
 		client.get(url, new AsyncHttpResponseHandler() {
 			
 			@Override
-			public void onStart() {
+			public void onStart() {				
 			}
 			
 			@Override
@@ -170,7 +172,7 @@ public class RecordService {
 					mBuilder.setContentTitle(mContext.getResources().getString(R.string.creating_record))
 					    .setContentText("")
 					    .setSmallIcon(R.drawable.ic_launcher);
-
+					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, mBuilder.build());
 				}
 			}
