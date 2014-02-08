@@ -126,6 +126,12 @@ public class RegionService {
 		return regions;
 	}
 
+	public List<Region> getAllRegionsOrderedByName(){
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
+		List<Region> regions = regionDao.getAllOrderedByName();
+		return regions;
+	}
+	
 	public void setRequiresRefresh(Boolean requireRefresh){
 		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();

@@ -1,5 +1,7 @@
 package com.yassirh.digitalocean.data;
 
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,5 +42,9 @@ public class RegionDao extends SqlDao<Region> {
 	@Override
 	public TableHelper getTableHelper() {
 		return new RegionTable();
+	}
+
+	public List<Region> getAllOrderedByName() {
+		return getAll(RegionTable.NAME);
 	}
 }

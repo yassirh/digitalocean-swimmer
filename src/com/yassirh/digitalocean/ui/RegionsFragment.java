@@ -40,7 +40,7 @@ public class RegionsFragment extends ListFragment implements Updatable{
 
 	@Override
 	public void update(Context context) {
-		regions = new RegionService(context).getAllRegions();
+		regions = new RegionService(context).getAllRegionsOrderedByName();
 		regionAdapter = new RegionAdapter(this.getActivity(), regions);
 		setListAdapter(regionAdapter);
 	}

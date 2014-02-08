@@ -57,8 +57,6 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 				data.add(new ItemImage(navigationTitle, R.drawable.regions));
 			else if(i == 4)
 				data.add(new ItemImage(navigationTitle, R.drawable.sizes));
-			else if(i == 5)
-				data.add(new ItemImage(navigationTitle, R.drawable.settings));
     		i++;
 		}
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

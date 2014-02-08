@@ -236,11 +236,12 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
     		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
     		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
+    		final CheckBox enableBackupsCheckBox = (CheckBox)view.findViewById(R.id.enableBackupsCheckBox);
     		List<Image> images = new ArrayList<Image>();
     		images.addAll(mImageService.getSnapshotsOnly());
     		images.addAll(mImageService.getImagesOnly());
     		imageSpinner.setAdapter(new ImageAdapter(this, images));
-    		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegions()));
+    		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegionsOrderedByName()));
     		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {
 				
@@ -250,8 +251,9 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     				Long regionId = regionSpinner.getSelectedItemId();
     				Long sizeId = sizeSpinner.getSelectedItemId();
     				String hostname = hostnameEditText.getText().toString();
-    				boolean virtualNetworking = privateNetworkingCheckBox.isChecked(); 
-    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking);
+    				boolean virtualNetworking = privateNetworkingCheckBox.isChecked();
+    				boolean enableBackups = enableBackupsCheckBox.isChecked();
+    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking,enableBackups);
 				}
 			});
     		builder.setNegativeButton(R.string.cancel, new OnClickListener() {

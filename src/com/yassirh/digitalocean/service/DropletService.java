@@ -327,9 +327,16 @@ public class DropletService {
 		return droplet;
 	}
 
-	public void createDroplet(String hostname,Long imageId, Long regionId, Long sizeId,
-			boolean virtualNetworking) {
-		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext) + "&name=" + hostname + "&size_id=" + sizeId + "&image_id=" + imageId + "&region_id=" + regionId;
+	public void createDroplet(String hostname, Long imageId, Long regionId, Long sizeId,
+			boolean privateNetworking, boolean enableBackups) {
+		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(mContext) + 
+				"&api_key=" + ApiHelper.getAPIKey(mContext) + 
+				"&name=" + hostname +
+				"&size_id=" + sizeId + 
+				"&image_id=" + imageId + 
+				"&region_id=" + regionId +
+				"&private_networking" + privateNetworking +
+				"&backups_enabled=" + enableBackups;
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 		    @Override

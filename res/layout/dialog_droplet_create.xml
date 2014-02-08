@@ -65,6 +65,12 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        tools:listitem="@layout/image_list_row" />
+
+		    <CheckBox
+		        android:id="@+id/enableBackupsCheckBox"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/enable_backups" />
 		
 		    <CheckBox
 		        android:id="@+id/privateNetworkingCheckBox"
