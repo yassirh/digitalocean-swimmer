@@ -1337,7 +1337,7 @@ containing a value of this type.
         public static final int app_name=0x7f0b000d;
         /**   Strings for possible PreferenceActivity Back/Next buttons 
          */
-        public static final int back_button_label=0x7f0b007b;
+        public static final int back_button_label=0x7f0b007f;
         public static final int backups_active_label=0x7f0b0021;
         public static final int cancel=0x7f0b002d;
         public static final int client_id_label=0x7f0b006d;
@@ -1371,7 +1371,7 @@ containing a value of this type.
         public static final int monthly=0x7f0b001c;
         public static final int name=0x7f0b0066;
         public static final int name_label=0x7f0b0075;
-        public static final int next_button_label=0x7f0b007c;
+        public static final int next_button_label=0x7f0b0080;
         public static final int no=0x7f0b002a;
         public static final int no_domains=0x7f0b0017;
         public static final int no_droplets=0x7f0b0018;
@@ -1380,6 +1380,7 @@ containing a value of this type.
         public static final int no_regions=0x7f0b0015;
         public static final int no_sizes=0x7f0b0016;
         public static final int no_ssh_client=0x7f0b0011;
+        public static final int no_thanks=0x7f0b007d;
         public static final int not_yet_implemented=0x7f0b0010;
         public static final int ok=0x7f0b002c;
         public static final int password_reset=0x7f0b0035;
@@ -1396,6 +1397,8 @@ containing a value of this type.
         public static final int private_networking_label=0x7f0b0053;
         public static final int private_visibility=0x7f0b001b;
         public static final int public_visibility=0x7f0b001a;
+        public static final int rate_app=0x7f0b007e;
+        public static final int rate_message=0x7f0b007b;
         public static final int reboot=0x7f0b0030;
         public static final int reboot_alert=0x7f0b005c;
         public static final int rebuild=0x7f0b0039;
@@ -1403,6 +1406,7 @@ containing a value of this type.
         public static final int record_type_label=0x7f0b0029;
         public static final int records=0x7f0b0072;
         public static final int region_label=0x7f0b0027;
+        public static final int reminde_me_later=0x7f0b007c;
         public static final int rename=0x7f0b003c;
         public static final int resize=0x7f0b0036;
         public static final int restore=0x7f0b0038;
@@ -1418,7 +1422,7 @@ containing a value of this type.
         public static final int size_info=0x7f0b001f;
         /**  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
          */
-        public static final int skip_button_label=0x7f0b007d;
+        public static final int skip_button_label=0x7f0b0081;
         public static final int snapshot=0x7f0b0037;
         public static final int ssh_to_droplet=0x7f0b002f;
         public static final int summary_api_key=0x7f0b006e;

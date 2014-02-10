@@ -134,8 +134,12 @@
     <string name="text_label">Text:</string> 
     <string name="port_label">Port:</string> 
     <string name="weight_label">Weight:</string> 
-    <string name="create_record">Create record</string>    
-    
+    <string name="create_record">Create record</string>
+        
+    <string name="rate_message">If you enjoy using %1$s, please take a moment to rate it. Thanks for your support!</string>
+    <string name="reminde_me_later">Remind me later</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="rate_app">Rate %1$s</string>
     
     <!--  Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Back</string>
