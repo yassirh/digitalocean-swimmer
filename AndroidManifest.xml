@@ -10,7 +10,9 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	
     <application
         android:name="com.yassirh.digitalocean.utils.MyApplication"
         android:allowBackup="true"
@@ -30,6 +32,13 @@
             android:name="com.yassirh.digitalocean.ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity android:name="com.startapp.android.publish.AppWallActivity"
+			android:theme="@android:style/Theme.Translucent" 
+			android:taskAffinity="com.yassirh.digitalocean.AppWall"
+			android:configChanges="orientation|keyboardHidden" />
+		<activity android:name="com.startapp.android.publish.list3d.List3DActivity"
+			android:taskAffinity="com.yassirh.digitalocean.AppWall"
+			android:theme="@android:style/Theme" />
 		<receiver android:name="com.yassirh.digitalocean.utils.MyBroadcastReceiver" ></receiver>
     </application>
 

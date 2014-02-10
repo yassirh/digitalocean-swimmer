@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.startapp.android.publish.StartAppAd;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
@@ -42,6 +43,7 @@ import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.AdsHelper;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
@@ -57,6 +59,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     
     private DropletService mDropletService;
     private DomainService mDomainService;
+    
+    private StartAppAd mStartAppAd = new StartAppAd(this);
     
     @SuppressLint("HandlerLeak")
 	Handler mUiHandler = new Handler(){
@@ -109,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StartAppAd.init(this, AdsHelper.DEVELOPER_KEY, AdsHelper.APP_KEY);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -163,6 +168,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		mStartAppAd.onResume();
 	}
 	
 	@Override
@@ -175,6 +181,13 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	protected void onStop() {
 		t.interrupt();
 		super.onStop();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		mStartAppAd.onBackPressed();
+		mStartAppAd.showAd();
+		super.onBackPressed();
 	}
 	
 	@Override
