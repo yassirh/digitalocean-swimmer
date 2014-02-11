@@ -10,4 +10,7 @@ public class NotificationsIndexes {
 	public static int NOTIFICATION_CREATE_DROPLET = 6;
 	public static int NOTIFICATION_CREATE_DOMAIN = 7;
 	public static int NOTIFICATION_DESTROY_DOMAIN = 8;
+	public static int NOTIFICATION_CREATE_DOMAIN_RECORD = 9;
+	public static int NOTIFICATION_UPDATE_DOMAIN_RECORD = 10;
+	public static int NOTIFICATION_DESTROY_RECORD = 11;
 }

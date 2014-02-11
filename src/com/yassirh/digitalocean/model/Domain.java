@@ -54,4 +54,18 @@ public class Domain {
 	public void setRecords(List<Record> records) {
 		this.mRecords = records;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+	        return true;
+	    if (o == null)
+	        return false;
+	    if (o instanceof Domain){
+	        Domain other = (Domain)o;
+	        return other.getId() == mId;	        		
+	    }
+	    else
+	        return false;
+	}
 }

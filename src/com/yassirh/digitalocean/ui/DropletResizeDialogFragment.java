@@ -50,8 +50,4 @@ public class DropletResizeDialogFragment extends DialogFragment {
 		});
 		return builder.create();
 	}
-	
-	
-	
-	
 }

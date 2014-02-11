@@ -295,6 +295,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					mDomainService = new DomainService(MainActivity.this);
 					mDomainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getIpAddress(),true);
 				}
 			});
@@ -307,6 +308,11 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			});
     		builder.show();
         	return true;
+        case R.id.action_add_record:
+			FragmentManager fm = getSupportFragmentManager();
+			RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
+			recordCreateDialogFragment.show(fm, "create_record");
+        	return true;        	
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);
         	startActivity(intent);

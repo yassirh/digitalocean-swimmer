@@ -58,4 +58,18 @@ public class Record {
 	public void setWeight(Integer weight) {
 		this.mWeight = weight;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+	        return true;
+	    if (o == null)
+	        return false;
+	    if (o instanceof Record){
+	        Record other = (Record)o;
+	        return other.getId() == mId;	        		
+	    }
+	    else
+	        return false;
+	}
 }

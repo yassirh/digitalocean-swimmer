@@ -150,8 +150,13 @@ public class RecordService {
 		recordDao.createOrUpdate(record);
 	}
 	
-	public void createRecord(final long domainId, HashMap<String,String> params, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+	public void createOrUpdateRecord(final long domainId, HashMap<String,String> params, long recordId, final boolean showProgress) {
+		String url = "";
+		if(recordId > 0L){
+			url = "https://api.digitalocean.com/domains/" + domainId + "/records/" + recordId + "/edit?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		}
+		else
+			url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -173,7 +178,7 @@ public class RecordService {
 					    .setContentText("")
 					    .setSmallIcon(R.drawable.ic_launcher);
 					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, mBuilder.build());
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, mBuilder.build());
 				}
 			}
 			
@@ -205,14 +210,77 @@ public class RecordService {
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
 					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, mBuilder.build());
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, mBuilder.build());
 				}
 			}
 		    
 		    @Override
 		    public void onFinish() {
 		    	if(showProgress)
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN);
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD);
+		    }
+		});
+	}
+
+	public void deleteDomainRecord(final long domainId, final long recordId, final boolean showProgress) {
+		String url = "https://api.digitalocean.com/domains/"  + domainId + "/records/" + recordId + "/destroy?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.get(url, new AsyncHttpResponseHandler() {
+			NotificationManager mNotifyManager;
+			NotificationCompat.Builder mBuilder;
+			
+			@Override
+			public void onStart() {
+				if(showProgress){
+					mNotifyManager =
+					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(mContext);
+					mBuilder.setContentTitle(mContext.getResources().getString(R.string.destroying_record))
+					    .setContentText("")
+					    .setSmallIcon(R.drawable.ic_launcher);
+
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD, mBuilder.build());
+				}
+			}
+			
+		    @Override
+		    public void onSuccess(String response) {
+		        try {
+					JSONObject jsonObject = new JSONObject(response);
+					String status = jsonObject.getString("status");
+					if(ApiHelper.API_STATUS_OK.equals(status)){
+						
+					}
+					else{
+						// TODO handle error Access Denied/Not Found
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+		    }
+		    
+		    @Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				if(statusCode == 401){
+					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+				}
+			}
+		    
+		    @Override
+			public void onProgress(int bytesWritten, int totalSize) {	
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD, mBuilder.build());
+				}
+			}
+		    
+		    @Override
+		    public void onFinish() {
+		    	if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD);
+		    	RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
+		    	recordDao.delete(recordId);
 		    }
 		});
 	}

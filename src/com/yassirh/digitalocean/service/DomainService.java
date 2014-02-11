@@ -208,8 +208,8 @@ public class DomainService {
 		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
 		Domain domain = domainDao.findById(id);
-		domain.setRecords(recordDao.getAllByDomain(domain.getId()));
-		
+		if(domain != null)
+			domain.setRecords(recordDao.getAllByDomain(domain.getId()));		
 		return domain;
 	}
 

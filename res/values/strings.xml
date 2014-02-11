@@ -90,6 +90,7 @@
     <string name="access_denied_message">Access denied! Please make sure your client id and api key are correct.</string>
     <string name="action_add_droplet">Add droplet</string>
     <string name="action_add_domain">Add domain</string>
+    <string name="action_add_record">Add record</string>
     <string name="hostname_label">Hostname:</string>
     <string name="select_size_label">Select size:</string>
     <string name="select_image_label">Select image:</string>
@@ -103,6 +104,7 @@
     <string name="creating_domain">Creating domain</string>
     <string name="creating_record">Creating record</string>
     <string name="destroying_domain">Destroying domain</string>
+    <string name="destroying_record">Destroying record</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
     <string name="shut_down_alert">This will shutdown your droplet.\n\nDo you wish to proceed?</string>
@@ -135,6 +137,7 @@
     <string name="port_label">Port:</string> 
     <string name="weight_label">Weight:</string> 
     <string name="create_record">Create record</string>
+    <string name="edit_record">Edit record</string>
         
     <string name="rate_message">If you enjoy using %1$s, please take a moment to rate it. Thanks for your support!</string>
     <string name="reminde_me_later">Remind me later</string>
