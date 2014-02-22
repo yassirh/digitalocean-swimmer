@@ -67,6 +67,10 @@ public class AppRater {
         b1.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+                if (editor != null) {
+                    editor.putBoolean("dontshowagain", true);
+                    editor.commit();
+                }
                 dialog.dismiss();
             }
         });        

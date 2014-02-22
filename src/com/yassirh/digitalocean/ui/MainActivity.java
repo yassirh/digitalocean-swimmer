@@ -62,6 +62,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     private DomainService mDomainService;
     
     private StartAppAd mStartAppAd = new StartAppAd(this);
+    private boolean mShouldDisplayAnAd = false;
     
     @SuppressLint("HandlerLeak")
 	Handler mUiHandler = new Handler(){
@@ -114,8 +115,11 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		StartAppAd.init(this, AdsHelper.DEVELOPER_KEY, AdsHelper.APP_KEY);
-		AppRater.app_launched(this);
+		mShouldDisplayAnAd = PreferencesHelper.shouldDisplayAnAd(this);
+		if(mShouldDisplayAnAd){
+			StartAppAd.init(this, AdsHelper.DEVELOPER_KEY, AdsHelper.APP_KEY);
+			AppRater.app_launched(this);
+		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -187,8 +191,10 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	
 	@Override
 	public void onBackPressed() {
-		mStartAppAd.onBackPressed();
-		mStartAppAd.showAd();
+		if(mShouldDisplayAnAd){
+			mStartAppAd.onBackPressed();
+			mStartAppAd.showAd();
+		}
 		super.onBackPressed();
 	}
 	

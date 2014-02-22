@@ -28,6 +28,18 @@
     </string-array>
     <string name="pref_sync_frequency_key_label">Synchronization interval</string>
     <string name="summary_sync_frequency">Frequency of synchronization</string>
+    <string-array name="pref_ads_frequency_entries">
+        <item name="0">Never</item>
+        <item name="6">Rarely (almost never)</item>
+        <item name="3">Sometimes (from time to time)</item>
+    </string-array>
+    <string-array name="pref_ads_frequency_values">
+        <item name="0">0</item>
+        <item name="6">6</item>
+        <item name="3">3</item>
+    </string-array>
+    <string name="pref_ads_frequency_key_label">Ads frequency</string>
+    <string name="summary_ads_frequency">Frequency of ads (By keeping the ads enabled you help me add more features to this app!)</string>
     <string name="not_yet_implemented">Not yet implemented</string>
     <string name="no_ssh_client">No ssh client found! Please intall one to get this feature.</string>
     <string name="drawer_open">Open navigation drawer</string>
