@@ -55,13 +55,16 @@ public class SizeService {
 			
 			@Override
 			public void onFinish() {
-				mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES);
+				if(showProgress)
+					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES);
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-				mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
+			public void onProgress(int bytesWritten, int totalSize) {
+				if(showProgress){
+					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
+				}
 			}
 			
 			@Override

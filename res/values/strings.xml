@@ -7,6 +7,7 @@
         <item>Droplets</item>
         <item>Domains</item>
         <item>Images</item>
+        <item>SSH Keys</item>
         <item>Regions</item>
         <item>Sizes</item>
     </string-array>
@@ -50,6 +51,7 @@
     <string name="no_domains">No domains!</string>
     <string name="no_droplets">No droplets!</string>
     <string name="no_records">No records!</string>
+    <string name="no_ssh_keys">No SSH keys!</string>
     <string name="public_visibility">Public</string>
     <string name="private_visibility">Private</string>
     <string name="monthly">Monthly</string>
@@ -71,6 +73,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="add_record">Add record</string>
+    <string name="add_ssh_key">Add SSH key</string>
     <string name="ssh_to_droplet">SSH to droplet</string>
     <string name="reboot">Reboot</string>
     <string name="power_cycle">Power cycle</string>
@@ -89,6 +92,8 @@
     <string name="sync">Synchronize</string>
     <string name="settings">Settings</string>
     <string name="synchronising">Synchronising</string>
+    <string name="synchronising_keys">Synchronising keys</string>
+    <string name="synchronising_keys_completed">Synchronising keys completed</string>
     <string name="synchronising_images">Synchronising images</string>
     <string name="synchronising_images_completed">Synchronising images completed</string>
     <string name="synchronising_domains">Synchronising domains</string>
@@ -103,6 +108,7 @@
     <string name="action_add_droplet">Add droplet</string>
     <string name="action_add_domain">Add domain</string>
     <string name="action_add_record">Add record</string>
+    <string name="action_add_ssh_key">Add SSH key</string>
     <string name="hostname_label">Hostname:</string>
     <string name="select_size_label">Select size:</string>
     <string name="select_image_label">Select image:</string>
@@ -117,12 +123,14 @@
     <string name="creating_record">Creating record</string>
     <string name="destroying_domain">Destroying domain</string>
     <string name="destroying_record">Destroying record</string>
+    <string name="destroying_ssh_key">Destroying SSH key</string>
     <string name="power_cycle_alert">This will reboot your droplet.\n\nWe recommend rebooting your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="reboot_alert">This will reboot your droplet.\n\nDo you wish to proceed?</string>
     <string name="shut_down_alert">This will shutdown your droplet.\n\nDo you wish to proceed?</string>
     <string name="power_off_alert">This will power off your droplet.\n\nWe recommend powering off your droplet through the command line, as this action is the same as hard resetting the server and may cause data corruption.\n\nDo you wish to proceed?</string>
     <string name="power_on_alert">This will boot your droplet.\n\nDo you wish to proceed?</string>
     <string name="destroy_droplet_alert">This is irreversible. We will destroy your droplet and all associated backups.\n\nDo you wish to proceed?</string>
+    <string name="destroy_ssh_key_alert">Are you sure?</string>
     <string name="restore_alert">This method allows you to restore a droplet with a previous image or snapshot. This will be a mirror copy of the image or snapshot to your droplet. Be sure you have backed up any necessary information prior to restore.</string>
     <string name="rebuild_alert">This method allows you to reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet.</string>
     <string name="enable_backups_alert">This method enables automatic backups which run in the background daily to backup your droplet\'s data.</string>
@@ -150,6 +158,8 @@
     <string name="weight_label">Weight:</string> 
     <string name="create_record">Create record</string>
     <string name="edit_record">Edit record</string>
+    <string name="edit_ssh_key">Edit SSH key</string>
+    <string name="saving_ssh_key">Savings SSH Key</string>
         
     <string name="rate_message">If you enjoy using %1$s, please take a moment to rate it. Thanks for your support!</string>
     <string name="reminde_me_later">Remind me later</string>
@@ -162,4 +172,5 @@
 
     <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
     <string name="skip_button_label">Skip</string>
+    <string name="public_ssh_key_label">Public SSH Key:</string>
 </resources>

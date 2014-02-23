@@ -47,16 +47,18 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     	data = new ArrayList<NavigationDrawerAdapter.ItemImage>();
     	int i = 0;
     	for (String navigationTitle : navigationTitles) {
-    		if(i == 0)
+    		if(i == DrawerPositions.DROPLETS_FRAGMENT_POSITION)
     			data.add(new ItemImage(navigationTitle, R.drawable.droplets));
-    		else if(i == 1)
+    		else if(i == DrawerPositions.DOMAINS_FRAGMENT_POSITION)
     			data.add(new ItemImage(navigationTitle, R.drawable.domains));
-			else if(i == 2)
+			else if(i == DrawerPositions.IMAGES_FRAGMENT_POSITION)
 				data.add(new ItemImage(navigationTitle, R.drawable.images));
-			else if(i == 3)
+			else if(i == DrawerPositions.REGIONS_FRAGMENT_POSITION)
 				data.add(new ItemImage(navigationTitle, R.drawable.regions));
-			else if(i == 4)
+			else if(i == DrawerPositions.SIZES_FRAGMENT_POSITION)
 				data.add(new ItemImage(navigationTitle, R.drawable.sizes));
+			else if(i == DrawerPositions.SSHKEYS_FRAGMENT_POSITION)
+				data.add(new ItemImage(navigationTitle, R.drawable.keys));
     		i++;
 		}
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

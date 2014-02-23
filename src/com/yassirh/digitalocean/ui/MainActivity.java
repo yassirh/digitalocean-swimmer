@@ -42,6 +42,7 @@ import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
+import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.AdsHelper;
 import com.yassirh.digitalocean.utils.AppRater;
@@ -103,6 +104,11 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 						RegionService regionService = new RegionService(MainActivity.this);
 						update = regionService.requiresRefresh();
 						regionService.setRequiresRefresh(false);
+					}
+					else if(MainActivity.this.mCurrentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
+						SSHKeyService sshKeyService = new SSHKeyService(MainActivity.this);
+						update = sshKeyService.requiresRefresh();
+						sshKeyService.setRequiresRefresh(false);
 					}
 					if(update)
 						mUiHandler.sendMessage(new Message());
@@ -174,7 +180,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mStartAppAd.onResume();
+		if(mShouldDisplayAnAd)
+			mStartAppAd.onResume();
 	}
 	
 	@Override
@@ -215,6 +222,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        FragmentManager fm;
         switch(item.getItemId()) {
         case R.id.action_sync:
         	if(mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
@@ -233,10 +241,14 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         		RegionService regionService = new RegionService(this);
         		regionService.getAllRegionsFromAPI(true);	
         	}
-        	else{
+        	else if(mCurrentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
         		SizeService sizeService = new SizeService(this);
         		sizeService.getAllSizesFromAPI(true);
         	}    		
+        	else if(mCurrentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
+        		SSHKeyService sshKeysService = new SSHKeyService(this);
+        		sshKeysService.getAllSSHKeysFromAPI(true);
+        	}
         	return true;
         case R.id.action_add_droplet:
         	ImageService mImageService;
@@ -314,11 +326,16 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			});
     		builder.show();
         	return true;
+        case R.id.action_add_ssh_key:
+			fm = getSupportFragmentManager();
+			SSHKeyCreateDialogFragment sshKeyCreateDialogFragment = new SSHKeyCreateDialogFragment();
+			sshKeyCreateDialogFragment.show(fm, "create_ssh_key");
+        	return true;
         case R.id.action_add_record:
-			FragmentManager fm = getSupportFragmentManager();
+			fm = getSupportFragmentManager();
 			RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 			recordCreateDialogFragment.show(fm, "create_record");
-        	return true;        	
+        	return true;  
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);
         	startActivity(intent);
@@ -335,16 +352,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
             mCurrentSelected = position;
             selectItem(position);
         }
-    }
-    
-    public static class DrawerPositions{
-    	public static final Integer DROPLETS_FRAGMENT_POSITION = 0;
-    	public static final Integer DOMAINS_FRAGMENT_POSITION = 1;
-    	public static final Integer IMAGES_FRAGMENT_POSITION = 2;
-    	public static final Integer REGIONS_FRAGMENT_POSITION = 3;
-    	public static final Integer SIZES_FRAGMENT_POSITION = 4;
-    	public static final Integer SETTINGS_POSITION = 5;
-    	
     }
     
     Fragment mFragment = new Fragment();
@@ -365,6 +372,9 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     	}
     	else if(position == DrawerPositions.SIZES_FRAGMENT_POSITION){
     		mFragment = new SizesFragment();
+    	}
+    	else if(position == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
+    		mFragment = new SSHKeyFragment();
     	}
     	else if(position == DrawerPositions.SETTINGS_POSITION){
     		Intent intent = new Intent(this, SettingsActivity.class);

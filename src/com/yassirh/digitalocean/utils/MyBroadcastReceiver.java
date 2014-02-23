@@ -8,6 +8,8 @@ import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
+import com.yassirh.digitalocean.service.SSHKeyService;
+import com.yassirh.digitalocean.service.SizeService;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
@@ -24,6 +26,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		
 		RegionService regionService = new RegionService(context);
 		regionService.getAllRegionsFromAPI(false);		
+		
+		SSHKeyService sshKeyService = new SSHKeyService(context);
+		sshKeyService.getAllSSHKeysFromAPI(false);
+		
+		SizeService sizeService = new SizeService(context);
+		sizeService.getAllSizesFromAPI(false);
 	}
 	
 }

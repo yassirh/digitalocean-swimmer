@@ -15,6 +15,9 @@
         android:id="@+id/action_add_record" 
         android:title="@string/action_add_record" />
     <item 
+        android:id="@+id/action_add_ssh_key" 
+        android:title="@string/action_add_ssh_key" />
+    <item 
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_2_action_settings"
         android:title="@string/settings"

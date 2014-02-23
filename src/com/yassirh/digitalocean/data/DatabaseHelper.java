@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper domainTable = new DomainTable();
 	private TableHelper dropletTable = new DropletTable();
 	private TableHelper recordTable = new RecordTable();
+	private TableHelper sshKeyTable = new SSHKeyTable();
 	static DatabaseHelper sDatabaseHelper;
 	static SQLiteDatabase sSQLiteDatabase;
 	
@@ -52,6 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(domainTable.getCreateSql());
 		db.execSQL(dropletTable.getCreateSql());
 		db.execSQL(recordTable.getCreateSql());
+		db.execSQL(sshKeyTable.getCreateSql());
 	}
 
 	@Override
@@ -62,6 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL(recordTable.getDropSql());
 			db.execSQL(recordTable.getCreateSql());
 		}
+		if(oldVersion < 12)
+			db.execSQL(sshKeyTable.getCreateSql());
 	}
 
 }
