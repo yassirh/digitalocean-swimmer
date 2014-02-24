@@ -10,13 +10,15 @@ This application allows you to :
 
 * Manage your droplets : create, reboot, boot, shutdown, reset password, resize, take snapshots, enable/disable backups, rename and destroy.
 
-* Manage domains : create and destroy domains.
+* Manage domains : create, update and destroy.
+
+* Manage domain records : create, update and destroy.
+
+* Manage SSH Keys : create, update and destroy.
 
 Coming soon : 
 
 * Home screen widget.
-
-* Domain records management.
 
 * Better support for tablets.
 
