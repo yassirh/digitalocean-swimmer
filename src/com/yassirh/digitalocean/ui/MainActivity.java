@@ -38,12 +38,14 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
 import com.yassirh.digitalocean.utils.AdsHelper;
 import com.yassirh.digitalocean.utils.AppRater;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
@@ -268,12 +270,24 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     		final Spinner regionSpinner = (Spinner)view.findViewById(R.id.regionSpinner);
     		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
     		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
+    		final MultiSelectSpinner sshKeysMultiSelectSpinner = (MultiSelectSpinner) view.findViewById(R.id.sshKeysMultiSelectSpinner);
     		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
     		final CheckBox enableBackupsCheckBox = (CheckBox)view.findViewById(R.id.enableBackupsCheckBox);
     		List<Image> images = new ArrayList<Image>();
     		images.addAll(mImageService.getSnapshotsOnly());
     		images.addAll(mImageService.getImagesOnly());
     		imageSpinner.setAdapter(new ImageAdapter(this, images));
+    		List<String> sshKeysNames = new ArrayList<String>();
+    		List<Long> sshKeysIds = new ArrayList<Long>();
+    		SSHKeyService mSSHKeyService = new SSHKeyService(this);
+    		List<SSHKey> sshKeys = mSSHKeyService.getAllSSHKeys();
+    		for (SSHKey sshKey : sshKeys) {
+				sshKeysIds.add(sshKey.getId());
+				sshKeysNames.add(sshKey.getName());
+			}
+    		sshKeysMultiSelectSpinner.setIds(sshKeysIds);
+    		sshKeysMultiSelectSpinner.setItems(sshKeysNames);
+    		if(sshKeys.size() == 0) sshKeysMultiSelectSpinner.setVisibility(View.GONE);
     		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegionsOrderedByName()));
     		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {
@@ -286,7 +300,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     				String hostname = hostnameEditText.getText().toString();
     				boolean virtualNetworking = privateNetworkingCheckBox.isChecked();
     				boolean enableBackups = enableBackupsCheckBox.isChecked();
-    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking,enableBackups);
+    				List<Long> selectedSSHKeysIds = sshKeysMultiSelectSpinner.getSelectedIds();
+    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking,enableBackups,selectedSSHKeysIds);
 				}
 			});
     		builder.setNegativeButton(R.string.cancel, new OnClickListener() {

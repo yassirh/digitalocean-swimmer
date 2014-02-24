@@ -66,6 +66,11 @@
 		        android:layout_height="wrap_content"
 		        tools:listitem="@layout/image_list_row" />
 
+		    <com.yassirh.digitalocean.ui.widget.MultiSelectSpinner
+		        android:id="@+id/sshKeysMultiSelectSpinner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+
 		    <CheckBox
 		        android:id="@+id/enableBackupsCheckBox"
 		        android:layout_width="wrap_content"

@@ -2,7 +2,6 @@ package com.yassirh.digitalocean.ui;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,9 @@ public class SSHKeyAdapter extends BaseAdapter {
     private List<SSHKey> data;
     private static LayoutInflater inflater=null;
     
-    public SSHKeyAdapter(Activity activity, List<SSHKey> data) {
+    public SSHKeyAdapter(Context context, List<SSHKey> data) {
         this.data=data;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {

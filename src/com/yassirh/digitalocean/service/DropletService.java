@@ -328,7 +328,15 @@ public class DropletService {
 	}
 
 	public void createDroplet(String hostname, Long imageId, Long regionId, Long sizeId,
-			boolean privateNetworking, boolean enableBackups) {
+			boolean privateNetworking, boolean enableBackups, List<Long> selectedSSHKeysIds) {
+		String sshKeys = "";
+		if(selectedSSHKeysIds.size() > 0){
+			StringBuilder sb = new StringBuilder();
+			for (Long l : selectedSSHKeysIds)
+				sb.append("," + l);
+			sshKeys = "&ssh_key_ids=" + sb.substring(1);
+		}
+		
 		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(mContext) + 
 				"&api_key=" + ApiHelper.getAPIKey(mContext) + 
 				"&name=" + hostname +
@@ -336,7 +344,9 @@ public class DropletService {
 				"&image_id=" + imageId + 
 				"&region_id=" + regionId +
 				"&private_networking" + privateNetworking +
-				"&backups_enabled=" + enableBackups;
+				"&backups_enabled=" + enableBackups +
+				sshKeys;
+		
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 		    @Override

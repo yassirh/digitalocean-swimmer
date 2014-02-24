@@ -6,7 +6,6 @@ import java.util.Random;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class PreferencesHelper {
 	public static int getSynchronizationInterval(Context context){
