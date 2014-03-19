@@ -199,7 +199,7 @@ public class MultiSelectSpinner extends Spinner implements
 	}
 	
 	/**
-	 * Returns a list of ifs, one for each selected item.
+	 * Returns a list of ids, one for each selected item.
 	 * 
 	 * @return
 	 */

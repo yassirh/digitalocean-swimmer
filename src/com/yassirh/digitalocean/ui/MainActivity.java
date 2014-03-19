@@ -32,6 +32,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.startapp.android.publish.StartAppAd;
 import com.yassirh.digitalocean.R;
@@ -271,6 +272,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
     		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
     		final MultiSelectSpinner sshKeysMultiSelectSpinner = (MultiSelectSpinner) view.findViewById(R.id.sshKeysMultiSelectSpinner);
+    		final TextView sshKeysTextView = (TextView) view.findViewById(R.id.sshKeysTextView);
     		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
     		final CheckBox enableBackupsCheckBox = (CheckBox)view.findViewById(R.id.enableBackupsCheckBox);
     		List<Image> images = new ArrayList<Image>();
@@ -287,7 +289,10 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			}
     		sshKeysMultiSelectSpinner.setIds(sshKeysIds);
     		sshKeysMultiSelectSpinner.setItems(sshKeysNames);
-    		if(sshKeys.size() == 0) sshKeysMultiSelectSpinner.setVisibility(View.GONE);
+    		if(sshKeys.size() == 0){
+    			sshKeysMultiSelectSpinner.setVisibility(View.GONE);
+    			sshKeysTextView.setVisibility(View.GONE);
+    		}
     		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegionsOrderedByName()));
     		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {

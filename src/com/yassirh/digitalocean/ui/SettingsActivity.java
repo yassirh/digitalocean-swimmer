@@ -13,6 +13,7 @@ import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
+import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.MyApplication;
 
@@ -46,6 +47,10 @@ public class SettingsActivity extends ActionBarActivity{
 						DropletService dropletService = new DropletService(MyApplication.getAppContext());
 						dropletService.deleteAll();
 						dropletService.getAllDropletsFromAPI(true);
+						
+						SSHKeyService sshKeyService = new SSHKeyService(MyApplication.getAppContext());
+						sshKeyService.deleteAll();
+						sshKeyService.getAllSSHKeysFromAPI(true);
 					}
 				}
 			};

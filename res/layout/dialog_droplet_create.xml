@@ -66,6 +66,13 @@
 		        android:layout_height="wrap_content"
 		        tools:listitem="@layout/image_list_row" />
 
+		    <TextView
+		        android:id="@+id/sshKeysTextView"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="@string/ssh_keys_label" />
+		    
 		    <com.yassirh.digitalocean.ui.widget.MultiSelectSpinner
 		        android:id="@+id/sshKeysMultiSelectSpinner"
 		        android:layout_width="match_parent"

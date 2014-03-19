@@ -3,10 +3,11 @@ package com.yassirh.digitalocean.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 12;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();
@@ -58,14 +59,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion < 9)
-			db.execSQL(recordTable.getCreateSql());
-		if(oldVersion < 10){
-			db.execSQL(recordTable.getDropSql());
-			db.execSQL(recordTable.getCreateSql());
-		}
-		if(oldVersion < 12)
-			db.execSQL(sshKeyTable.getCreateSql());
+		db.execSQL(imageTable.getDropSql());
+		db.execSQL(regionTable.getDropSql());
+		db.execSQL(sizeTable.getDropSql());
+		db.execSQL(domainTable.getDropSql());
+		db.execSQL(dropletTable.getDropSql());
+		db.execSQL(recordTable.getDropSql());
+		db.execSQL(sshKeyTable.getDropSql());
+		
+		db.execSQL(imageTable.getCreateSql());
+		db.execSQL(regionTable.getCreateSql());
+		db.execSQL(sizeTable.getCreateSql());
+		db.execSQL(domainTable.getCreateSql());
+		db.execSQL(dropletTable.getCreateSql());
+		db.execSQL(recordTable.getCreateSql());
+		db.execSQL(sshKeyTable.getCreateSql());
 	}
 
 }

@@ -114,6 +114,7 @@
     <string name="select_image_label">Select image:</string>
     <string name="select_region_label">Select region:</string>
     <string name="select_droplet_label">Select droplet:</string>
+    <string name="ssh_keys_label">SSH Keys:</string>
     <string name="private_networking_label">Private networking</string>
     <string name="domain_name_label">Domain name</string>
     <string name="create_droplet">Create droplet</string>
