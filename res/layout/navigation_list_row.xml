@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="5dip"
+    style="@style/activated"
     >
 
     <ImageView
@@ -27,7 +28,8 @@
 	        android:layout_height="wrap_content"
 	        android:textColor="@android:color/white"
 	        android:text="aa"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	        android:textAppearance="?android:attr/textAppearanceMedium" 
+	        />
 		
 	</LinearLayout>
 </RelativeLayout>

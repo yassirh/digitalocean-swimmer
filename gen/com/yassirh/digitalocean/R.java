@@ -1693,6 +1693,7 @@ containing a value of this type.
         public static final int Widget_AppCompat_ProgressBar=0x7f0c000a;
         public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0c0009;
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0c0022;
+        public static final int activated=0x7f0c0085;
     }
     public static final class xml {
         public static final int preferences=0x7f050000;
