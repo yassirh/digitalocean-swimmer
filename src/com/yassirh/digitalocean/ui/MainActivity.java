@@ -34,7 +34,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.startapp.android.publish.StartAppAd;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
@@ -47,8 +46,6 @@ import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
-import com.yassirh.digitalocean.utils.AdsHelper;
-import com.yassirh.digitalocean.utils.AppRater;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
@@ -64,10 +61,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     
     private DropletService mDropletService;
     private DomainService mDomainService;
-    
-    private StartAppAd mStartAppAd = new StartAppAd(this);
-    private boolean mShouldDisplayAnAd = false;
-    
+        
     @SuppressLint("HandlerLeak")
 	Handler mUiHandler = new Handler(){
         @Override
@@ -124,11 +118,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mShouldDisplayAnAd = PreferencesHelper.shouldDisplayAnAd(this);
-		if(mShouldDisplayAnAd){
-			StartAppAd.init(this, AdsHelper.DEVELOPER_KEY, AdsHelper.APP_KEY);
-			AppRater.app_launched(this);
-		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -183,8 +172,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mShouldDisplayAnAd)
-			mStartAppAd.onResume();
 	}
 	
 	@Override
@@ -201,10 +188,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	
 	@Override
 	public void onBackPressed() {
-		if(mShouldDisplayAnAd){
-			mStartAppAd.onBackPressed();
-			mStartAppAd.showAd();
-		}
 		super.onBackPressed();
 	}
 	

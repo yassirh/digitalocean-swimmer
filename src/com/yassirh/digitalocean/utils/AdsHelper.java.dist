@@ -1,7 +1,0 @@
-package com.yassirh.digitalocean.utils;
-
-public class AdsHelper {
-
-	public static final String DEVELOPER_KEY = "";
-	public static final String APP_KEY = "";	
-}

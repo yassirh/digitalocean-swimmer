@@ -25,13 +25,6 @@
             android:summary="@string/summary_sync_frequency"
             android:entryValues="@array/pref_sync_frequency_values"
             android:title="@string/pref_sync_frequency_key_label" />
-		<ListPreference
-            android:key="pref_ads_frequency"
-            android:entries="@array/pref_ads_frequency_entries"
-            android:summary="@string/summary_ads_frequency"
-            android:entryValues="@array/pref_ads_frequency_values"
-            android:title="@string/pref_ads_frequency_key_label" 
-            android:defaultValue="3"/>
 	</PreferenceCategory>
 	
 </PreferenceScreen>  
