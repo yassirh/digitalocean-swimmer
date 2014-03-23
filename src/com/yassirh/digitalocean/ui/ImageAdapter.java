@@ -55,7 +55,7 @@ public class ImageAdapter extends BaseAdapter {
 	        }
 	        TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
 	        ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
-	        TextView slugTextView = (TextView)vi.findViewById(R.id.slugTextView);
+	        //TextView slugTextView = (TextView)vi.findViewById(R.id.slugTextView);
 	        TextView visibilityTextView = (TextView)vi.findViewById(R.id.visibilityTextView);
 	        
 	        if(image.getDistribution().equals("Ubuntu")){
@@ -75,10 +75,10 @@ public class ImageAdapter extends BaseAdapter {
 	        }
 	        
 	        nameTextView.setText(image.getName());
-	        if(image.getSlug().equals(""))
+	        /*if(image.getSlug().equals(""))
 	        	slugTextView.setVisibility(View.GONE);
 	        else
-	        	slugTextView.setText(image.getSlug());
+	        	slugTextView.setText(image.getSlug());*/
 	        String visibility = vi.getResources().getString(R.string.public_visibility);
 	        if(!image.isPublic())
 	        	visibility = vi.getResources().getString(R.string.private_visibility);

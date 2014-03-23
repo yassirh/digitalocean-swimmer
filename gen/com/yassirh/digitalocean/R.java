@@ -1067,10 +1067,10 @@ containing a value of this type.
         public static final int action_sync=0x7f0600ac;
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
-        public static final int back_button=0x7f060092;
+        public static final int back_button=0x7f060091;
         public static final int backupsActiveTextView=0x7f060066;
         public static final int beginning=0x7f060011;
-        public static final int button_bar=0x7f060091;
+        public static final int button_bar=0x7f060090;
         public static final int checkbox=0x7f06002d;
         public static final int cnameHostnameEditText=0x7f060074;
         public static final int cnameLinearLayout=0x7f060072;
@@ -1079,7 +1079,7 @@ containing a value of this type.
         public static final int content_frame=0x7f06003d;
         public static final int cpusTextView=0x7f060059;
         public static final int createdAtTextView=0x7f06006a;
-        public static final int dataTextView=0x7f060096;
+        public static final int dataTextView=0x7f060095;
         public static final int default_activity_button=0x7f060028;
         public static final int dialog=0x7f06000e;
         public static final int disableHome=0x7f060008;
@@ -1103,7 +1103,7 @@ containing a value of this type.
         public static final int icon=0x7f06002a;
         public static final int ifRoom=0x7f06000a;
         public static final int image=0x7f060027;
-        public static final int imageImageView=0x7f06008f;
+        public static final int imageImageView=0x7f06008e;
         public static final int imageSpinner=0x7f06004c;
         public static final int imageTextView=0x7f060061;
         public static final int ipAddressTextView=0x7f060054;
@@ -1120,21 +1120,21 @@ containing a value of this type.
         public static final int nameEditText=0x7f06006b;
         public static final int nameTextView=0x7f060053;
         public static final int never=0x7f060009;
-        public static final int next_button=0x7f060094;
+        public static final int next_button=0x7f060093;
         public static final int none=0x7f060010;
         public static final int normal=0x7f060000;
         public static final int nsHostnameEditText=0x7f06007a;
         public static final int nsLinearLayout=0x7f060078;
-        public static final int portTextView=0x7f060098;
+        public static final int portTextView=0x7f060097;
         public static final int pricingTextView=0x7f06009b;
-        public static final int priorityTextView=0x7f060097;
+        public static final int priorityTextView=0x7f060096;
         public static final int privateNetworkingCheckBox=0x7f060050;
         public static final int progress_circular=0x7f060018;
         public static final int progress_horizontal=0x7f060019;
         public static final int publicSSHKeyEditText=0x7f06008b;
         public static final int radio=0x7f06002f;
         public static final int ramcpuTextView=0x7f06009a;
-        public static final int recordTypeImageView=0x7f060095;
+        public static final int recordTypeImageView=0x7f060094;
         public static final int recordTypeSpinner=0x7f06006e;
         public static final int recordsListView=0x7f060046;
         public static final int recordsTextView=0x7f060045;
@@ -1157,8 +1157,8 @@ containing a value of this type.
         public static final int showHome=0x7f060004;
         public static final int showTitle=0x7f060006;
         public static final int sizeSpinner=0x7f060048;
-        public static final int skip_button=0x7f060093;
-        public static final int slugTextView=0x7f06008d;
+        public static final int skip_button=0x7f060092;
+        public static final int slugTextView=0x7f060099;
         public static final int split_action_bar=0x7f06001e;
         public static final int srvHostnameEditText=0x7f060084;
         public static final int srvLinearLayout=0x7f060080;
@@ -1196,7 +1196,7 @@ containing a value of this type.
         public static final int textView8=0x7f060060;
         public static final int textView9=0x7f060079;
         public static final int title=0x7f06002b;
-        public static final int titleTextView=0x7f060090;
+        public static final int titleTextView=0x7f06008f;
         public static final int top_action_bar=0x7f060020;
         public static final int ttlTextView=0x7f060044;
         public static final int txtLinearLayout=0x7f06007b;
@@ -1204,8 +1204,8 @@ containing a value of this type.
         public static final int txtTextEditText=0x7f06007f;
         public static final int up=0x7f060021;
         public static final int useLogo=0x7f060003;
-        public static final int visibilityTextView=0x7f06008e;
-        public static final int weightTextView=0x7f060099;
+        public static final int visibilityTextView=0x7f06008d;
+        public static final int weightTextView=0x7f060098;
         public static final int withText=0x7f06000c;
     }
     public static final class integer {
