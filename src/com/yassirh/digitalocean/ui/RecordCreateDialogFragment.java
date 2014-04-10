@@ -65,12 +65,14 @@ public class RecordCreateDialogFragment extends DialogFragment {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				LinearLayout aLinearLayout = (LinearLayout) view.findViewById(R.id.aLinearLayout);
+				LinearLayout aaaaLinearLayout = (LinearLayout) view.findViewById(R.id.aaaaLinearLayout);
 				LinearLayout cnameLinearLayout = (LinearLayout) view.findViewById(R.id.cnameLinearLayout);
 				LinearLayout mxLinearLayout = (LinearLayout) view.findViewById(R.id.mxLinearLayout);
 				LinearLayout nsLinearLayout = (LinearLayout) view.findViewById(R.id.nsLinearLayout);
 				LinearLayout txtLinearLayout = (LinearLayout) view.findViewById(R.id.txtLinearLayout);
 				LinearLayout srvLinearLayout = (LinearLayout) view.findViewById(R.id.srvLinearLayout);
 				aLinearLayout.setVisibility(View.GONE);
+				aaaaLinearLayout.setVisibility(View.GONE);
 				cnameLinearLayout.setVisibility(View.GONE);
 				mxLinearLayout.setVisibility(View.GONE);
 				nsLinearLayout.setVisibility(View.GONE);
@@ -79,6 +81,9 @@ public class RecordCreateDialogFragment extends DialogFragment {
 				switch ((Integer)recordTypeAdapter.getItem(position)) {
 				case R.drawable.a:
 					aLinearLayout.setVisibility(View.VISIBLE);
+					break;
+				case R.drawable.aaaa:
+					aaaaLinearLayout.setVisibility(View.VISIBLE);
 					break;
 				case R.drawable.cname:
 					cnameLinearLayout.setVisibility(View.VISIBLE);
@@ -107,6 +112,8 @@ public class RecordCreateDialogFragment extends DialogFragment {
 		
 		final EditText aHostnameEditText = (EditText) view.findViewById(R.id.aHostnameEditText);
 		final EditText aIpAddressEditText = (EditText) view.findViewById(R.id.aIpAddressEditText);
+		final EditText aaaaHostnameEditText = (EditText) view.findViewById(R.id.aaaaHostnameEditText);
+		final EditText aaaaIpAddressEditText = (EditText) view.findViewById(R.id.aaaaIpAddressEditText);
 		final EditText cnameHostnameEditText = (EditText) view.findViewById(R.id.cnameHostnameEditText);
 		final EditText cnameNameEditText = (EditText) view.findViewById(R.id.cnameNameEditText);
 		final EditText mxHostnameEditText = (EditText) view.findViewById(R.id.mxHostnameEditText);
@@ -147,6 +154,10 @@ public class RecordCreateDialogFragment extends DialogFragment {
 				recordTypeSpinner.setSelection(5);
 				aHostnameEditText.setText(record.getName());
 				aIpAddressEditText.setText(record.getData());
+			}else if(record.getRecordType().equals("AAAA")){
+				recordTypeSpinner.setSelection(5);
+				aaaaHostnameEditText.setText(record.getName());
+				aaaaIpAddressEditText.setText(record.getData());
 			}
 		}
 		mBuilder.setView(view);
@@ -166,6 +177,11 @@ public class RecordCreateDialogFragment extends DialogFragment {
 					params.put("record_type", "A");
 					params.put("name", aHostnameEditText.getText().toString());
 					params.put("data", aIpAddressEditText.getText().toString());
+					break;
+				case R.drawable.aaaa:
+					params.put("record_type", "AAAA");
+					params.put("name", aaaaHostnameEditText.getText().toString());
+					params.put("data", aaaaIpAddressEditText.getText().toString());
 					break;
 				case R.drawable.cname:
 					params.put("record_type", "CNAME");
