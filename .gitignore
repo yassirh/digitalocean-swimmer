@@ -1,2 +1,3 @@
-bin/*
+bin/**
+gen/**
 src/com/yassirh/digitalocean/utils/AdsHelper.java

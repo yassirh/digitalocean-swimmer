@@ -73,9 +73,11 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         lockedTextView.setText(droplet.isLocked() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         createdAtTextView.setText(DateFormat.format("yyyy-MM-dd hh:mm", droplet.getCreatedAt()));
         statusTextView.setText(droplet.getStatus());
-        memoryTextView.setText(size.getMemory()  +"MB");
-        diskTextView.setText(size.getDisk() +"GB");
-        cpusTextView.setText(size.getCpu() + "");
+        if(size != null){
+	        memoryTextView.setText(size.getMemory()  +"MB");
+	        diskTextView.setText(size.getDisk() +"GB");
+	        cpusTextView.setText(size.getCpu() + "");
+        }
 		return view;
 	}
 	
