@@ -55,6 +55,9 @@ public class ApiHelper {
 		if(recordType.equals("A")){
         	return R.drawable.a;
         }
+		else if(recordType.equals("AAAA")){
+        	return R.drawable.aaaa;
+        }
 		else if(recordType.equals("CNAME")){
         	return R.drawable.cname;
         }

@@ -24,6 +24,7 @@ public class RecordTypeAdapter extends BaseAdapter {
         sData.put("mx", R.drawable.mx);
         sData.put("cname", R.drawable.cname);
         sData.put("a",R.drawable.a);
+        sData.put("aaaa",R.drawable.aaaa);
     }
     
     private String[] mKeys;
