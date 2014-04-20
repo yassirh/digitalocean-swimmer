@@ -27,6 +27,7 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class SSHKeyService {
 
 	private Context mContext;
+	private boolean mIsRefreshing;
 		
 	public SSHKeyService(Context context) {
 		this.mContext = context;
@@ -105,6 +106,7 @@ public class SSHKeyService {
 	}
 
 	private void getSSHKeyByIdFromAPI(long id, final boolean showProgress) {
+		mIsRefreshing = true;
 		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -127,8 +129,10 @@ public class SSHKeyService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				mIsRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
+				}
 			}
 			
 			@Override
@@ -351,5 +355,9 @@ public class SSHKeyService {
 		    }
 
 		});
+	}
+
+	public boolean isRefreshing() {
+		return mIsRefreshing;
 	}
 }

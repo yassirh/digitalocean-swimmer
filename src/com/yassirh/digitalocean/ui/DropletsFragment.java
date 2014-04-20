@@ -14,9 +14,11 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -25,10 +27,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,12 +45,14 @@ import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.SizeService;
 
-public class DropletsFragment extends ListFragment implements OnItemClickListener,Updatable{
+public class DropletsFragment extends ListFragment implements OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, Updatable{
 		
-	DropletAdapter mDropletAdapter;
-	List<Droplet> mDroplets = new ArrayList<Droplet>();
-	DropletService mDropletService;
-	ImageService mImageService;
+	private DropletAdapter mDropletAdapter;
+	private List<Droplet> mDroplets = new ArrayList<Droplet>();
+	private DropletService mDropletService;
+	private ImageService mImageService;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Handler handler = new Handler();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,14 +65,37 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		mDropletService = new DropletService(this.getActivity());
 		mImageService = new ImageService(getActivity());
 		update(this.getActivity());
-		return inflater.inflate(R.layout.fragment_droplets, container, false);
+		View layout = inflater.inflate(R.layout.fragment_droplets, container, false);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
+	            R.color.green_light,
+	            R.color.orange_light,
+	            R.color.red_light);
+		return layout;
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getListView().setOnItemClickListener(this);
-		registerForContextMenu(getListView());
+		final ListView listView = getListView();
+		listView.setOnItemClickListener(this);
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				int topRowVerticalPosition = 
+					      (listView == null || listView.getChildCount() == 0) ? 
+					        0 : listView.getChildAt(0).getTop();
+					    mSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+			}
+		});
+		registerForContextMenu(listView);
 	}
 	
 	@Override
@@ -360,4 +390,25 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		FragmentManager supportFragment = ((FragmentActivity)this.getActivity()).getSupportFragmentManager();
 		dropletDetailsDialogFragment.show(supportFragment, "droplet_details_fragment");
 	}
+
+	@Override
+	public void onRefresh() {
+		mDropletService.getAllDropletsFromAPI(true);
+		handler.post(refreshing);
+	}
+	
+	private final Runnable refreshing = new Runnable(){
+	    public void run(){
+	        try {
+	        	if(mDropletService.isRefreshing()){
+	        		handler.postDelayed(this, 1000);   
+	        	}else{
+	        		mSwipeRefreshLayout.setRefreshing(false);
+	        	}
+	        }
+	        catch (Exception e) {
+	            e.printStackTrace();
+	        }   
+	    }
+	};
 }

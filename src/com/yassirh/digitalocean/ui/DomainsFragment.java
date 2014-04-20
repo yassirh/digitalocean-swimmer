@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -18,7 +20,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -26,12 +31,14 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.service.DomainService;
 
-public class DomainsFragment extends ListFragment implements OnItemClickListener, Updatable{
+public class DomainsFragment extends ListFragment implements OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, Updatable{
 		
 	private DomainAdapter mDomainAdapter;
 	private DomainService mDomainService;
 	private List<Domain> mDomains;
 	private Domain mDomain;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Handler handler = new Handler();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,14 +50,36 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 			Bundle savedInstanceState) {
 		mDomainService = new DomainService(getActivity());
 		update(this.getActivity());
-		return inflater.inflate(R.layout.fragment_domains, container, false);
+		View layout = inflater.inflate(R.layout.fragment_domains, container, false);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
+	            R.color.green_light,
+	            R.color.orange_light,
+	            R.color.red_light);
+		return layout;
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getListView().setOnItemClickListener(this);
-		registerForContextMenu(getListView());
+		final ListView listView = getListView();
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				int topRowVerticalPosition = 
+					      (listView == null || listView.getChildCount() == 0) ? 
+					        0 : listView.getChildAt(0).getTop();
+					    mSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+			}
+		});
+		registerForContextMenu(listView);
 	}
 
 
@@ -114,4 +143,26 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 		FragmentManager supportFragment = ((FragmentActivity)this.getActivity()).getSupportFragmentManager();
 		domainDetailsDialogFragment.show(supportFragment, "droplet_domain_fragment");
 	}
+	
+	@Override
+	public void onRefresh() {
+		mDomainService.getAllDomainsFromAPI(true);
+		handler.post(refreshing);
+	}
+	
+	private final Runnable refreshing = new Runnable(){
+	    public void run(){
+	        try {
+	        	if(mDomainService.isRefreshing()){
+	        		handler.postDelayed(this, 1000);   
+	        	}else{
+	        		mSwipeRefreshLayout.setRefreshing(false);
+	        	}
+	        }
+	        catch (Exception e) {
+	            e.printStackTrace();
+	        }   
+	    }
+	};
+	
 }

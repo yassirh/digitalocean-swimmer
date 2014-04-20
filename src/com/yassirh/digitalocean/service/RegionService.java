@@ -27,12 +27,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class RegionService {
 
 	private Context mContext;
+	private boolean mIsRefreshing;
 		
 	public RegionService(Context context) {
 		mContext = context;
 	}
 
 	public void getAllRegionsFromAPI(final boolean showProgress){
+		mIsRefreshing = true;
 		String url = "https://api.digitalocean.com/regions/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -55,8 +57,10 @@ public class RegionService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				mIsRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS);
+				}
 			}
 			
 			@Override
@@ -142,5 +146,9 @@ public class RegionService {
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("region_require_refresh", true);
+	}
+
+	public boolean isRefreshing() {
+		return mIsRefreshing;
 	}
 }

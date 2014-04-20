@@ -27,12 +27,13 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class SizeService {
 
 	private Context mContext;
-		
+	private boolean mIsRefreshing;
 	public SizeService(Context context) {
 		mContext = context;
 	}
 
 	public void getAllSizesFromAPI(final boolean showProgress){
+		mIsRefreshing = true;
 		String url = "https://api.digitalocean.com/sizes/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -55,8 +56,10 @@ public class SizeService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				mIsRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES);
+				}
 			}
 			
 			@Override
@@ -140,5 +143,9 @@ public class SizeService {
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("size_require_refresh", true);
+	}
+
+	public boolean isRefreshing() {
+		return mIsRefreshing;
 	}
 }

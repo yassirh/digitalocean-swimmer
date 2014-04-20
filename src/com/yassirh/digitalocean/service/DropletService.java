@@ -49,6 +49,7 @@ public class DropletService {
 	
 	@SuppressLint("SimpleDateFormat")
 	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	private boolean isRefreshing;
 	
 	
 	public void setRequiresRefresh(Boolean requireRefresh){
@@ -207,6 +208,7 @@ public class DropletService {
 	}
 
 	public void getAllDropletsFromAPI(final boolean showProgress){
+		isRefreshing = true;
 		String url = "https://api.digitalocean.com/droplets/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -229,8 +231,10 @@ public class DropletService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				isRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
+				}
 			}
 			
 			@Override
@@ -442,5 +446,8 @@ public class DropletService {
 	protected void update(Droplet droplet) {
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		dropletDao.createOrUpdate(droplet);
+	}
+	public boolean isRefreshing() {
+		return isRefreshing;
 	}	
 }

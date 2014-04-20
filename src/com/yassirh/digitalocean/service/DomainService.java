@@ -28,12 +28,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class DomainService {
 
 	private Context mContext;
+	private boolean isRefreshing;
 		
 	public DomainService(Context context) {
 		this.mContext = context;
 	}
 
 	public void getAllDomainsFromAPI(final boolean showProgress){
+		isRefreshing = true;
 		String url = "https://api.digitalocean.com/domains/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -56,8 +58,10 @@ public class DomainService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				isRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS);
+				}
 			}
 			
 			@Override
@@ -275,5 +279,9 @@ public class DomainService {
 		    	DomainService.this.setRequiresRefresh(true);
 		    }
 		});
+	}
+
+	public boolean isRefreshing() {
+		return isRefreshing;
 	}
 }
