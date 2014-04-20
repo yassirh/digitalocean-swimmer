@@ -27,14 +27,14 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class ImageService {
 
 	private Context mContext;
-	private boolean isRefreshing;
-		
+	private boolean mIsRefreshing;
+	
 	public ImageService(Context context) {
 		this.mContext = context;
 	}
 	
 	public void getAllImagesFromAPI(final boolean showProgress){
-		isRefreshing = true;
+		mIsRefreshing = true;
 		String url = "https://api.digitalocean.com/images/?client_id=" + ApiHelper.getClientId(mContext)+ "&api_key=" + ApiHelper.getAPIKey(mContext); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -57,7 +57,7 @@ public class ImageService {
 			
 			@Override
 			public void onFinish() {
-				isRefreshing = false;
+				mIsRefreshing = false;
 				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
 				}
@@ -157,6 +157,6 @@ public class ImageService {
 	}
 
 	public boolean isRefreshing() {
-		return isRefreshing;
+		return mIsRefreshing;
 	}
 }

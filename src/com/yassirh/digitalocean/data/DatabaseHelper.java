@@ -18,9 +18,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper sshKeyTable = new SSHKeyTable();
 	static DatabaseHelper sDatabaseHelper;
 	static SQLiteDatabase sSQLiteDatabase;
+	private Context mContext;
 	
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 	}
 	
 	
@@ -73,6 +75,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(dropletTable.getCreateSql());
 		db.execSQL(recordTable.getCreateSql());
 		db.execSQL(sshKeyTable.getCreateSql());
+	}
+
+
+	public Context getContext() {
+		return mContext;
 	}
 
 }

@@ -10,6 +10,7 @@ import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
+import com.yassirh.digitalocean.utils.CachedImagesHelper;
 
 public class DropletDao extends SqlDao<Droplet> {
 
@@ -48,6 +49,10 @@ public class DropletDao extends SqlDao<Droplet> {
 
 	public Droplet newInstance(Cursor c) {
 		Image image = new ImageDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
+		if(image == null){
+			// search cached images	
+			image = CachedImagesHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
+		}
 		Region region = new RegionDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.REGION_ID)));
 		Size size = new SizeDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.SIZE_ID)));
 		Droplet droplet = new Droplet();

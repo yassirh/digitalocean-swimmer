@@ -53,13 +53,16 @@ public class DropletAdapter extends BaseAdapter {
         TextView statusTextView = (TextView)vi.findViewById(R.id.statusTextView);
         ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
         ImageView flagImageView = (ImageView)vi.findViewById(R.id.flagImageView);
-        if(region != null)
+        if(region != null){
         	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
-        else
+        }
+        else{
         	flagImageView.setVisibility(View.GONE);
+        }
         
-        if(image != null)	
+        if(image != null){	
 	    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), droplet.getStatus()));
+        }
         
         nameTextView.setText(droplet.getName());
         ipAddressTextView.setText(droplet.getIpAddress());
