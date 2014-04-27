@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -349,6 +350,10 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	startActivity(intent);
         	finish();
         	return true;
+        case R.id.action_about:
+        	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://yassirh.com/digitalocean_swimmer/"));
+			startActivity(browserIntent);
+			return true;
         default:
             return super.onOptionsItemSelected(item);
         }

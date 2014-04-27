@@ -28,7 +28,7 @@ public class SettingsActivity extends ActionBarActivity{
 						String key) {
 					ApiHelper.getCurrentAccount(MyApplication.getAppContext());
 					// Clear all the previously stored data and get the new account data.
-					if(key.equals("api_key_preference") || key.equals("client_id_preference")){
+					if(key.equals("api_key_preference") || key.equals("client_id_preference") || key.equals("account_name_preference")){
 						ImageService imageService = new ImageService(MyApplication.getAppContext());
 						imageService.deleteAll();
 						imageService.getAllImagesFromAPI(true);

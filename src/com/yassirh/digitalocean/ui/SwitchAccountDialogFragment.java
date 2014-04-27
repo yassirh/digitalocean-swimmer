@@ -8,13 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -57,7 +57,6 @@ public class SwitchAccountDialogFragment extends DialogFragment implements OnIte
 			AccountCreateDialogFragment accountCreateDialogFragment = new AccountCreateDialogFragment();
 			accountCreateDialogFragment.show(fm, "create_account");
 		}else{
-			Log.v("LOG", accounts.get(position).getName() + " - " + accounts.get(position).getId());
 			ApiHelper.selectAccount(getActivity(), accounts.get(position));
 		}
 		this.dismiss();

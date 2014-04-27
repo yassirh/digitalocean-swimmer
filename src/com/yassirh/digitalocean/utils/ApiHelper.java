@@ -51,12 +51,11 @@ public class ApiHelper {
 					break;
 				}
 			}
-		}
-		
-		if(!getAccountName(context).equals(currentAccount.getName())){
-			currentAccount.setName(getAccountName(context));
-			accountDao.createOrUpdate(currentAccount);
-		}
+			if(currentAccount != null && !getAccountName(context).equals(currentAccount.getName())){
+				currentAccount.setName(getAccountName(context));
+				accountDao.createOrUpdate(currentAccount);
+			}
+		}		
 		
 		return currentAccount;
 	}
