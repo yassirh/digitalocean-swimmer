@@ -22,6 +22,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DomainDao;
 import com.yassirh.digitalocean.data.RecordDao;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
@@ -35,8 +36,12 @@ public class DomainService {
 	}
 
 	public void getAllDomainsFromAPI(final boolean showProgress){
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		isRefreshing = true;
-		String url = "https://api.digitalocean.com/domains/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		String url = "https://api.digitalocean.com/domains/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -147,7 +152,11 @@ public class DomainService {
 
 	// TODO : show progress
 	public void createDomain(String domainName, String ipAddress, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/domains/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext) + "&name=" + domainName + "&ip_address=" + ipAddress;
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/domains/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey() + "&name=" + domainName + "&ip_address=" + ipAddress;
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -218,7 +227,11 @@ public class DomainService {
 	}
 
 	public void deleteDomain(final long id, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

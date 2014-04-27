@@ -24,6 +24,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.RecordDao;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.model.Record;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -31,13 +32,12 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class RecordService {
 
 	private Context mContext;
+	@SuppressLint("SimpleDateFormat")
+	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			
 	public RecordService(Context context) {
 		mContext = context;
-	}
-	
-	@SuppressLint("SimpleDateFormat")
-	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	}	
 	
 	public void deleteAll() {
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
@@ -93,7 +93,11 @@ public class RecordService {
 
 
 	public void getRecordsByDomainFromAPI(final long domainId, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/domains/" + domainId + "/records?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/domains/" + domainId + "/records?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			
@@ -151,12 +155,16 @@ public class RecordService {
 	}
 	
 	public void createOrUpdateRecord(final long domainId, HashMap<String,String> params, long recordId, final boolean showProgress) {
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		String url = "";
 		if(recordId > 0L){
-			url = "https://api.digitalocean.com/domains/" + domainId + "/records/" + recordId + "/edit?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+			url = "https://api.digitalocean.com/domains/" + domainId + "/records/" + recordId + "/edit?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		}
 		else
-			url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+			url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -223,7 +231,11 @@ public class RecordService {
 	}
 
 	public void deleteDomainRecord(final long domainId, final long recordId, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/domains/"  + domainId + "/records/" + recordId + "/destroy?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/domains/"  + domainId + "/records/" + recordId + "/destroy?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

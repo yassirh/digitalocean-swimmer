@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -15,6 +16,15 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
+		if(currentAccount == null){
+			return;
+		}
+		if(!ApiHelper.isValidApiKeyOrClientId(currentAccount.getApiKey()) 
+			|| !ApiHelper.isValidApiKeyOrClientId(currentAccount.getClientId())){
+			return;
+		}
+		
 		ImageService imageService = new ImageService(context);
 		imageService.getAllImagesFromAPI(false);
 		

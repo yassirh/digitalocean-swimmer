@@ -15,17 +15,18 @@ import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyApplication;
 
 public class SettingsActivity extends ActionBarActivity{
 
 	static SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = 
 			new OnSharedPreferenceChangeListener() {
-				
+		
 				@Override
 				public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 						String key) {
-					
+					ApiHelper.getCurrentAccount(MyApplication.getAppContext());
 					// Clear all the previously stored data and get the new account data.
 					if(key.equals("api_key_preference") || key.equals("client_id_preference")){
 						ImageService imageService = new ImageService(MyApplication.getAppContext());

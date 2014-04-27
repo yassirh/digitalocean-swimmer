@@ -3,6 +3,12 @@
     <PreferenceCategory
             android:title="@string/api_settings_title">
             
+        <EditTextPreference
+			android:key="account_name_preference"
+			android:title="@string/account_name_label"
+			android:summary="@string/summary_account_name"
+			/>
+        
 		<EditTextPreference
 			android:key="client_id_preference"
 			android:title="@string/client_id_label"

@@ -1,4 +1,5 @@
 303619:Debian 7.0 x32:debian-7-0-x32:Debian:
+1505447:Ubuntu 12.04.3 x64:Ubuntu-12.04.3-x64:Ubuntu: 
 #2014-04-17 12:00:02
 1601:CentOS 5.8 x64:centos-5-8-x64:CentOS:
 1602:CentOS 5.8 x32:centos-5-8-x32:CentOS:
@@ -46,3 +47,5 @@
 3240850:CentOS 6.5 x64:centos-6-5-x64:CentOS:
 3243143:Fedora 20 x32:fedora-20-x32:Fedora:
 3243145:Fedora 20 x64:fedora-20-x64:Fedora:
+#2014-04-24 12:00:02
+3288841:Dokku v0.2.3 on Ubuntu 14.04:dokku-ubuntu-14.04:Ubuntu:

@@ -27,6 +27,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Region;
@@ -36,7 +37,10 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 public class DropletService {
 
 	private Context mContext;
+	@SuppressLint("SimpleDateFormat")
+	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
+	private boolean isRefreshing;
 	public enum DropletActions{
 		REBOOT, POWER_CYCLE, SHUTDOWN, POWER_OFF, POWER_ON,
 		PASSWORD_RESET, RESIZE, SNAPSHOT, RESTORE, REBUILD, 
@@ -46,10 +50,6 @@ public class DropletService {
 	public DropletService(Context context) {
 		mContext = context;
 	}
-	
-	@SuppressLint("SimpleDateFormat")
-	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	private boolean isRefreshing;
 	
 	
 	public void setRequiresRefresh(Boolean requireRefresh){
@@ -64,7 +64,10 @@ public class DropletService {
 	}
 	
 	public void ExecuteAction(final long dropletId,final DropletActions dropletAction, HashMap<String,String> params){
-		
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		String action = getAction(dropletAction);
 		String url = getActionUrl(dropletId,action,params);
 		AsyncHttpClient client = new AsyncHttpClient();
@@ -198,7 +201,8 @@ public class DropletService {
 	}
 
 	private String getActionUrl(long dropletId,String action, HashMap<String,String> params) {
-		String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -208,8 +212,12 @@ public class DropletService {
 	}
 
 	public void getAllDropletsFromAPI(final boolean showProgress){
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		isRefreshing = true;
-		String url = "https://api.digitalocean.com/droplets/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
+		String url = "https://api.digitalocean.com/droplets/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -333,6 +341,10 @@ public class DropletService {
 
 	public void createDroplet(String hostname, Long imageId, Long regionId, Long sizeId,
 			boolean privateNetworking, boolean enableBackups, List<Long> selectedSSHKeysIds) {
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		String sshKeys = "";
 		if(selectedSSHKeysIds.size() > 0){
 			StringBuilder sb = new StringBuilder();
@@ -341,8 +353,8 @@ public class DropletService {
 			sshKeys = "&ssh_key_ids=" + sb.substring(1);
 		}
 		
-		String url = "https://api.digitalocean.com/droplets/new?client_id=" + ApiHelper.getClientId(mContext) + 
-				"&api_key=" + ApiHelper.getAPIKey(mContext) + 
+		String url = "https://api.digitalocean.com/droplets/new?client_id=" + currentAccount.getClientId() + 
+				"&api_key=" + currentAccount.getApiKey() + 
 				"&name=" + hostname +
 				"&size_id=" + sizeId + 
 				"&image_id=" + imageId + 
@@ -378,7 +390,11 @@ public class DropletService {
 	}
 
 	public void getDropletFromAPI(long dropletId, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

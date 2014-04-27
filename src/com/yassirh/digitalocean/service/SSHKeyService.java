@@ -21,6 +21,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.SSHKeyDao;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
@@ -34,7 +35,12 @@ public class SSHKeyService {
 	}
 
 	public void getAllSSHKeysFromAPI(final boolean showProgress){
-		String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		mIsRefreshing = true;
+		String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -56,8 +62,10 @@ public class SSHKeyService {
 			
 			@Override
 			public void onFinish() {
-				if(showProgress)
+				mIsRefreshing = false;
+				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
+				}
 			}
 			
 			@Override
@@ -106,8 +114,11 @@ public class SSHKeyService {
 	}
 
 	private void getSSHKeyByIdFromAPI(long id, final boolean showProgress) {
-		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -129,7 +140,6 @@ public class SSHKeyService {
 			
 			@Override
 			public void onFinish() {
-				mIsRefreshing = false;
 				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
 				}
@@ -207,7 +217,11 @@ public class SSHKeyService {
 	}
 
 	public void delete(final long id, final boolean showProgress) {
-		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/destroy/" + "?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -272,17 +286,21 @@ public class SSHKeyService {
 	}
 
 	public void save(SSHKey sshKey, final boolean update, final boolean showProgress) {
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		String url = "";
 		if(update){
 			url = "https://api.digitalocean.com/ssh_keys/" + sshKey.getId() + "/edit/" + 
-					"?client_id=" + ApiHelper.getClientId(mContext) + 
-					"&api_key=" + ApiHelper.getAPIKey(mContext) +
+					"?client_id=" + currentAccount.getClientId() + 
+					"&api_key=" + currentAccount.getApiKey() +
 					"&ssh_pub_key=" + sshKey.getSshPubKey() +
 					"&name=" + sshKey.getName();
 		} else{
 			url = "https://api.digitalocean.com/ssh_keys/new/" + 
-					"?client_id=" + ApiHelper.getClientId(mContext) + 
-					"&api_key=" + ApiHelper.getAPIKey(mContext) +
+					"?client_id=" + currentAccount.getClientId() + 
+					"&api_key=" + currentAccount.getApiKey() +
 					"&ssh_pub_key=" + sshKey.getSshPubKey() +
 					"&name=" + sshKey.getName();
 		}

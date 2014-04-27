@@ -22,4 +22,7 @@
         android:icon="@drawable/ic_2_action_settings"
         android:title="@string/settings"
         app:showAsAction="ifRoom" />
+    <item 
+        android:id="@+id/action_switch_account"
+        android:title="@string/action_switch_account" />
 </menu>

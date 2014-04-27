@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yassirh.digitalocean"
-    android:versionCode="16"
-    android:versionName="1.3.4"
+    android:versionCode="17"
+    android:versionName="1.4"
     android:installLocation="auto" >
 
     <uses-sdk
@@ -30,13 +30,6 @@
             android:name="com.yassirh.digitalocean.ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-        <activity android:name="com.startapp.android.publish.AppWallActivity"
-			android:theme="@android:style/Theme.Translucent" 
-			android:taskAffinity="com.yassirh.digitalocean.AppWall"
-			android:configChanges="orientation|keyboardHidden" />
-		<activity android:name="com.startapp.android.publish.list3d.List3DActivity"
-			android:taskAffinity="com.yassirh.digitalocean.AppWall"
-			android:theme="@android:style/Theme" />
 		<receiver android:name="com.yassirh.digitalocean.utils.MyBroadcastReceiver" ></receiver>
     </application>
 

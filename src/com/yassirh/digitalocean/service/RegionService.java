@@ -21,6 +21,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.RegionDao;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
@@ -34,8 +35,12 @@ public class RegionService {
 	}
 
 	public void getAllRegionsFromAPI(final boolean showProgress){
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
 		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/regions/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
+		String url = "https://api.digitalocean.com/regions/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

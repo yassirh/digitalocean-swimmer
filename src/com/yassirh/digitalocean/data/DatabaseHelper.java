@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 13;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();
@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper dropletTable = new DropletTable();
 	private TableHelper recordTable = new RecordTable();
 	private TableHelper sshKeyTable = new SSHKeyTable();
+	private TableHelper accountTable = new AccountTable();
 	static DatabaseHelper sDatabaseHelper;
 	static SQLiteDatabase sSQLiteDatabase;
 	private Context mContext;
@@ -56,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(dropletTable.getCreateSql());
 		db.execSQL(recordTable.getCreateSql());
 		db.execSQL(sshKeyTable.getCreateSql());
+		db.execSQL(accountTable.getCreateSql());
 	}
 
 	@Override
@@ -67,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(dropletTable.getDropSql());
 		db.execSQL(recordTable.getDropSql());
 		db.execSQL(sshKeyTable.getDropSql());
+		db.execSQL(accountTable.getDropSql());
 		
 		db.execSQL(imageTable.getCreateSql());
 		db.execSQL(regionTable.getCreateSql());
@@ -75,6 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(dropletTable.getCreateSql());
 		db.execSQL(recordTable.getCreateSql());
 		db.execSQL(sshKeyTable.getCreateSql());
+		db.execSQL(accountTable.getCreateSql());
 	}
 
 

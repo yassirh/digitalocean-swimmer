@@ -344,7 +344,6 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		case R.id.action_ssh:
 			try {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + mDroplet.getIpAddress() + "/#" + mDroplet.getName())));
-				getActivity().finish();	
 			} catch (ActivityNotFoundException e) {
 				Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
 			}

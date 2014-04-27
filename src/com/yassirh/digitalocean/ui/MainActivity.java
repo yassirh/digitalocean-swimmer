@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 		public void run() {
 			for (;;) {
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(1000);
 					Boolean update = false;
 					if(MainActivity.this.mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
 						DropletService dropletService = new DropletService(MainActivity.this);
@@ -338,7 +338,12 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			fm = getSupportFragmentManager();
 			RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 			recordCreateDialogFragment.show(fm, "create_record");
-        	return true;  
+        	return true;
+        case R.id.action_switch_account:
+        	fm = getSupportFragmentManager();
+			SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
+			switchAccountDialogFragment.show(fm, "switch_account");
+        	return true;
         case R.id.action_settings:
         	Intent intent = new Intent(this, SettingsActivity.class);
         	startActivity(intent);

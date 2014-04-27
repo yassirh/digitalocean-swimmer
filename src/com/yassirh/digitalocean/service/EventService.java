@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Event;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -25,7 +26,11 @@ public class EventService {
 	}
 
 	public void trackEvent(final long eventId,final String name,final String message){
-		final String url ="https://api.digitalocean.com/events/" + eventId + "/?client_id=" + ApiHelper.getClientId(mContext) + "&api_key=" + ApiHelper.getAPIKey(mContext); 
+		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		if(currentAccount == null){
+			return;
+		}
+		final String url ="https://api.digitalocean.com/events/" + eventId + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		Thread t = new Thread(new Runnable() {
 			Event mEvent;
 			NotificationManager mNotifyManager;
