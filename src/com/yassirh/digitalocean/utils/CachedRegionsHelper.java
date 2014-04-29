@@ -26,7 +26,7 @@ public class CachedRegionsHelper {
 	            	if(!readLine.startsWith("#")){
 	            		String[] regionLine = readLine.split("\\:");
 	            		Long regionId = Long.parseLong(regionLine[0]);
-	            		Region region = new Region(regionId, regionLine[1], regionLine[3]);
+	            		Region region = new Region(regionId, regionLine[1], regionLine[2]);
 	            		sCachedRegions.put(regionId, region);
 	            	}
 	            }
