@@ -77,6 +77,7 @@
     <string name="cancel">Cancel</string>
     <string name="add_record">Add record</string>
     <string name="add_ssh_key">Add SSH key</string>
+    <string name="visit_domain">Visit</string>
     <string name="ssh_to_droplet">SSH to droplet</string>
     <string name="reboot">Reboot</string>
     <string name="power_cycle">Power cycle</string>

@@ -7,6 +7,8 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -64,6 +66,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		final ListView listView = getListView();
+		listView.setOnItemClickListener(this);
 		listView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -129,6 +132,10 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 				RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 				recordCreateDialogFragment.setArguments(args);
 				recordCreateDialogFragment.show(fm, "create_record");
+				return true;
+			case R.id.action_visit_domain:
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + mDomain.getName()));
+				startActivity(browserIntent);
 				return true;
 		}
 		return super.onContextItemSelected(item);

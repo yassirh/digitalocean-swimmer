@@ -49,3 +49,10 @@
 3243145:Fedora 20 x64:fedora-20-x64:Fedora:
 #2014-04-24 12:00:02
 3288841:Dokku v0.2.3 on Ubuntu 14.04:dokku-ubuntu-14.04:Ubuntu:
+#2014-05-03 12:00:07
+3445812:Debian 7.0 x64:debian-7-0-x64:Debian:
+3445920:Debian 7.0 x32:debian-7-0-x32:Debian:
+3447910:Ubuntu 12.10 x32:ubuntu-12-10-x32:Ubuntu:
+3447912:Ubuntu 12.10 x64:ubuntu-12-10-x64:Ubuntu:
+3448641:CentOS 6.5 x64:centos-6-5-x64:CentOS:
+3448674:CentOS 6.5 x32:centos-6-5-x32:CentOS:
