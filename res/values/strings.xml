@@ -176,7 +176,7 @@
     <string name="reminde_me_later">Remind me later</string>
     <string name="no_thanks">No, thanks</string>
     <string name="rate_app">Rate %1$s</string>
-    
+    <string name="message_feature_disabled_api">Operation aborted : this feature is disabled in the API</string>
     <!--  Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>

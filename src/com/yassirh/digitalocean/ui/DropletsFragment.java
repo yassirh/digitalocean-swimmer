@@ -89,10 +89,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				int topRowVerticalPosition = 
-					      (listView == null || listView.getChildCount() == 0) ? 
-					        0 : listView.getChildAt(0).getTop();
-					    mSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+				mSwipeRefreshLayout.setEnabled(listView.getFirstVisiblePosition() == 0);
 			}
 		});
 		registerForContextMenu(listView);
@@ -214,7 +211,8 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			builder.show();
 			break;
 		case R.id.action_enable_backups:
-			alertDialog.setTitle(getString(R.string.enable_backups) + " : " + mDroplet.getName());
+			Toast.makeText(getActivity(), getString(R.string.message_feature_disabled_api), Toast.LENGTH_SHORT).show();
+			/*alertDialog.setTitle(getString(R.string.enable_backups) + " : " + mDroplet.getName());
 			alertDialog.setMessage(R.string.enable_backups_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
@@ -223,10 +221,11 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
-			alertDialog.show();
+			alertDialog.show();*/
 			break;
 		case R.id.action_disable_backups:
-			alertDialog.setTitle(getString(R.string.disable_backups) + " : " + mDroplet.getName());
+			Toast.makeText(getActivity(), getString(R.string.message_feature_disabled_api), Toast.LENGTH_SHORT).show();
+			/*alertDialog.setTitle(getString(R.string.disable_backups) + " : " + mDroplet.getName());
 			alertDialog.setMessage(R.string.disable_backups_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
@@ -235,7 +234,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
-			alertDialog.show();
+			alertDialog.show();*/
 			break;
 		case R.id.action_resize:
 			builder = new AlertDialog.Builder(getActivity());

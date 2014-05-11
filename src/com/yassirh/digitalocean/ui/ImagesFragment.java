@@ -62,10 +62,7 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				int topRowVerticalPosition = 
-					      (listView == null || listView.getChildCount() == 0) ? 
-					        0 : listView.getChildAt(0).getTop();
-					    mSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+			    mSwipeRefreshLayout.setEnabled(listView.getFirstVisiblePosition() == 0);
 			}
 		});
 		registerForContextMenu(listView);
