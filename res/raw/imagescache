@@ -58,3 +58,6 @@
 3448674:CentOS 6.5 x32:centos-6-5-x32:CentOS:
 #2014-05-10 12:00:02
 3668014:Docker 0.11.1 on Ubuntu 13.10 x64::Ubuntu:
+#2014-05-21 12:00:03
+3935257:Django on Ubuntu 14.04::Ubuntu:
+3961756:LAMP on Ubuntu 14.04::Ubuntu:

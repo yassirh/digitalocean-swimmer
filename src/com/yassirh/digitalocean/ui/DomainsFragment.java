@@ -76,7 +76,13 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				mSwipeRefreshLayout.setEnabled(listView.getFirstVisiblePosition() == 0);
+				boolean enable = false;
+		        if(listView != null && listView.getChildCount() > 0){
+		            boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+		            enable = firstItemVisible && topOfFirstItemVisible;
+		        }
+			    mSwipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);

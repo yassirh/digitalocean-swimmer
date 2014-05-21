@@ -70,10 +70,13 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				int topRowVerticalPosition = 
-					      (listView == null || listView.getChildCount() == 0) ? 
-					        0 : listView.getChildAt(0).getTop();
-					    mSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+				boolean enable = false;
+		        if(listView != null && listView.getChildCount() > 0){
+		            boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+		            enable = firstItemVisible && topOfFirstItemVisible;
+		        }
+			    mSwipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);
