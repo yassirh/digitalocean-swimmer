@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -300,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 					dialog.dismiss();
 				}
 			});
-    		builder.show();
+    		builder.show().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         	return true;
         case R.id.action_add_domain:
         	builder = new AlertDialog.Builder(this);
@@ -328,7 +329,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 					dialog.dismiss();
 				}
 			});
-    		builder.show();
+    		builder.show().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         	return true;
         case R.id.action_add_ssh_key:
 			fm = getSupportFragmentManager();

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar.LayoutParams;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Spinner;
@@ -49,5 +50,11 @@ public class DropletResizeDialogFragment extends DialogFragment {
 			}
 		});
 		return builder.create();
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		getDialog().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 }
