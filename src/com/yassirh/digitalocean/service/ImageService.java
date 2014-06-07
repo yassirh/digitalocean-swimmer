@@ -24,6 +24,7 @@ import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.utils.ApiHelper;
+import com.yassirh.digitalocean.utils.MyApplication;
 
 public class ImageService {
 
@@ -79,7 +80,7 @@ public class ImageService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					ApiHelper.showAccessDenied();
 				}
 			}
 			

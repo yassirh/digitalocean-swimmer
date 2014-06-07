@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -9,6 +10,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.data.AccountDao;
+import com.yassirh.digitalocean.data.DatabaseHelper;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -26,32 +30,20 @@ public class SettingsActivity extends ActionBarActivity{
 				@Override
 				public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 						String key) {
-					ApiHelper.getCurrentAccount(MyApplication.getAppContext());
+					Account currentAccount = ApiHelper.getCurrentAccount(MyApplication.getAppContext());
+					if(currentAccount == null){
+						currentAccount = new Account();
+					}
 					// Clear all the previously stored data and get the new account data.
 					if(key.equals("api_key_preference") || key.equals("client_id_preference") || key.equals("account_name_preference")){
-						ImageService imageService = new ImageService(MyApplication.getAppContext());
-						imageService.deleteAll();
-						imageService.getAllImagesFromAPI(true);
-						
-						RegionService regionService = new RegionService(MyApplication.getAppContext());
-						regionService.deleteAll();
-						regionService.getAllRegionsFromAPI(true);
-						
-						SizeService sizeService = new SizeService(MyApplication.getAppContext());
-						sizeService.deleteAll();
-						sizeService.getAllSizesFromAPI(true);
-						
-						DomainService domainService = new DomainService(MyApplication.getAppContext());
-						domainService.deleteAll();
-						domainService.getAllDomainsFromAPI(true);
-						
-						DropletService dropletService = new DropletService(MyApplication.getAppContext());
-						dropletService.deleteAll();
-						dropletService.getAllDropletsFromAPI(true);
-						
-						SSHKeyService sshKeyService = new SSHKeyService(MyApplication.getAppContext());
-						sshKeyService.deleteAll();
-						sshKeyService.getAllSSHKeysFromAPI(true);
+						Context context = MyApplication.getAppContext();
+						currentAccount.setApiKey(ApiHelper.getAPIKey(context));
+						currentAccount.setClientId(ApiHelper.getClientId(context));
+						currentAccount.setName(ApiHelper.getAccountName(context));
+						if(currentAccount.getName().equals("")){
+							currentAccount.setName("default");
+						}
+						ApiHelper.selectAccount(context, currentAccount);
 					}
 				}
 			};

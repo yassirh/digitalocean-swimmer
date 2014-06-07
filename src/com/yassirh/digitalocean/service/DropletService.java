@@ -93,7 +93,7 @@ public class DropletService {
 		    @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					ApiHelper.showAccessDenied();
 				}
 			}
 		    
@@ -248,7 +248,7 @@ public class DropletService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					ApiHelper.showAccessDenied();
 				}
 			}
 			
@@ -423,7 +423,7 @@ public class DropletService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
-					Toast.makeText(mContext, R.string.access_denied_message, Toast.LENGTH_SHORT).show();
+					ApiHelper.showAccessDenied();
 				}
 			}
 			

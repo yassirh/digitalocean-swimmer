@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.AccountDao;
@@ -65,7 +66,7 @@ public class ApiHelper {
 		return accountDao.getAll(null);
 	}
 	
-	private static String getAccountName(Context context) {
+	public static String getAccountName(Context context) {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPreferences.getString("account_name_preference", "");
 	}
@@ -155,21 +156,36 @@ public class ApiHelper {
 		editor.commit();
 		
 		ImageService imageService = new ImageService(context);
+		imageService.deleteAll();
 		imageService.getAllImagesFromAPI(true);
 		
 		DomainService domainService = new DomainService(context);
+		domainService.deleteAll();
 		domainService.getAllDomainsFromAPI(true);
 		
 		DropletService dropletService = new DropletService(context);
+		dropletService.deleteAll();
 		dropletService.getAllDropletsFromAPI(true);
 		
 		RegionService regionService = new RegionService(context);
+		regionService.deleteAll();
 		regionService.getAllRegionsFromAPI(true);		
 		
 		SSHKeyService sshKeyService = new SSHKeyService(context);
+		sshKeyService.deleteAll();
 		sshKeyService.getAllSSHKeysFromAPI(true);
 		
 		SizeService sizeService = new SizeService(context);
+		sizeService.deleteAll();
 		sizeService.getAllSizesFromAPI(true);
+	}
+	static Toast sToast;
+	public static void showAccessDenied() {
+		if(sToast == null){
+			sToast = Toast.makeText(MyApplication.getAppContext(), R.string.access_denied_message, Toast.LENGTH_SHORT);
+		}
+		if(sToast.getView().getWindowToken() == null){
+			sToast.show();	
+		}
 	}
 }
