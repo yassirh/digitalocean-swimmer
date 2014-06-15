@@ -1478,7 +1478,7 @@ containing a value of this type.
         public static final int app_name=0x7f0c000d;
         /**   Strings for possible PreferenceActivity Back/Next buttons 
          */
-        public static final int back_button_label=0x7f0c0096;
+        public static final int back_button_label=0x7f0c0097;
         public static final int backups_active_label=0x7f0c0023;
         public static final int cancel=0x7f0c002f;
         public static final int client_id_label=0x7f0c007b;
@@ -1516,10 +1516,11 @@ containing a value of this type.
         public static final int locked_label=0x7f0c0024;
         public static final int memory_label=0x7f0c0026;
         public static final int message_feature_disabled_api=0x7f0c0095;
+        public static final int message_press_again_to_exit=0x7f0c0096;
         public static final int monthly=0x7f0c001d;
         public static final int name=0x7f0c0074;
         public static final int name_label=0x7f0c0085;
-        public static final int next_button_label=0x7f0c0097;
+        public static final int next_button_label=0x7f0c0098;
         public static final int no=0x7f0c002c;
         public static final int no_domains=0x7f0c0017;
         public static final int no_droplets=0x7f0c0018;
@@ -1545,7 +1546,7 @@ containing a value of this type.
         public static final int priority_label=0x7f0c0086;
         public static final int private_networking_label=0x7f0c005c;
         public static final int private_visibility=0x7f0c001c;
-        public static final int public_ssh_key_label=0x7f0c0099;
+        public static final int public_ssh_key_label=0x7f0c009a;
         public static final int public_visibility=0x7f0c001b;
         public static final int rate_app=0x7f0c0094;
         public static final int rate_message=0x7f0c0091;
@@ -1573,7 +1574,7 @@ containing a value of this type.
         public static final int shut_down_alert=0x7f0c006a;
         /**  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
          */
-        public static final int skip_button_label=0x7f0c0098;
+        public static final int skip_button_label=0x7f0c0099;
         public static final int snapshot=0x7f0c003b;
         public static final int ssh_keys_label=0x7f0c005b;
         public static final int ssh_to_droplet=0x7f0c0033;

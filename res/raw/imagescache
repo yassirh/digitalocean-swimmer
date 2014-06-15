@@ -73,3 +73,10 @@
 4148217:GitLab 6.9.2 CE::Ubuntu:
 #2014-06-06 12:00:04
 4201396:Redmine on Ubuntu 14.04::Ubuntu:
+#2014-06-10 12:00:03
+4204318:MEAN on Ubuntu 14.04::Ubuntu:
+#2014-06-11 12:00:03
+4261622:Ruby on Rails on Ubuntu 14.04 (Nginx + Unicorn)::Ubuntu:
+#2014-06-14 12:00:03
+4295378:node-v0.10.29 on Ubuntu 14.04::Ubuntu:
+4296335:Docker 1.0 on Ubuntu 14.04::Ubuntu:

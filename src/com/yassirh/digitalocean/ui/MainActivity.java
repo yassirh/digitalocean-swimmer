@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
@@ -117,6 +118,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			}
 		}
 	});
+	private long lastBackPressed;
     	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +192,13 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		if (lastBackPressed + 2000 > System.currentTimeMillis()) {
+			super.onBackPressed();
+		}
+        else {
+        	Toast.makeText(getBaseContext(), R.string.message_press_again_to_exit, Toast.LENGTH_SHORT).show();
+        }
+        lastBackPressed = System.currentTimeMillis();
 	}
 	
 	@Override

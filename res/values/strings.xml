@@ -163,6 +163,7 @@
     <string name="no_thanks">No, thanks</string>
     <string name="rate_app">Rate %1$s</string>
     <string name="message_feature_disabled_api">Operation aborted : this feature is disabled in the API</string>
+    <string name="message_press_again_to_exit">Press back button again to exit!</string>
     <!--  Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>
