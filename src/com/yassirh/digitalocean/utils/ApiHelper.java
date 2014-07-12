@@ -31,17 +31,15 @@ public class ApiHelper {
 		// used to get the config from the shared preferences
 		if(accounts.size() == 0){
 			currentAccount = new Account();
-			String apiKey = getAPIKey(context);
-			String clientId = getClientId(context);
+			String token = getToken(context);
 			String accountName = getAccountName(context);
 			if("".equals(accountName)){
 				accountName = "default";
 			}
-			if(isValidApiKeyOrClientId(apiKey) && isValidApiKeyOrClientId(clientId)){
+			if(isValidToken(token)){
 				currentAccount.setId(1L);
 				currentAccount.setName(accountName);
-				currentAccount.setApiKey(apiKey);
-				currentAccount.setClientId(clientId);
+				currentAccount.setToken(token);
 				currentAccount.setSelected(true);
 				accountDao.createOrUpdate(currentAccount);
 			}
@@ -61,6 +59,13 @@ public class ApiHelper {
 		return currentAccount;
 	}
 
+	public static boolean isValidToken(String token) {
+		if(token == null){
+			return false;
+		}
+		return token.matches("^[a-f0-9]{64}$");
+	}
+
 	public static List<Account> getAllAccounts(Context context){
 		AccountDao accountDao = new AccountDao(DatabaseHelper.getInstance(context));
 		return accountDao.getAll(null);
@@ -70,22 +75,10 @@ public class ApiHelper {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPreferences.getString("account_name_preference", "");
 	}
-	
-	public static String getAPIKey(Context context){
+		
+	public static String getToken(Context context) {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPreferences.getString("api_key_preference", "");
-	}
-	
-	public static String getClientId(Context context){
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPreferences.getString("client_id_preference", "");
-	}
-	
-	public static boolean isValidApiKeyOrClientId(String value){
-		if(value == null){
-			return false;
-		}
-		return value.matches("^[a-f0-9]{32}$");
+		return sharedPreferences.getString("token_preference", "");
 	}
 	
 	public static int getDistributionLogo(String distribution,String status){
@@ -151,8 +144,7 @@ public class ApiHelper {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString("account_name_preference", account.getName());
-		editor.putString("api_key_preference", account.getApiKey());
-		editor.putString("client_id_preference", account.getClientId());
+		editor.putString("token_preference", account.getToken());
 		editor.commit();
 		
 		ImageService imageService = new ImageService(context);

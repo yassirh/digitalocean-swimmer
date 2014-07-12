@@ -20,8 +20,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		if(currentAccount == null){
 			return;
 		}
-		if(!ApiHelper.isValidApiKeyOrClientId(currentAccount.getApiKey()) 
-			|| !ApiHelper.isValidApiKeyOrClientId(currentAccount.getClientId())){
+		if(!ApiHelper.isValidToken(currentAccount.getToken())){
 			return;
 		}
 		

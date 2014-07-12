@@ -35,10 +35,9 @@ public class SettingsActivity extends ActionBarActivity{
 						currentAccount = new Account();
 					}
 					// Clear all the previously stored data and get the new account data.
-					if(key.equals("api_key_preference") || key.equals("client_id_preference") || key.equals("account_name_preference")){
+					if(key.equals("token_preference") || key.equals("account_name_preference")){
 						Context context = MyApplication.getAppContext();
-						currentAccount.setApiKey(ApiHelper.getAPIKey(context));
-						currentAccount.setClientId(ApiHelper.getClientId(context));
+						currentAccount.setToken(ApiHelper.getToken(context));
 						currentAccount.setName(ApiHelper.getAccountName(context));
 						if(currentAccount.getName().equals("")){
 							currentAccount.setName("default");
