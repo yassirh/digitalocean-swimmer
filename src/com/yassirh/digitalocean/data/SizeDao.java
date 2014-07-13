@@ -17,12 +17,11 @@ public class SizeDao extends SqlDao<Size> {
 
 	public long create(Size size) {
 		ContentValues values = new ContentValues();
-		values.put(SizeTable.ID, size.getId());
-		values.put(SizeTable.NAME, size.getName());
-		values.put(SizeTable.SLUG, size.getSlug());
+		values.put(SizeTable.SIZE_SLUG, size.getSlug());
 		values.put(SizeTable.MEMORY, size.getMemory());
 		values.put(SizeTable.CPU, size.getCpu());
 		values.put(SizeTable.DISK, size.getDisk());
+		values.put(SizeTable.TRANSFER, size.getTransfer());
 		values.put(SizeTable.COST_PER_HOUR, size.getCostPerHour());
 		values.put(SizeTable.COST_PER_MONTH, size.getCostPerMonth());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
@@ -31,12 +30,11 @@ public class SizeDao extends SqlDao<Size> {
 
 	public Size newInstance(Cursor c) {
 		Size size = new Size();
-		size.setId(c.getLong(c.getColumnIndex(SizeTable.ID)));
-		size.setName(c.getString(c.getColumnIndex(SizeTable.NAME)));
-		size.setMemory(c.getInt(c.getColumnIndex(SizeTable.MEMORY)));
+		size.setSlug(c.getString(c.getColumnIndex(SizeTable.SIZE_SLUG)));
 		size.setMemory(c.getInt(c.getColumnIndex(SizeTable.MEMORY)));
 		size.setCpu(c.getInt(c.getColumnIndex(SizeTable.CPU)));
 		size.setDisk(c.getInt(c.getColumnIndex(SizeTable.DISK)));
+		size.setTransfer(c.getInt(c.getColumnIndex(SizeTable.TRANSFER)));
 		size.setCostPerHour(c.getFloat(c.getColumnIndex(SizeTable.COST_PER_HOUR)));
 		size.setCostPerMonth(c.getFloat(c.getColumnIndex(SizeTable.COST_PER_MONTH)));
 		return size;

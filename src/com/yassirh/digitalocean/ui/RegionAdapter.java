@@ -35,7 +35,7 @@ public class RegionAdapter extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-    	return data.get(position).getId();
+    	return (long)position;
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {

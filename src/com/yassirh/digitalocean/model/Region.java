@@ -2,25 +2,19 @@ package com.yassirh.digitalocean.model;
 
 public class Region {
 
-	private long id;
 	private String name;
 	private String slug;
+	private Boolean available;
+	private String features;
 	
 	public Region(){
 	}
 	
-	public Region(long id, String name, String slug) {
-		super();
-		this.id = id;
+	public Region(String name, String slug, Boolean available, String features) {
 		this.name = name;
 		this.slug = slug;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
+		this.available = available;
+		this.features = features;
 	}
 	public String getName() {
 		return name;
@@ -34,7 +28,18 @@ public class Region {
 	public void setSlug(String slug) {
 		this.slug = slug;
 	}
-	
-		
-	
+	public Boolean isAvailable(){
+		return available;
+	}
+	public void setAvailable(boolean available) {
+		this.available = available;		
+	}
+
+	public String getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(String features) {
+		this.features = features;
+	}
 }

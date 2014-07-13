@@ -41,8 +41,9 @@ public class DomainService {
 			return;
 		}
 		isRefreshing = true;
-		String url = "https://api.digitalocean.com/domains/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = String.format("%s/domains?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -88,28 +89,22 @@ public class DomainService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<Domain> domains = new ArrayList<Domain>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray domainJSONArray = jsonObject.getJSONArray("domains");
-						for(int i = 0; i < domainJSONArray.length(); i++){
-							JSONObject domainJSONObject = domainJSONArray.getJSONObject(i);
-							Domain domain = new Domain();
-							domain.setId(domainJSONObject.getLong("id"));
-							domain.setName(domainJSONObject.getString("name"));
-							domain.setTtl(domainJSONObject.getInt("ttl"));
-							domain.setLiveZoneFile(domainJSONObject.getString("live_zone_file"));
-							domain.setError(!domainJSONObject.getString("error").equals("null") ? domainJSONObject.getString("error") : "" );
-							domain.setZoneFileWithError(!domainJSONObject.getString("zone_file_with_error").equals("null") ? domainJSONObject.getString("zone_file_with_error") : "");
-							domains.add(domain);
-						}
-						DomainService.this.deleteAll();
-						DomainService.this.saveAll(domains);
-						for (Domain domain : domains) {
-							new RecordService(mContext).getRecordsByDomainFromAPI(domain.getId(),false);
-						}
-						DomainService.this.setRequiresRefresh(true);
+					JSONArray domainJSONArray = jsonObject.getJSONArray("domains");
+					for(int i = 0; i < domainJSONArray.length(); i++){
+						JSONObject domainJSONObject = domainJSONArray.getJSONObject(i);
+						Domain domain = new Domain();
+						domain.setName(domainJSONObject.getString("name"));
+						domain.setTtl(domainJSONObject.getInt("ttl"));
+						domain.setLiveZoneFile(domainJSONObject.getString("zone_file"));
+						domains.add(domain);
 					}
+					DomainService.this.deleteAll();
+					DomainService.this.saveAll(domains);
+					for (Domain domain : domains) {
+						//new RecordService(mContext).getRecordsByDomainFromAPI(domain.getId(),false);
+					}
+					DomainService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}  
@@ -134,7 +129,7 @@ public class DomainService {
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
 		List<Domain> domains = domainDao.getAll(null);
 		for (Domain domain : domains) {
-			domain.setRecords(recordDao.getAllByDomain(domain.getId()));
+			//domain.setRecords(recordDao.getAllByDomain(domain.getId()));
 		}
 		return domains;
 	}
@@ -156,8 +151,9 @@ public class DomainService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/domains/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey() + "&name=" + domainName + "&ip_address=" + ipAddress;
+		String url = "";//"https://api.digitalocean.com/domains/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey() + "&name=" + domainName + "&ip_address=" + ipAddress;
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -221,8 +217,8 @@ public class DomainService {
 		DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(mContext));
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(mContext));
 		Domain domain = domainDao.findById(id);
-		if(domain != null)
-			domain.setRecords(recordDao.getAllByDomain(domain.getId()));		
+		/*if(domain != null)
+			domain.setRecords(recordDao.getAllByDomain(domain.getId()));*/		
 		return domain;
 	}
 
@@ -231,7 +227,7 @@ public class DomainService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = "";//String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

@@ -20,8 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
@@ -38,7 +36,7 @@ public class DropletService {
 
 	private Context mContext;
 	@SuppressLint("SimpleDateFormat")
-	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	private static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
 	private boolean isRefreshing;
 	public enum DropletActions{
@@ -202,7 +200,7 @@ public class DropletService {
 
 	private String getActionUrl(long dropletId,String action, HashMap<String,String> params) {
 		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
-		String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = "";//String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -217,8 +215,9 @@ public class DropletService {
 			return;
 		}
 		isRefreshing = true;
-		String url = "https://api.digitalocean.com/droplets/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = String.format("%s/droplets", ApiHelper.API_URL);//"https://api.digitalocean.com/droplets/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -264,22 +263,16 @@ public class DropletService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<Droplet> droplets = new ArrayList<Droplet>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray dropletsJSONArray = jsonObject.getJSONArray("droplets");
-						for(int i = 0; i < dropletsJSONArray.length(); i++){
-							JSONObject dropletJSONObject = dropletsJSONArray.getJSONObject(i);
-							Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
-							droplets.add(droplet);
-						}
-						DropletService.this.deleteAll();
-						DropletService.this.saveAll(droplets);
-						DropletService.this.setRequiresRefresh(true);
+					JSONArray dropletsJSONArray = jsonObject.getJSONArray("droplets");
+					for(int i = 0; i < dropletsJSONArray.length(); i++){
+						JSONObject dropletJSONObject = dropletsJSONArray.getJSONObject(i);
+						Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
+						droplets.add(droplet);
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
+					DropletService.this.deleteAll();
+					DropletService.this.saveAll(droplets);
+					DropletService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}  
@@ -292,23 +285,16 @@ public class DropletService {
 		dropletDao.deleteAll();
 	}
 
-	private Droplet jsonObjectToDroplet(JSONObject dropletJSONObject) throws JSONException {
+	public static Droplet jsonObjectToDroplet(JSONObject dropletJSONObject) throws JSONException {
 		Droplet droplet = new Droplet();
-		Image image = new Image();
-		image.setId(dropletJSONObject.getLong("image_id"));
-		Region region = new Region();
-		region.setId(dropletJSONObject.getLong("region_id"));
-		Size size = new Size();
-		size.setId(dropletJSONObject.getLong("size_id"));
-		
+		Image image = ImageService.jsonObjectToImage(dropletJSONObject.getJSONObject("image"));
+		Region region = RegionService.jsonObjectToRegion(dropletJSONObject.getJSONObject("region"));
+		Size size = SizeService.jsonObjectToSize(dropletJSONObject.getJSONObject("size"));
 		droplet.setId(dropletJSONObject.getLong("id"));
 		droplet.setName(dropletJSONObject.getString("name"));
 		droplet.setImage(image);
 		droplet.setRegion(region);
 		droplet.setSize(size);
-		droplet.setBackupsActive(dropletJSONObject.getBoolean("backups_active"));
-		droplet.setIpAddress(dropletJSONObject.getString("ip_address"));
-		droplet.setPrivateIpAddress(dropletJSONObject.getString("private_ip_address"));
 		droplet.setLocked(dropletJSONObject.getBoolean("locked"));
 		droplet.setStatus(dropletJSONObject.getString("status"));
 		try {
@@ -352,8 +338,8 @@ public class DropletService {
 				sb.append("," + l);
 			sshKeys = "&ssh_key_ids=" + sb.substring(1);
 		}
-		
-		String url = "https://api.digitalocean.com/droplets/new?client_id=" + currentAccount.getClientId() + 
+		String url = "";
+		/*String url = "https://api.digitalocean.com/droplets/new?client_id=" + currentAccount.getClientId() + 
 				"&api_key=" + currentAccount.getApiKey() + 
 				"&name=" + hostname +
 				"&size_id=" + sizeId + 
@@ -361,7 +347,7 @@ public class DropletService {
 				"&region_id=" + regionId +
 				"&private_networking" + privateNetworking +
 				"&backups_enabled=" + enableBackups +
-				sshKeys;
+				sshKeys;*/
 		
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -394,7 +380,7 @@ public class DropletService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = "";//String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

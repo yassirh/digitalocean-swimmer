@@ -46,7 +46,7 @@ public class RecordService {
 
 	private Record jsonObjectToRecord(JSONObject recordJSONObject) throws JSONException {
 		Domain domain = new Domain();
-		domain.setId(recordJSONObject.getLong("domain_id"));
+		//domain.setId(recordJSONObject.getLong("domain_id"));
 		Integer priority = null;
 	    Integer port = null;
 	    Integer weight = null;
@@ -96,9 +96,10 @@ public class RecordService {
 		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
 		if(currentAccount == null){
 			return;
-		}
-		String url = "https://api.digitalocean.com/domains/" + domainId + "/records?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		} 
+		String url = String.format("%s/records", ApiHelper.API_URL);
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			
 			@Override
@@ -161,10 +162,11 @@ public class RecordService {
 		}
 		String url = "";
 		if(recordId > 0L){
-			url = "https://api.digitalocean.com/domains/" + domainId + "/records/" + recordId + "/edit?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+			//url = "https://api.digitalocean.com/domains/" + domainId + "/records/" + recordId + "/edit?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		}
-		else
-			url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		else{
+			//url = "https://api.digitalocean.com/domains/" + domainId + "/records/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		}
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> pairs = it.next();
@@ -235,7 +237,7 @@ public class RecordService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/domains/"  + domainId + "/records/" + recordId + "/destroy?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = "";//String url = "https://api.digitalocean.com/domains/"  + domainId + "/records/" + recordId + "/destroy?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;

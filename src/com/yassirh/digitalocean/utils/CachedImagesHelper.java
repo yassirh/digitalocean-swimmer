@@ -4,16 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 
 import android.content.Context;
+import android.support.v4.util.LongSparseArray;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Image;
 
 public class CachedImagesHelper {
 	
-	private static HashMap<Long,Image> sCachedImages = new HashMap<Long, Image>();
+	private static LongSparseArray<Image> sCachedImages = new LongSparseArray<Image>();
 	
 	public static Image getCachedImage(Context context, Long id){
 		if(sCachedImages.size() == 0){

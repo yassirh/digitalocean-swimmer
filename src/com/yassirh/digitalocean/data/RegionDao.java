@@ -19,18 +19,20 @@ public class RegionDao extends SqlDao<Region> {
 
 	public long create(Region region) {
 		ContentValues values = new ContentValues();
-		values.put(RegionTable.ID, region.getId());
 		values.put(RegionTable.NAME, region.getName());
-		values.put(RegionTable.SLUG, region.getSlug());
+		values.put(RegionTable.REGION_SLUG, region.getSlug());
+		values.put(RegionTable.AVAILABLE, region.isAvailable());
+		values.put(RegionTable.FEATURES, region.getFeatures());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 		return id;
 	}	
 
 	public Region newInstance(Cursor c) {
 		Region region = new Region();
-		region.setId(c.getLong(c.getColumnIndex(RegionTable.ID)));
+		region.setAvailable(c.getInt(c.getColumnIndex(RegionTable.AVAILABLE)) > 0);
 		region.setName(c.getString(c.getColumnIndex(RegionTable.NAME)));
-		region.setSlug(c.getString(c.getColumnIndex(RegionTable.SLUG)));
+		region.setSlug(c.getString(c.getColumnIndex(RegionTable.REGION_SLUG)));
+		region.setFeatures(c.getString(c.getColumnIndex(RegionTable.FEATURES)));
 		return region;
 	}
 

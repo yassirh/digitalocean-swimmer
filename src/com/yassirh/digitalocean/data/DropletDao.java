@@ -30,12 +30,9 @@ public class DropletDao extends SqlDao<Droplet> {
 		values.put(DropletTable.ID, droplet.getId());
 		values.put(DropletTable.NAME, droplet.getName());
 		values.put(DropletTable.IMAGE_ID, droplet.getImage().getId());
-		values.put(DropletTable.REGION_ID, droplet.getRegion().getId());
-		values.put(DropletTable.SIZE_ID, droplet.getSize().getId());
-		values.put(DropletTable.BACKUPS_ACTIVE, droplet.isBackupsActive());
+		values.put(DropletTable.REGION_SLUG, droplet.getRegion().getSlug());
+		values.put(DropletTable.SIZE_SLUG, droplet.getSize().getSlug());
 		values.put(DropletTable.CREATED_AT, droplet.getCreatedAt().getTime());
-		values.put(DropletTable.IP_ADDRESS, droplet.getIpAddress());
-		values.put(DropletTable.PRIVATE_IP_ADDRESS, droplet.getPrivateIpAddress());
 		values.put(DropletTable.LOCKED, droplet.isLocked());
 		values.put(DropletTable.STATUS, droplet.getStatus());
 		long id = droplet.getId();
@@ -54,22 +51,19 @@ public class DropletDao extends SqlDao<Droplet> {
 			// search cached images	
 			image = CachedImagesHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
 		}
-		Region region = new RegionDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.REGION_ID)));
+		Region region = new RegionDao(mDatabaseHelper).findByProperty(DropletTable.REGION_SLUG, c.getString(c.getColumnIndex(DropletTable.REGION_SLUG)));
 		if(region == null){
 			// search cached regions	
-			region = CachedRegionsHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.REGION_ID)));
+			region = CachedRegionsHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.REGION_SLUG)));
 		}
-		Size size = new SizeDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.SIZE_ID)));
+		Size size = new SizeDao(mDatabaseHelper).findByProperty(DropletTable.SIZE_SLUG, c.getString(c.getColumnIndex(DropletTable.SIZE_SLUG)));
 		Droplet droplet = new Droplet();
 		droplet.setId(c.getLong(c.getColumnIndex(DropletTable.ID)));
 		droplet.setName(c.getString(c.getColumnIndex(DropletTable.NAME)));
 		droplet.setImage(image);
 		droplet.setRegion(region);
 		droplet.setSize(size);
-		droplet.setBackupsActive(c.getInt(c.getColumnIndex(DropletTable.BACKUPS_ACTIVE)) > 0);
 		droplet.setCreatedAt(new Date(c.getLong(c.getColumnIndex(DropletTable.CREATED_AT))));
-		droplet.setIpAddress(c.getString(c.getColumnIndex(DropletTable.IP_ADDRESS)));
-		droplet.setPrivateIpAddress(c.getString(c.getColumnIndex(DropletTable.PRIVATE_IP_ADDRESS)));
 		droplet.setLocked(c.getInt(c.getColumnIndex(DropletTable.LOCKED)) > 0);
 		droplet.setStatus(c.getString(c.getColumnIndex(DropletTable.STATUS)));
 		return droplet;

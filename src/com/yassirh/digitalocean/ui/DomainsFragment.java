@@ -123,14 +123,16 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mDomainService.deleteDomain(mDomain.getId(),true);
+						// FIXME
+						//mDomainService.deleteDomain(mDomain.getId(),true);
 					}
 				});
 				alertDialog.show();
 				return true;
 			case R.id.action_add_record:
 				Bundle args = new Bundle();
-		        args.putLong("domain_id", mDomain.getId());
+				// FIXME
+		        //args.putLong("domain_id", mDomain.getId());
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 				recordCreateDialogFragment.setArguments(args);

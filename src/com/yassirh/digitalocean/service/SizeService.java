@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -40,8 +39,9 @@ public class SizeService {
 			return;
 		}			
 		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/sizes/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = String.format("%s/sizes/", ApiHelper.API_URL);//"https://api.digitalocean.com/sizes/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -87,33 +87,16 @@ public class SizeService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<Size> sizes = new ArrayList<Size>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
-						for(int i = 0; i < sizeJSONArray.length(); i++){
-							JSONObject regionJSONObject = sizeJSONArray.getJSONObject(i);
-							Size size = new Size();
-							size.setId(regionJSONObject.getLong("id"));
-							size.setName(regionJSONObject.getString("name"));
-							if(regionJSONObject.getString("slug").equals("null"))
-								size.setSlug("");
-							else
-								size.setSlug(regionJSONObject.getString("slug"));
-							size.setMemory(regionJSONObject.getInt("memory"));
-							size.setCpu(regionJSONObject.getInt("cpu"));
-							size.setDisk(regionJSONObject.getInt("disk"));
-							size.setCostPerHour(regionJSONObject.getDouble("cost_per_hour"));
-							size.setCostPerMonth(regionJSONObject.getDouble("cost_per_month"));
-							sizes.add(size);
-						}
-						SizeService.this.deleteAll();
-						SizeService.this.saveAll(sizes);
-						SizeService.this.setRequiresRefresh(true);
+					JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
+					for(int i = 0; i < sizeJSONArray.length(); i++){
+						JSONObject sizeJSONObject = sizeJSONArray.getJSONObject(i);
+						Size size = jsonObjectToSize(sizeJSONObject);
+						sizes.add(size);
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
+					SizeService.this.deleteAll();
+					SizeService.this.saveAll(sizes);
+					SizeService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -122,6 +105,19 @@ public class SizeService {
 		});
 	}
 
+	public static Size jsonObjectToSize(JSONObject sizeJSONObject)
+			throws JSONException {
+		Size size = new Size();
+		size.setSlug(sizeJSONObject.getString("slug"));
+		size.setMemory(sizeJSONObject.getInt("memory"));
+		size.setCpu(sizeJSONObject.getInt("vcpus"));
+		size.setDisk(sizeJSONObject.getInt("disk"));
+		size.setTransfer(sizeJSONObject.getInt("transfer"));
+		size.setCostPerHour(sizeJSONObject.getDouble("price_hourly"));
+		size.setCostPerMonth(sizeJSONObject.getDouble("price_monthly"));
+		return size;
+	}
+	
 	protected void saveAll(List<Size> sizes) {
 		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
 		for (Size size : sizes) {

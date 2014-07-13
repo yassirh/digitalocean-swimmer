@@ -69,8 +69,8 @@ public class DropletDetailsDialogFragment extends DialogFragment {
     		imageTextView.setText(image.getName());
     	}
     	
-        ipAddressTextView.setText(droplet.getIpAddress());
-        backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        //ipAddressTextView.setText(droplet.getIpAddress());
+        //backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         lockedTextView.setText(droplet.isLocked() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         createdAtTextView.setText(DateFormat.format("yyyy-MM-dd hh:mm", droplet.getCreatedAt()));
         statusTextView.setText(droplet.getStatus());

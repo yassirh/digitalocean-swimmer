@@ -4,7 +4,8 @@ public class SSHKey {
 	
 	private long id;
 	private String name;
-	private String sshPubKey;
+	private String publicKey;
+	private String fingerprint;
 	
 	public long getId() {
 		return id;
@@ -18,11 +19,16 @@ public class SSHKey {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getSshPubKey() {
-		return sshPubKey;
+	public String getPublicKey() {
+		return publicKey;
 	}
-	public void setSshPubKey(String sshPubKey) {
-		this.sshPubKey = sshPubKey;
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
 	}
-	
+	public String getFingerprint() {
+		return fingerprint;
+	}
+	public void setFingerprint(String fingerprint) {
+		this.fingerprint = fingerprint;
+	}
 }

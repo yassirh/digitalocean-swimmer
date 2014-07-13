@@ -14,8 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
@@ -24,7 +22,6 @@ import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.utils.ApiHelper;
-import com.yassirh.digitalocean.utils.MyApplication;
 
 public class ImageService {
 
@@ -41,8 +38,10 @@ public class ImageService {
 			return;
 		}
 		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/images/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		//String url = "https://api.digitalocean.com/images/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = String.format("%s/images?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -88,30 +87,16 @@ public class ImageService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<Image> images = new ArrayList<Image>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray imageJSONArray = jsonObject.getJSONArray("images");
-						for(int i = 0; i < imageJSONArray.length(); i++){
-							JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
-							Image image = new Image();
-							image.setId(imageJSONObject.getLong("id"));
-							image.setName(imageJSONObject.getString("name"));
-							image.setDistribution(imageJSONObject.getString("distribution"));
-							if(imageJSONObject.getString("slug").equals("null"))
-								image.setSlug("");
-							else
-								image.setSlug(imageJSONObject.getString("slug"));
-							image.setPublic(imageJSONObject.getBoolean("public"));
-							images.add(image);
-						}
-						ImageService.this.deleteAll();
-						ImageService.this.saveAll(images);
-						ImageService.this.setRequiresRefresh(true);
+					JSONArray imageJSONArray = jsonObject.getJSONArray("images");
+					for(int i = 0; i < imageJSONArray.length(); i++){
+						JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
+						Image image = jsonObjectToImage(imageJSONObject);
+						images.add(image);
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
+					ImageService.this.deleteAll();
+					ImageService.this.saveAll(images);
+					ImageService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -120,6 +105,21 @@ public class ImageService {
 		});
 	}
 
+
+	public static Image jsonObjectToImage(JSONObject imageJSONObject)
+			throws JSONException {
+		Image image = new Image();
+		image.setId(imageJSONObject.getLong("id"));
+		image.setName(imageJSONObject.getString("name"));
+		image.setDistribution(imageJSONObject.getString("distribution"));
+		if(imageJSONObject.getString("slug").equals("null"))
+			image.setSlug("");
+		else
+			image.setSlug(imageJSONObject.getString("slug"));
+		image.setPublic(imageJSONObject.getBoolean("public"));
+		return image;
+	}
+	
 	protected void saveAll(List<Image> images) {
 		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
 		for (Image image : images) {

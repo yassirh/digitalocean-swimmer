@@ -37,7 +37,7 @@ public class SSHKeyCreateDialogFragment extends DialogFragment {
 		final EditText publicSSHKeyEditText = (EditText) view.findViewById(R.id.publicSSHKeyEditText);
 		if(sshKey != null){
 			nameEditText.setText(sshKey.getName());
-			publicSSHKeyEditText.setText(sshKey.getSshPubKey());
+			publicSSHKeyEditText.setText(sshKey.getPublicKey());
 		}
 		mBuilder.setView(view);
 		int positiveString = R.string.edit_ssh_key;
@@ -49,7 +49,7 @@ public class SSHKeyCreateDialogFragment extends DialogFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				SSHKey sshKey = new SSHKey();
 				sshKey.setName(nameEditText.getText().toString());
-				sshKey.setSshPubKey(publicSSHKeyEditText.getText().toString());
+				sshKey.setPublicKey(publicSSHKeyEditText.getText().toString());
 				if(mSSHKeyId == 0L){
 					sshKey.setId(0);
 					mSSHKeyService.save(sshKey,false,true);

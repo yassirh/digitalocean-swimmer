@@ -13,7 +13,7 @@ import com.yassirh.digitalocean.model.Region;
 
 public class CachedRegionsHelper {
 	
-	private static HashMap<Long,Region> sCachedRegions = new HashMap<Long, Region>();
+	private static HashMap<String,Region> sCachedRegions = new HashMap<String, Region>();
 	
 	public static Region getCachedImage(Context context, Long id){
 		if(sCachedRegions.size() == 0){
@@ -25,9 +25,8 @@ public class CachedRegionsHelper {
 	            while ((readLine = br.readLine()) != null) {
 	            	if(!readLine.startsWith("#")){
 	            		String[] regionLine = readLine.split("\\:");
-	            		Long regionId = Long.parseLong(regionLine[0]);
-	            		Region region = new Region(regionId, regionLine[1], regionLine[2]);
-	            		sCachedRegions.put(regionId, region);
+	            		Region region = new Region(regionLine[1], regionLine[2], false, "");
+	            		sCachedRegions.put(regionLine[2], region);
 	            	}
 	            }
 	        } catch (IOException e) {

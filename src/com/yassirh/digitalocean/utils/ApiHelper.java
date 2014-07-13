@@ -22,7 +22,7 @@ public class ApiHelper {
 	
 	public static final String API_STATUS_OK = "OK";
 	public static final String API_STATUS_ERROR = "ERROR";
-	
+	public static final String API_URL = "https://api.digitalocean.com/v2";
 	
 	public static Account getCurrentAccount(Context context){
 		Account currentAccount = null;

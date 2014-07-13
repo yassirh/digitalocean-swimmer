@@ -40,8 +40,9 @@ public class SSHKeyService {
 			return;
 		}
 		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = String.format("%s/account/keys/", ApiHelper.API_URL);//String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -87,24 +88,20 @@ public class SSHKeyService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<SSHKey> sshKeys = new ArrayList<SSHKey>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray sshKeysJSONArray = jsonObject.getJSONArray("ssh_keys");
-						for(int i = 0; i < sshKeysJSONArray.length(); i++){
-							JSONObject sshKeysJSONObject = sshKeysJSONArray.getJSONObject(i);
-							SSHKey sshKey = new SSHKey();
-							sshKey.setId(sshKeysJSONObject.getLong("id"));
-							sshKey.setName(sshKeysJSONObject.getString("name"));
-							sshKeys.add(sshKey);
-						}
-						SSHKeyService.this.deleteAll();
-						SSHKeyService.this.saveAll(sshKeys);
-						for (SSHKey sshKey : sshKeys) {
-							getSSHKeyByIdFromAPI(sshKey.getId(),false);
-						}
-						SSHKeyService.this.setRequiresRefresh(true);
+					JSONArray sshKeysJSONArray = jsonObject.getJSONArray("ssh_keys");
+					for(int i = 0; i < sshKeysJSONArray.length(); i++){
+						JSONObject sshKeysJSONObject = sshKeysJSONArray.getJSONObject(i);
+						SSHKey sshKey = new SSHKey();
+						sshKey.setId(sshKeysJSONObject.getLong("id"));
+						sshKey.setName(sshKeysJSONObject.getString("name"));
+						sshKey.setFingerprint(sshKeysJSONObject.getString("fingerprint"));
+						sshKey.setPublicKey(sshKeysJSONObject.getString("public_key"));
+						sshKeys.add(sshKey);
 					}
+					SSHKeyService.this.deleteAll();
+					SSHKeyService.this.saveAll(sshKeys);
+					SSHKeyService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}  
@@ -113,12 +110,12 @@ public class SSHKeyService {
 		});
 	}
 
-	private void getSSHKeyByIdFromAPI(long id, final boolean showProgress) {
+	/*private void getSSHKeyByIdFromAPI(long id, final boolean showProgress) {
 		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = "";//"https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
@@ -170,7 +167,7 @@ public class SSHKeyService {
 						SSHKey sshKey = new SSHKey();
 						sshKey.setId(sshKeysJSONObject.getLong("id"));
 						sshKey.setName(sshKeysJSONObject.getString("name"));
-						sshKey.setSshPubKey(sshKeysJSONObject.getString("ssh_pub_key"));
+						sshKey.setPublicKey(sshKeysJSONObject.getString("ssh_pub_key"));
 						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
 						sshKeyDao.create(sshKey);
 					}
@@ -180,7 +177,7 @@ public class SSHKeyService {
 		    }
 
 		});
-	}
+	}*/
 	
 	protected void saveAll(List<SSHKey> sshKeys) {
 		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
@@ -221,7 +218,7 @@ public class SSHKeyService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "https://api.digitalocean.com/ssh_keys/" + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = "";//"https://api.digitalocean.com/ssh_keys/" + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -292,17 +289,17 @@ public class SSHKeyService {
 		}
 		String url = "";
 		if(update){
-			url = "https://api.digitalocean.com/ssh_keys/" + sshKey.getId() + "/edit/" + 
+			/*url = "https://api.digitalocean.com/ssh_keys/" + sshKey.getId() + "/edit/" + 
 					"?client_id=" + currentAccount.getClientId() + 
 					"&api_key=" + currentAccount.getApiKey() +
 					"&ssh_pub_key=" + sshKey.getSshPubKey() +
-					"&name=" + sshKey.getName();
+					"&name=" + sshKey.getName();*/
 		} else{
-			url = "https://api.digitalocean.com/ssh_keys/new/" + 
+			/*url = "https://api.digitalocean.com/ssh_keys/new/" + 
 					"?client_id=" + currentAccount.getClientId() + 
 					"&api_key=" + currentAccount.getApiKey() +
 					"&ssh_pub_key=" + sshKey.getSshPubKey() +
-					"&name=" + sshKey.getName();
+					"&name=" + sshKey.getName();*/
 		}
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -362,7 +359,7 @@ public class SSHKeyService {
 						SSHKey sshKey = new SSHKey();
 						sshKey.setId(sshKeysJSONObject.getLong("id"));
 						sshKey.setName(sshKeysJSONObject.getString("name"));
-						sshKey.setSshPubKey(sshKeysJSONObject.getString("ssh_pub_key"));
+						sshKey.setPublicKey(sshKeysJSONObject.getString("ssh_pub_key"));
 						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
 						sshKeyDao.create(sshKey);
 				    	SSHKeyService.this.setRequiresRefresh(true);
