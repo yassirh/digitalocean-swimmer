@@ -114,6 +114,8 @@ public class ApiHelper {
 			return R.drawable.us_flag;
 		else if(region.contains("Singapore"))
 			return R.drawable.sg_flag;
+		else if(region.contains("London"))
+			return R.drawable.uk_flag;
 		else
 			return R.drawable.unknown;
 	}

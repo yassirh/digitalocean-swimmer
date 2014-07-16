@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yassirh.digitalocean"
-    android:versionCode="20"
-    android:versionName="1.4.3"
+    android:versionCode="21"
+    android:versionName="1.4.4"
     android:installLocation="auto" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 	

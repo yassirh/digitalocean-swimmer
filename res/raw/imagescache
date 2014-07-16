@@ -1,6 +1,5 @@
 303619:Debian 7.0 x32:debian-7-0-x32:Debian:
-1505447:Ubuntu 12.04.3 x64:Ubuntu-12.04.3-x64:Ubuntu: 
-#2014-04-17 12:00:02
+1505447:Ubuntu 12.04.3 x64:Ubuntu-12.04.3-x64:Ubuntu:
 1601:CentOS 5.8 x64:centos-5-8-x64:CentOS:
 1602:CentOS 5.8 x32:centos-5-8-x32:CentOS:
 12573:Debian 6.0 x64:debian-6-0-x64:Debian:
@@ -37,46 +36,37 @@
 3137635:Ruby on Rails on Ubuntu 12.10 (Nginx + Unicorn):rails-unicorn-nginx-ubuntu-12.10:Ubuntu:
 3137903:Redmine on Ubuntu 12.04:redmine-ubuntu-12.04:Ubuntu:
 3140202:Dokku-v0.2.1 on Ubuntu 13.04:dokku-ubuntu-13.04:Ubuntu:
-#2014-04-18 12:00:02
 3229615:Ubuntu 14.04 x32:ubuntu-14-04-x32:Ubuntu:
 3229624:Ubuntu 14.04 x64:ubuntu-14-04-x64:Ubuntu:
-#2014-04-19 12:00:02
 3240033:Ubuntu 14.04 x32:ubuntu-14-04-x32:Ubuntu:
 3240036:Ubuntu 14.04 x64:ubuntu-14-04-x64:Ubuntu:
 3240847:CentOS 6.5 x32:centos-6-5-x32:CentOS:
 3240850:CentOS 6.5 x64:centos-6-5-x64:CentOS:
 3243143:Fedora 20 x32:fedora-20-x32:Fedora:
 3243145:Fedora 20 x64:fedora-20-x64:Fedora:
-#2014-04-24 12:00:02
 3288841:Dokku v0.2.3 on Ubuntu 14.04:dokku-ubuntu-14.04:Ubuntu:
-#2014-05-03 12:00:07
 3445812:Debian 7.0 x64:debian-7-0-x64:Debian:
 3445920:Debian 7.0 x32:debian-7-0-x32:Debian:
 3447910:Ubuntu 12.10 x32:ubuntu-12-10-x32:Ubuntu:
 3447912:Ubuntu 12.10 x64:ubuntu-12-10-x64:Ubuntu:
 3448641:CentOS 6.5 x64:centos-6-5-x64:CentOS:
 3448674:CentOS 6.5 x32:centos-6-5-x32:CentOS:
-#2014-05-10 12:00:02
 3668014:Docker 0.11.1 on Ubuntu 13.10 x64::Ubuntu:
-#2014-05-21 12:00:03
 3935257:Django on Ubuntu 14.04::Ubuntu:
 3961756:LAMP on Ubuntu 14.04::Ubuntu:
-#2014-05-22 12:00:03
 3987532:node-v0.10.28 on Ubuntu 14.04::Ubuntu:
-#2014-05-28 12:00:02
 4031172:GitLab 6.9.0 CE::Ubuntu:
-#2014-05-29 12:00:03
 4131425:GitLab 6.9.1 CE::Ubuntu:
 4136458:Wordpress on Ubuntu 14.04::Ubuntu:
-#2014-05-31 12:00:06
 4143358:LEMP on Ubuntu 14.04::Ubuntu:
 4148217:GitLab 6.9.2 CE::Ubuntu:
-#2014-06-06 12:00:04
 4201396:Redmine on Ubuntu 14.04::Ubuntu:
-#2014-06-10 12:00:03
 4204318:MEAN on Ubuntu 14.04::Ubuntu:
-#2014-06-11 12:00:03
 4261622:Ruby on Rails on Ubuntu 14.04 (Nginx + Unicorn)::Ubuntu:
-#2014-06-14 12:00:03
 4295378:node-v0.10.29 on Ubuntu 14.04::Ubuntu:
 4296335:Docker 1.0 on Ubuntu 14.04::Ubuntu:
+4381169:Dokku v0.2.3 on Ubuntu 14.04 (w/ Docker 1.0):dokku:Ubuntu:
+4547332:LEMP on Ubuntu 14.04:lemp:Ubuntu:
+4582138:GitLab 7.0.0 CE:gitlab:Ubuntu:
+4856048:CentOS 7.0 x64:centos-7-0-x64:CentOS:
+4869208:Redmine on Ubuntu 14.04::Ubuntu:
