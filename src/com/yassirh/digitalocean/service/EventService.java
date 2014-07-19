@@ -30,7 +30,7 @@ public class EventService {
 		if(currentAccount == null){
 			return;
 		}
-		final String url ="https://api.digitalocean.com/events/" + eventId + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		final String url="";//final String url ="https://api.digitalocean.com/events/" + eventId + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		Thread t = new Thread(new Runnable() {
 			Event mEvent;
 			NotificationManager mNotifyManager;

@@ -19,8 +19,7 @@ public class AccountDao extends SqlDao<Account> {
 		Account account = new Account();
 		account.setId(c.getLong(c.getColumnIndex(AccountTable.ID)));
 		account.setName(c.getString(c.getColumnIndex(AccountTable.NAME)));
-		account.setClientId(c.getString(c.getColumnIndex(AccountTable.CLIENT_ID)));
-		account.setApiKey(c.getString(c.getColumnIndex(AccountTable.API_KEY)));
+		account.setToken(c.getString(c.getColumnIndex(AccountTable.TOKEN)));
 		account.setSelected(c.getInt(c.getColumnIndex(AccountTable.SELECTED)) == 1);
 		return account;
 	}
@@ -42,8 +41,7 @@ public class AccountDao extends SqlDao<Account> {
 		ContentValues values = new ContentValues();
 		values.put(AccountTable.ID, account.getId());
 		values.put(AccountTable.NAME, account.getName());
-		values.put(AccountTable.CLIENT_ID, account.getClientId());
-		values.put(AccountTable.API_KEY, account.getApiKey());
+		values.put(AccountTable.TOKEN, account.getToken());
 		values.put(AccountTable.SELECTED, account.isSelected() ? 1 : 0);
 		long id;
 		if(update){

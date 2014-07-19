@@ -256,7 +256,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put(DropletTable.SIZE_ID, sizeSpinner.getSelectedItemId()+"");
+					params.put(DropletTable.SIZE_SLUG, sizeSpinner.getSelectedItemId()+"");
 					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESIZE, params);
 				}
 			});
@@ -348,7 +348,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			break;
 		case R.id.action_ssh:
 			try {
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + mDroplet.getIpAddress() + "/#" + mDroplet.getName())));
+				//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + mDroplet.getIpAddress() + "/#" + mDroplet.getName())));
 			} catch (ActivityNotFoundException e) {
 				Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
 			}
@@ -378,10 +378,10 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			menu.removeItem(R.id.action_power_cycle);
 			menu.removeItem(R.id.action_ssh);
 		}		
-		if(mDroplet.isBackupsActive())
+		/*if(mDroplet.isBackupsActive())
 			menu.removeItem(R.id.action_enable_backups);
 		else
-			menu.removeItem(R.id.action_disable_backups);
+			menu.removeItem(R.id.action_disable_backups);*/
 	}
 
 	

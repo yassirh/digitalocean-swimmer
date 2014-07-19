@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -40,8 +39,9 @@ public class RegionService {
 			return;
 		}
 		mIsRefreshing = true;
-		String url = "https://api.digitalocean.com/regions/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = String.format("%s/regions/", ApiHelper.API_URL);//String url = "https://api.digitalocean.com/regions/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager mNotifyManager;
 			NotificationCompat.Builder mBuilder;
@@ -87,28 +87,16 @@ public class RegionService {
 		    public void onSuccess(String response) {
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
 					List<Region> regions = new ArrayList<Region>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
-						for(int i = 0; i < regionJSONArray.length(); i++){
-							JSONObject regionJSONObject = regionJSONArray.getJSONObject(i);
-							Region region = new Region();
-							region.setId(regionJSONObject.getLong("id"));
-							region.setName(regionJSONObject.getString("name"));
-							if(regionJSONObject.getString("slug").equals("null"))
-								region.setSlug("");
-							else
-								region.setSlug(regionJSONObject.getString("slug"));
-							regions.add(region);
-						}
-						RegionService.this.deleteAll();
-						RegionService.this.saveAll(regions);
-						RegionService.this.setRequiresRefresh(true);
+					JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
+					for(int i = 0; i < regionJSONArray.length(); i++){
+						JSONObject regionJSONObject = regionJSONArray.getJSONObject(i);
+						Region region = jsonObjectToRegion(regionJSONObject);
+						regions.add(region);
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
+					RegionService.this.deleteAll();
+					RegionService.this.saveAll(regions);
+					RegionService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -117,6 +105,22 @@ public class RegionService {
 		});
 	}
 
+
+
+	public static Region jsonObjectToRegion(JSONObject regionJSONObject)
+			throws JSONException {
+		Region region = new Region();
+		region.setName(regionJSONObject.getString("name"));
+		region.setSlug(regionJSONObject.getString("slug"));
+		region.setAvailable(regionJSONObject.getBoolean("available"));
+		String features = "";
+		for (int i = 0; i < regionJSONObject.getJSONArray("features").length(); i++) {
+			features += ";" + regionJSONObject.getJSONArray("features").getString(i);
+		}
+		region.setFeatures(features.replaceFirst(";", ""));
+		return region;
+	}
+	
 	public void deleteAll() {
 		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
 		regionDao.deleteAll();

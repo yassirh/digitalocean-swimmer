@@ -11,11 +11,11 @@ public class Image {
 	public Image(){
 	}
 	
-	public Image(long id, String name, String distribution, String slug, Boolean ispublic) {
-		super();
+	public Image(long id, String name, String distribution, String slug, Boolean isPublic) {
 		this.id = id;
 		this.name = name;
 		this.distribution = distribution;
+		this.isPublic = isPublic;
 	}
 	
 	public long getId() {

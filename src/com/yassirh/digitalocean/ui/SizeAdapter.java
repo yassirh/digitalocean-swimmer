@@ -35,7 +35,7 @@ public class SizeAdapter extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-    	return data.get(position).getId();
+    	return (long)position;
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,7 +49,7 @@ public class SizeAdapter extends BaseAdapter {
         TextView diskTextView = (TextView)vi.findViewById(R.id.diskTextView);
         TextView pricingTextView = (TextView)vi.findViewById(R.id.pricingTextView);
         
-        ramcpuTextView.setText(size.getName() + "/" + size.getCpu() + " CPU");
+        ramcpuTextView.setText(size.getSlug() + "/" + size.getCpu() + " CPU");
         diskTextView.setText(size.getDisk() +"GB SSD");
         Formatter formatter = new Formatter();
 

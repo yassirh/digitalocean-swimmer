@@ -43,8 +43,10 @@ public class SSHKeyAdapter extends BaseAdapter {
         final SSHKey sshKey = data.get(position);
         
         TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
-                
+        TextView fingerprintTextView = (TextView)vi.findViewById(R.id.fingerprintTextView);
+        
         nameTextView.setText(sshKey.getName());
+        fingerprintTextView.setText(sshKey.getFingerprint());
         
         return vi;
     }

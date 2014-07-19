@@ -49,7 +49,7 @@ public class RecordDao extends SqlDao<Record> {
 		ContentValues values = new ContentValues();
 		values.put(RecordTable.ID, record.getId());
 		values.put(RecordTable.NAME, record.getName());
-		values.put(RecordTable.DOMAIN_ID, record.getDomain().getId());
+		//values.put(RecordTable.DOMAIN_ID, record.getDomain().getId());
 		values.put(RecordTable.RECORD_TYPE, record.getRecordType());
 		values.put(RecordTable.DATA, record.getData());
 		values.put(RecordTable.PORT, record.getPort());

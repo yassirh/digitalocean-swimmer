@@ -1,36 +1,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    <PreferenceCategory
-            android:title="@string/api_settings_title">
-            
+
+    <PreferenceCategory android:title="@string/api_settings_title" >
         <EditTextPreference
-			android:key="account_name_preference"
-			android:title="@string/account_name_label"
-			android:summary="@string/summary_account_name"
-			/>
-        
-		<EditTextPreference
-			android:key="client_id_preference"
-			android:title="@string/client_id_label"
-			android:summary="@string/summary_client_id"
-			/>
- 
-		<EditTextPreference
-			android:key="api_key_preference"
-			android:title="@string/api_key_label"
-			android:summary="@string/summary_api_key" 
-			android:inputType="textPassword"
-			/>
-        
+            android:key="account_name_preference"
+            android:summary="@string/summary_account_name"
+            android:title="@string/account_name_label" />
+        <EditTextPreference
+            android:key="token_preference"
+            android:summary="@string/summary_token"
+            android:title="@string/token_label" />
     </PreferenceCategory>
-	<PreferenceCategory 
-	    android:title="@string/preferences_title">
-		<ListPreference
-            android:key="pref_sync_frequency"
+    <PreferenceCategory android:title="@string/preferences_title" >
+        <ListPreference
             android:entries="@array/pref_sync_frequency_entries"
-            android:summary="@string/summary_sync_frequency"
             android:entryValues="@array/pref_sync_frequency_values"
+            android:key="pref_sync_frequency"
+            android:summary="@string/summary_sync_frequency"
             android:title="@string/pref_sync_frequency_key_label" />
-	</PreferenceCategory>
-	
-</PreferenceScreen>  
+    </PreferenceCategory>
+
+</PreferenceScreen>

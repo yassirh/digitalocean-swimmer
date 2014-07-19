@@ -4,55 +4,34 @@ import java.util.List;
 
 public class Domain {
 	
-	private long mId;
-	private String mName;
-	private int mTtl;
-	private String mLiveZoneFile;
-	private String mError;
-	private String mZoneFileWithError;
-	private List<Record> mRecords;
-	
-	public long getId() {
-		return mId;
-	}
-	public void setId(long id) {
-		this.mId = id;
-	}
+	private String name;
+	private int ttl;
+	private String zoneFile;
+	private List<Record> records;
+
 	public String getName() {
-		return mName;
+		return name;
 	}
 	public void setName(String name) {
-		this.mName = name;
+		this.name = name;
 	}
 	public int getTtl() {
-		return mTtl;
+		return ttl;
 	}
 	public void setTtl(int ttl) {
-		this.mTtl = ttl;
+		this.ttl = ttl;
 	}
 	public String getLiveZoneFile() {
-		return mLiveZoneFile;
+		return zoneFile;
 	}
 	public void setLiveZoneFile(String liveZoneFile) {
-		this.mLiveZoneFile = liveZoneFile;
-	}
-	public String getError() {
-		return mError;
-	}
-	public void setError(String error) {
-		this.mError = error;
-	}
-	public String getZoneFileWithError() {
-		return mZoneFileWithError;
-	}
-	public void setZoneFileWithError(String zoneFileWithError) {
-		this.mZoneFileWithError = zoneFileWithError;
+		this.zoneFile = liveZoneFile;
 	}
 	public List<Record> getRecords() {
-		return mRecords;
+		return records;
 	}
 	public void setRecords(List<Record> records) {
-		this.mRecords = records;
+		this.records = records;
 	}
 	
 	@Override
@@ -63,7 +42,7 @@ public class Domain {
 	        return false;
 	    if (o instanceof Domain){
 	        Domain other = (Domain)o;
-	        return other.getId() == mId;	        		
+	        return other.getName().equals(this.name);	        		
 	    }
 	    else
 	        return false;

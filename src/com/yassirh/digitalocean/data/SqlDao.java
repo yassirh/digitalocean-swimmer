@@ -51,4 +51,14 @@ public abstract class SqlDao<T> {
 		cursor.close();
 		return t;
 	}
+	
+	public T findByProperty(String property, String value) {
+		T t = null;
+		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
+				getTableHelper().getAllColumns(), String.format("%s = '%s'", property, value), null, null, null, null);
+		if(cursor.moveToNext())		
+			t = newInstance(cursor);
+		cursor.close();
+		return t;
+	}
 }

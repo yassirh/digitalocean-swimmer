@@ -3,20 +3,17 @@ package com.yassirh.digitalocean.model;
 public class Account {
 
 	private Long id;
-	private String name; 
-	private String clientId;
-	private String apiKey;
+	private String name;
+	private String token;
 	private boolean selected;
 	
 	public Account() {
 	}
 	
-	public Account(Long id, String name, String clientId, String apiKey,
+	public Account(Long id, String name, String token,
 			boolean selected) {
 		this.id = id;
 		this.name = name;
-		this.clientId = clientId;
-		this.apiKey = apiKey;
 		this.selected = selected;
 	}
 	
@@ -32,22 +29,16 @@ public class Account {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getClientId() {
-		return clientId;
-	}
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-	public String getApiKey() {
-		return apiKey;
-	}
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
-	}
 	public boolean isSelected() {
 		return selected;
 	}
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

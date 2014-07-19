@@ -19,7 +19,8 @@ public class SSHKeyDao extends SqlDao<SSHKey> {
 		ContentValues values = new ContentValues();
 		values.put(SSHKeyTable.ID, sshKey.getId());
 		values.put(SSHKeyTable.NAME, sshKey.getName());
-		values.put(SSHKeyTable.SSH_PUB_KEY, sshKey.getSshPubKey());
+		values.put(SSHKeyTable.PUBLIC_KEY, sshKey.getPublicKey());
+		values.put(SSHKeyTable.FINGERPRINT, sshKey.getFingerprint());
 		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 		return id;
 	}	
@@ -28,7 +29,8 @@ public class SSHKeyDao extends SqlDao<SSHKey> {
 		SSHKey sshKey = new SSHKey();
 		sshKey.setId(c.getLong(c.getColumnIndex(SSHKeyTable.ID)));
 		sshKey.setName(c.getString(c.getColumnIndex(SSHKeyTable.NAME)));
-		sshKey.setSshPubKey(c.getString(c.getColumnIndex(SSHKeyTable.SSH_PUB_KEY)));
+		sshKey.setPublicKey(c.getString(c.getColumnIndex(SSHKeyTable.PUBLIC_KEY)));
+		sshKey.setFingerprint(c.getString(c.getColumnIndex(SSHKeyTable.FINGERPRINT)));
 		return sshKey;
 	}
 

@@ -54,7 +54,7 @@ public class DropletAdapter extends BaseAdapter {
         ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
         ImageView flagImageView = (ImageView)vi.findViewById(R.id.flagImageView);
         if(region != null){
-        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
+        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName(), true));
         }
         else{
         	flagImageView.setVisibility(View.GONE);
@@ -65,7 +65,7 @@ public class DropletAdapter extends BaseAdapter {
         }
         
         nameTextView.setText(droplet.getName());
-        ipAddressTextView.setText(droplet.getIpAddress());
+        //ipAddressTextView.setText(droplet.getIpAddress());
         statusTextView.setText(droplet.getStatus());
         
         return vi;

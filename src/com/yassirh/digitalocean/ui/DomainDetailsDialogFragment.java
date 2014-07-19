@@ -89,7 +89,8 @@ public class DomainDetailsDialogFragment extends DialogFragment {
 				recordCreateDialogFragment.show(fm, "create_record");
 				return true;
 			case R.id.action_destroy:
-				mRecordService.deleteDomainRecord(mRecord.getDomain().getId(), mRecord.getId(), true);
+				// FIXME
+				//mRecordService.deleteDomainRecord(mRecord.getDomain().getId(), mRecord.getId(), true);
 				this.dismiss();
 				return true;				
 		}

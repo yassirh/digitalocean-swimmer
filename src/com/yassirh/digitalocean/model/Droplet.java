@@ -9,9 +9,6 @@ public class Droplet {
 	private Image image;
 	private Size size;
 	private Region region;
-	private boolean backupsActive;
-	private String ipAddress;
-	private String privateIpAddress;
 	private boolean locked;
 	private String status;
 	private Date createdAt;
@@ -45,24 +42,6 @@ public class Droplet {
 	}
 	public void setRegion(Region region) {
 		this.region = region;
-	}
-	public boolean isBackupsActive() {
-		return backupsActive;
-	}
-	public void setBackupsActive(boolean backupActive) {
-		this.backupsActive = backupActive;
-	}
-	public String getIpAddress() {
-		return ipAddress;
-	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-	public String getPrivateIpAddress() {
-		return privateIpAddress;
-	}
-	public void setPrivateIpAddress(String privateIpAddress) {
-		this.privateIpAddress = privateIpAddress;
 	}
 	public boolean isLocked() {
 		return locked;
