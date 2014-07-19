@@ -100,17 +100,17 @@ public class ApiHelper {
 		return R.drawable.unknown;
 	}
 	
-	public static int getLocationFlag(String region){
+	public static int getLocationFlag(String region, boolean isAvailable){
 		if(region.contains("Amsterdam"))
-			return R.drawable.nl_flag;
+			return isAvailable ? R.drawable.nl_flag : R.drawable.nl_flag_unavailable;
 		else if(region.contains("New York") || region.contains("San Francisco"))
-			return R.drawable.us_flag;
+			return isAvailable ? R.drawable.us_flag : R.drawable.us_flag_unavailable;
 		else if(region.contains("Singapore"))
-			return R.drawable.sg_flag;
+			return isAvailable ? R.drawable.sg_flag : R.drawable.sg_flag_unavailable;
         else if(region.contains("London"))
-            return R.drawable.uk_flag;
+        	return isAvailable ? R.drawable.uk_flag : R.drawable.uk_flag_unavailable;
 		else
-			return R.drawable.unknown;
+			return isAvailable ? R.drawable.unknown : R.drawable.unknown_unavailable;
 	}
 	
 	public static int getRecordLabel(String recordType){

@@ -46,13 +46,13 @@ public class RegionAdapter extends BaseAdapter {
         final Region region = data.get(position);
         
         TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
-        TextView slugTextView = (TextView)vi.findViewById(R.id.slugTextView);
+        TextView featuresTextView = (TextView)vi.findViewById(R.id.featuresTextView);
         ImageView flagImageView = (ImageView)vi.findViewById(R.id.flagImageView);
         
-        flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
+        flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName(), region.isAvailable()));
         
         nameTextView.setText(region.getName());    
-    	slugTextView.setText(region.getSlug());        
+    	featuresTextView.setText(region.getFeatures().replace(";", ", "));        
         
         return vi;
     }

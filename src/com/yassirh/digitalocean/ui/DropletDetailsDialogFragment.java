@@ -56,7 +56,7 @@ public class DropletDetailsDialogFragment extends DialogFragment {
 
         nameTextView.setText(droplet.getName());
         if(region != null){
-        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName()));
+        	flagImageView.setImageResource(ApiHelper.getLocationFlag(region.getName(), true));
         	regionTextView.setText(region.getName());
         }
         else{

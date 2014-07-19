@@ -1115,18 +1115,23 @@ containing a value of this type.
         public static final int keys=0x7f02006c;
         public static final int mx=0x7f02006d;
         public static final int nl_flag=0x7f02006e;
-        public static final int ns=0x7f02006f;
-        public static final int regions=0x7f020070;
-        public static final int settings=0x7f020071;
-        public static final int sg_flag=0x7f020072;
-        public static final int sizes=0x7f020073;
-        public static final int srv=0x7f020074;
-        public static final int txt=0x7f020075;
-        public static final int ubuntu=0x7f020076;
-        public static final int ubuntu_active=0x7f020077;
-        public static final int uk_flag=0x7f020078;
-        public static final int unknown=0x7f020079;
-        public static final int us_flag=0x7f02007a;
+        public static final int nl_flag_unavailable=0x7f02006f;
+        public static final int ns=0x7f020070;
+        public static final int regions=0x7f020071;
+        public static final int settings=0x7f020072;
+        public static final int sg_flag=0x7f020073;
+        public static final int sg_flag_unavailable=0x7f020074;
+        public static final int sizes=0x7f020075;
+        public static final int srv=0x7f020076;
+        public static final int txt=0x7f020077;
+        public static final int ubuntu=0x7f020078;
+        public static final int ubuntu_active=0x7f020079;
+        public static final int uk_flag=0x7f02007a;
+        public static final int uk_flag_unavailable=0x7f02007b;
+        public static final int unknown=0x7f02007c;
+        public static final int unknown_unavailable=0x7f02007d;
+        public static final int us_flag=0x7f02007e;
+        public static final int us_flag_unavailable=0x7f02007f;
     }
     public static final class id {
         public static final int aHostnameEditText=0x7f070074;
@@ -1208,6 +1213,7 @@ containing a value of this type.
         public static final int end=0x7f070013;
         public static final int expand_activities_button=0x7f070026;
         public static final int expanded_menu=0x7f07002c;
+        public static final int featuresTextView=0x7f0700a4;
         public static final int fingerprintTextView=0x7f0700a7;
         public static final int flagImageView=0x7f07005a;
         public static final int home=0x7f070014;
@@ -1271,7 +1277,6 @@ containing a value of this type.
         public static final int showTitle=0x7f070006;
         public static final int sizeSpinner=0x7f07004e;
         public static final int skip_button=0x7f07009d;
-        public static final int slugTextView=0x7f0700a4;
         public static final int split_action_bar=0x7f07001e;
         public static final int srvHostnameEditText=0x7f07008d;
         public static final int srvLinearLayout=0x7f070089;
