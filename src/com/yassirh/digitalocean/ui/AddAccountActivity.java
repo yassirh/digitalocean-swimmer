@@ -24,11 +24,11 @@ public class AddAccountActivity extends Activity {
 		setContentView(R.layout.activity_add_account);
 		accountNameEditText = (EditText)findViewById(R.id.accountNameEditText);
 		tokenEditText = (EditText)findViewById(R.id.tokenEditText);
-		accountNameEditText.setText("Default");
 		
 		Uri uri = getIntent().getData();
 		if(uri != null && uri.toString().startsWith("callback://com.yassirh.digitalocean")){
 			tokenEditText.setText(uri.getQueryParameter("code"));
+			accountNameEditText.setText(uri.getQueryParameter("account_name"));
 		}
 	}
 	
@@ -39,6 +39,7 @@ public class AddAccountActivity extends Activity {
 		Uri uri = intent.getData();
 		if(uri != null && uri.toString().startsWith("callback://com.yassirh.digitalocean")){
 			tokenEditText.setText(uri.getQueryParameter("code"));
+			accountNameEditText.setText(uri.getQueryParameter("account_name"));
 		}
 	}
 	

@@ -55,8 +55,8 @@ public class SwitchAccountDialogFragment extends DialogFragment implements OnIte
 		}else if(id == ADD_EXISTING_ACCOUNT_ID){
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cloud.digitalocean.com/v1/oauth/authorize?" +
 					"client_id=76d93180752d757185733a318cec4af9c2f4c681ac6264924294facab3ea54ff&" +
-					"redirect_uri=callback://com.yassirh.digitalocean" +
-					"&response_type=code"));
+					"redirect_uri=https://yassirh.com/digitalocean_swimmer/genrate_token.php" +
+					"&response_type=code&scope=read write"));
 			startActivity(intent);
 			/*FragmentManager fm = getActivity().getSupportFragmentManager();
 			AccountCreateDialogFragment accountCreateDialogFragment = new AccountCreateDialogFragment();
