@@ -75,9 +75,9 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         createdAtTextView.setText(DateFormat.format("yyyy-MM-dd hh:mm", droplet.getCreatedAt()));
         statusTextView.setText(droplet.getStatus());
         if(size != null){
-	        memoryTextView.setText(size.getMemory()  +"MB");
-	        diskTextView.setText(size.getDisk() +"GB");
-	        cpusTextView.setText(size.getCpu() + "");
+	        memoryTextView.setText(droplet.getMemory()  +"MB");
+	        diskTextView.setText(droplet.getDisk() +"GB");
+	        cpusTextView.setText(droplet.getCpu() + "");
         }
 		return view;
 	}

@@ -109,9 +109,15 @@ public class SizeService {
 			throws JSONException {
 		Size size = new Size();
 		size.setSlug(sizeJSONObject.getString("slug"));
-		size.setMemory(sizeJSONObject.getInt("memory"));
-		size.setCpu(sizeJSONObject.getInt("vcpus"));
-		size.setDisk(sizeJSONObject.getInt("disk"));
+		if(sizeJSONObject.has("memory")){
+			size.setMemory(sizeJSONObject.getInt("memory"));
+		}
+		if(sizeJSONObject.has("vcpus")){
+			size.setCpu(sizeJSONObject.getInt("vcpus"));
+		}
+		if(sizeJSONObject.has("disk")){
+			size.setDisk(sizeJSONObject.getInt("disk"));
+		}
 		size.setTransfer(sizeJSONObject.getInt("transfer"));
 		size.setCostPerHour(sizeJSONObject.getDouble("price_hourly"));
 		size.setCostPerMonth(sizeJSONObject.getDouble("price_monthly"));

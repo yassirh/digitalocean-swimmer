@@ -292,6 +292,7 @@ public class DropletService {
 		Size size = SizeService.jsonObjectToSize(dropletJSONObject.getJSONObject("size"));
 		droplet.setId(dropletJSONObject.getLong("id"));
 		droplet.setName(dropletJSONObject.getString("name"));
+		droplet.setMemory(dropletJSONObject.getInt("memory"));
 		droplet.setImage(image);
 		droplet.setRegion(region);
 		droplet.setSize(size);

@@ -6,6 +6,9 @@ public class Droplet {
 	
 	private long id;
 	private String name;
+	private int memory;
+	private int cpu;
+	private int disk;
 	private Image image;
 	private Size size;
 	private Region region;
@@ -24,6 +27,24 @@ public class Droplet {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getMemory() {
+		return memory;
+	}
+	public void setMemory(int memory) {
+		this.memory = memory;
+	}
+	public int getCpu() {
+		return cpu;
+	}
+	public void setCpu(int cpu) {
+		this.cpu = cpu;
+	}
+	public int getDisk() {
+		return disk;
+	}
+	public void setDisk(int disk) {
+		this.disk = disk;
 	}
 	public Image getImage() {
 		return image;

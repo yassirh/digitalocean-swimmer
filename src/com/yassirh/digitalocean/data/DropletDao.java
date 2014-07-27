@@ -29,6 +29,9 @@ public class DropletDao extends SqlDao<Droplet> {
 		ContentValues values = new ContentValues();
 		values.put(DropletTable.ID, droplet.getId());
 		values.put(DropletTable.NAME, droplet.getName());
+		values.put(DropletTable.MEMORY, droplet.getMemory());
+		values.put(DropletTable.CPU, droplet.getCpu());
+		values.put(DropletTable.DISK, droplet.getDisk());
 		values.put(DropletTable.IMAGE_ID, droplet.getImage().getId());
 		values.put(DropletTable.REGION_SLUG, droplet.getRegion().getSlug());
 		values.put(DropletTable.SIZE_SLUG, droplet.getSize().getSlug());
@@ -60,6 +63,9 @@ public class DropletDao extends SqlDao<Droplet> {
 		Droplet droplet = new Droplet();
 		droplet.setId(c.getLong(c.getColumnIndex(DropletTable.ID)));
 		droplet.setName(c.getString(c.getColumnIndex(DropletTable.NAME)));
+		droplet.setMemory(c.getInt(c.getColumnIndex(DropletTable.MEMORY)));
+		droplet.setCpu(c.getInt(c.getColumnIndex(DropletTable.CPU)));
+		droplet.setDisk(c.getInt(c.getColumnIndex(DropletTable.DISK)));
 		droplet.setImage(image);
 		droplet.setRegion(region);
 		droplet.setSize(size);
