@@ -1,5 +1,7 @@
 package com.yassirh.digitalocean.data;
 
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +22,8 @@ public class AccountDao extends SqlDao<Account> {
 		account.setId(c.getLong(c.getColumnIndex(AccountTable.ID)));
 		account.setName(c.getString(c.getColumnIndex(AccountTable.NAME)));
 		account.setToken(c.getString(c.getColumnIndex(AccountTable.TOKEN)));
+		account.setRefreshToken(c.getString(c.getColumnIndex(AccountTable.REFRESH_TOKEN)));
+		account.setExpiresIn(new Date(c.getLong(c.getColumnIndex(AccountTable.EXPIRES_IN))));
 		account.setSelected(c.getInt(c.getColumnIndex(AccountTable.SELECTED)) == 1);
 		return account;
 	}
@@ -42,11 +46,13 @@ public class AccountDao extends SqlDao<Account> {
 		values.put(AccountTable.ID, account.getId());
 		values.put(AccountTable.NAME, account.getName());
 		values.put(AccountTable.TOKEN, account.getToken());
+		values.put(AccountTable.REFRESH_TOKEN, account.getRefreshToken());
+		values.put(AccountTable.EXPIRES_IN, account.getExpiresIn().getTime());
 		values.put(AccountTable.SELECTED, account.isSelected() ? 1 : 0);
 		long id;
 		if(update){
 			id = account.getId();
-			db.updateWithOnConflict(getTableHelper().TABLE_NAME,values,DropletTable.ID +"= ?",new String[]{id+""},SQLiteDatabase.CONFLICT_REPLACE);
+			db.updateWithOnConflict(getTableHelper().TABLE_NAME,values,AccountTable.ID +"= ?",new String[]{id+""},SQLiteDatabase.CONFLICT_REPLACE);
 		}else{
 			id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 		}

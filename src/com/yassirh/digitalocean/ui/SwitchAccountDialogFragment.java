@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,8 @@ public class SwitchAccountDialogFragment extends DialogFragment implements OnIte
 		View view = inflater.inflate(R.layout.dialog_switch_account, container);
 		accounts = new ArrayList<Account>();
 		getDialog().setTitle(getString(R.string.switch_account));
-		accounts.add(new Account(ADD_EXISTING_ACCOUNT_ID,getString(R.string.add_existing_account),"",false));
-		accounts.add(new Account(CREATE_NEW_ACCOUNT_ID,getString(R.string.create_new_account),"",false));
+		accounts.add(new Account(ADD_EXISTING_ACCOUNT_ID,getString(R.string.add_existing_account),"","",null,false));
+		accounts.add(new Account(CREATE_NEW_ACCOUNT_ID,getString(R.string.create_new_account),"","",null,false));
 		accounts.addAll(ApiHelper.getAllAccounts(getActivity()));
 
         AccountAdapter accountAdapter = new AccountAdapter(getActivity(), accounts);

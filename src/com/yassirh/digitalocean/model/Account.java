@@ -1,19 +1,25 @@
 package com.yassirh.digitalocean.model;
 
+import java.util.Date;
+
 public class Account {
 
 	private Long id;
 	private String name;
 	private String token;
+	private String refreshToken;
+	private Date expiresIn;
 	private boolean selected;
 	
 	public Account() {
 	}
 	
-	public Account(Long id, String name, String token,
-			boolean selected) {
+	public Account(Long id, String name, String token, String refreshToken,
+			Date expiresIn, boolean selected) {
 		this.id = id;
 		this.name = name;
+		this.token = token;
+		this.expiresIn = expiresIn;
 		this.selected = selected;
 	}
 	
@@ -40,5 +46,17 @@ public class Account {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+	public Date getExpiresIn() {
+		return expiresIn;
+	}
+	public void setExpiresIn(Date expiresIn) {
+		this.expiresIn = expiresIn;
 	}
 }

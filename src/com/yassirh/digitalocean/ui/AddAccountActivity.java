@@ -1,5 +1,7 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +19,8 @@ public class AddAccountActivity extends Activity {
 
 	EditText accountNameEditText;
 	EditText tokenEditText;
+	Calendar expiresIn = Calendar.getInstance();
+	String refreshToken = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +28,15 @@ public class AddAccountActivity extends Activity {
 		setContentView(R.layout.activity_add_account);
 		accountNameEditText = (EditText)findViewById(R.id.accountNameEditText);
 		tokenEditText = (EditText)findViewById(R.id.tokenEditText);
-		
-		Uri uri = getIntent().getData();
-		if(uri != null && uri.toString().startsWith("callback://com.yassirh.digitalocean")){
-			tokenEditText.setText(uri.getQueryParameter("code"));
-			accountNameEditText.setText(uri.getQueryParameter("account_name"));
+		try {
+			Uri uri = getIntent().getData();
+			if(uri != null && uri.toString().startsWith("callback://com.yassirh.digitalocean")){
+				tokenEditText.setText(uri.getQueryParameter("code"));
+				accountNameEditText.setText(uri.getQueryParameter("account_name"));
+				refreshToken = uri.getQueryParameter("refresh_token");
+				expiresIn.add(Calendar.SECOND, Integer.parseInt(uri.getQueryParameter("expires_in")));
+			}
+		} catch (Exception e) {
 		}
 	}
 	
@@ -61,6 +69,8 @@ public class AddAccountActivity extends Activity {
     		Account account = new Account();
 			account.setName(accountNameEditText.getText().toString());
 			account.setToken(tokenEditText.getText().toString());
+			account.setExpiresIn(expiresIn.getTime());
+			account.setRefreshToken(refreshToken);
 			account.setSelected(true);
 			ApiHelper.selectAccount(this,account);
 			startActivity(new Intent(this, MainActivity.class));
