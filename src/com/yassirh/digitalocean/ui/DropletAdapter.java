@@ -65,7 +65,9 @@ public class DropletAdapter extends BaseAdapter {
         }
         
         nameTextView.setText(droplet.getName());
-        //ipAddressTextView.setText(droplet.getIpAddress());
+        if(droplet.getNetworks().size() > 0){
+        	ipAddressTextView.setText(droplet.getNetworks().get(0).getIpAddress());
+        }
         statusTextView.setText(droplet.getStatus());
         
         return vi;

@@ -68,8 +68,9 @@ public class DropletDetailsDialogFragment extends DialogFragment {
 	    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), droplet.getStatus()));
     		imageTextView.setText(image.getName());
     	}
-    	
-        //ipAddressTextView.setText(droplet.getIpAddress());
+    	if(droplet.getNetworks().size() > 0){
+    		ipAddressTextView.setText(droplet.getNetworks().get(0).getIpAddress());
+    	}
         //backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         lockedTextView.setText(droplet.isLocked() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         createdAtTextView.setText(DateFormat.format("yyyy-MM-dd hh:mm", droplet.getCreatedAt()));

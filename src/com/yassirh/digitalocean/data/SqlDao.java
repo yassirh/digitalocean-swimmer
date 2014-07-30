@@ -33,6 +33,22 @@ public abstract class SqlDao<T> {
 		return collection;
 	}
 	
+	public List<T> getAllByProperty(String property, String value) {
+		List<T> collection = new ArrayList<T>();
+		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
+				getTableHelper().getAllColumns(), String.format("%s = '%s'", property, value), null, null, null, null);
+		
+		if(cursor.moveToFirst()){
+			while (!cursor.isAfterLast()) {
+				T object = newInstance(cursor);
+				collection.add(object);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		return collection;
+	}
+	
 
 	public void deleteAll() {
 		db.delete(getTableHelper().TABLE_NAME,null,null);

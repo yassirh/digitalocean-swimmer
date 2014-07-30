@@ -17,13 +17,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper recordTable = new RecordTable();
 	private TableHelper sshKeyTable = new SSHKeyTable();
 	private TableHelper accountTable = new AccountTable();
+	private TableHelper networkTable = new NetworkTable();
+	
 	static DatabaseHelper sDatabaseHelper;
 	static SQLiteDatabase sSQLiteDatabase;
-	private Context mContext;
+	private Context context;
 	
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		mContext = context;
+		this.context = context;
 	}
 	
 	
@@ -58,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(recordTable.getCreateSql());
 		db.execSQL(sshKeyTable.getCreateSql());
 		db.execSQL(accountTable.getCreateSql());
+		db.execSQL(networkTable.getCreateSql());
 	}
 
 	@Override
@@ -70,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(recordTable.getDropSql());
 		db.execSQL(sshKeyTable.getDropSql());
 		db.execSQL(accountTable.getDropSql());
+		db.execSQL(networkTable.getDropSql());
 		
 		db.execSQL(imageTable.getCreateSql());
 		db.execSQL(regionTable.getCreateSql());
@@ -79,11 +83,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(recordTable.getCreateSql());
 		db.execSQL(sshKeyTable.getCreateSql());
 		db.execSQL(accountTable.getCreateSql());
+		db.execSQL(networkTable.getCreateSql());
 	}
 
 
 	public Context getContext() {
-		return mContext;
+		return context;
 	}
 
 }

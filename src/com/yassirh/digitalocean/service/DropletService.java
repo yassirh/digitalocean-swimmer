@@ -20,14 +20,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.NetworkDao;
+import com.yassirh.digitalocean.data.NetworkTable;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -283,8 +288,25 @@ public class DropletService {
 	public void deleteAll() {
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
 		dropletDao.deleteAll();
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
+		networkDao.deleteAll();
 	}
 
+	
+	public static Network jsonObjectToNetwork(JSONObject networkJSONObject) throws JSONException {
+		Network network = new Network();
+		if(!networkJSONObject.isNull("cidr")){
+			network.setCidr(networkJSONObject.getString("cidr"));
+		}
+		if(!networkJSONObject.isNull("netmask")){
+			network.setNetmask(networkJSONObject.getString("netmask"));
+		}
+		network.setGateway(networkJSONObject.getString("gateway"));
+		network.setIpAddress(networkJSONObject.getString("ip_address"));
+		network.setType(networkJSONObject.getString("type"));
+		return network;
+	}
+	
 	public static Droplet jsonObjectToDroplet(JSONObject dropletJSONObject) throws JSONException {
 		Droplet droplet = new Droplet();
 		Image image = ImageService.jsonObjectToImage(dropletJSONObject.getJSONObject("image"));
@@ -293,11 +315,34 @@ public class DropletService {
 		droplet.setId(dropletJSONObject.getLong("id"));
 		droplet.setName(dropletJSONObject.getString("name"));
 		droplet.setMemory(dropletJSONObject.getInt("memory"));
+		droplet.setCpu(dropletJSONObject.getInt("vcpus"));
+		droplet.setDisk(dropletJSONObject.getInt("disk"));
 		droplet.setImage(image);
 		droplet.setRegion(region);
 		droplet.setSize(size);
 		droplet.setLocked(dropletJSONObject.getBoolean("locked"));
 		droplet.setStatus(dropletJSONObject.getString("status"));
+		
+		List<Network> networks = new ArrayList<Network>();
+		JSONObject networksJSONObject = dropletJSONObject.getJSONObject("networks");
+		
+		JSONArray v4JSONArray = networksJSONObject.getJSONArray("v4");
+		JSONArray v6JSONArray = networksJSONObject.getJSONArray("v6");
+		
+		for (int i = 0; i < v4JSONArray.length(); i++) {
+			JSONObject networkJSONObject = v4JSONArray.getJSONObject(i);
+			Network network = jsonObjectToNetwork(networkJSONObject);
+			networks.add(network);
+		}
+		
+		for (int i = 0; i < v6JSONArray.length(); i++) {
+			JSONObject networkJSONObject = v6JSONArray.getJSONObject(i);
+			Network network = jsonObjectToNetwork(networkJSONObject);
+			networks.add(network);
+		}
+		
+		droplet.setNetworks(networks);
+		
 		try {
 			droplet.setCreatedAt(iso8601Format.parse(dropletJSONObject.getString("created_at").replace("Z", "")));
 		} catch (ParseException e) {
@@ -307,22 +352,36 @@ public class DropletService {
 	}
 
 	protected void saveAll(List<Droplet> droplets) {
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		networkDao.deleteAll();
 		for (Droplet droplet : droplets) {
-			dropletDao.createOrUpdate(droplet);
+			long id = dropletDao.createOrUpdate(droplet);
+			droplet.setId(id);
+			for (Network network : droplet.getNetworks()) {
+				network.setDroplet(droplet);
+				networkDao.createOrUpdate(network);
+			}
 		}
 		DropletService.this.setRequiresRefresh(true);
 	}
 	
 	public List<Droplet> getAllDroplets(){
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
 		List<Droplet> droplets = dropletDao.getAll(null);
+		for (Droplet droplet : droplets) {
+			droplet.setNetworks(networkDao.findByDropletId(droplet.getId()));
+		}
 		return droplets;
 	}
 
 	public Droplet findById(long id) {
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
 		Droplet droplet = dropletDao.findById(id);
+		List<Network> networks = networkDao.findByDropletId(id);
+		droplet.setNetworks(networks);
 		return droplet;
 	}
 

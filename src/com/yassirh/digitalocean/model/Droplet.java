@@ -1,6 +1,7 @@
 package com.yassirh.digitalocean.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Droplet {
 	
@@ -15,6 +16,7 @@ public class Droplet {
 	private boolean locked;
 	private String status;
 	private Date createdAt;
+	private List<Network> networks;
 	
 	public long getId() {
 		return id;
@@ -81,5 +83,11 @@ public class Droplet {
 	}
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+	public List<Network> getNetworks() {
+		return networks;
+	}
+	public void setNetworks(List<Network> networks) {
+		this.networks = networks;
 	}
 }
