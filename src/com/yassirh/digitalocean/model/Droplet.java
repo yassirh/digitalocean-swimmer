@@ -14,6 +14,10 @@ public class Droplet {
 	private Size size;
 	private Region region;
 	private boolean locked;
+	private boolean virtIoEnabled;
+	private boolean privateNetworkingEnabled;
+	private boolean backupsEnabled;
+	private boolean ipv6Enabled;
 	private String status;
 	private Date createdAt;
 	private List<Network> networks;
@@ -71,6 +75,30 @@ public class Droplet {
 	}
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+	public boolean isVirtIoEnabled() {
+		return virtIoEnabled;
+	}
+	public void setVirtIoEnabled(boolean virtIoEnabled) {
+		this.virtIoEnabled = virtIoEnabled;
+	}
+	public boolean isPrivateNetworkingEnabled() {
+		return privateNetworkingEnabled;
+	}
+	public void setPrivateNetworkingEnabled(boolean privateNetworkingEnabled) {
+		this.privateNetworkingEnabled = privateNetworkingEnabled;
+	}
+	public boolean isBackupsEnabled() {
+		return backupsEnabled;
+	}
+	public void setBackupsEnabled(boolean backupsEnabled) {
+		this.backupsEnabled = backupsEnabled;
+	}
+	public boolean isIpv6Enabled() {
+		return ipv6Enabled;
+	}
+	public void setIpv6Enabled(boolean ipv6Enabled) {
+		this.ipv6Enabled = ipv6Enabled;
 	}
 	public String getStatus() {
 		return status;

@@ -46,6 +46,9 @@ public class DropletDetailsDialogFragment extends DialogFragment {
         ImageView distroImageView = (ImageView)view.findViewById(R.id.distroImageView);
         ImageView flagImageView = (ImageView)view.findViewById(R.id.flagImageView);
         TextView backupsActiveTextView = (TextView)view.findViewById(R.id.backupsActiveTextView);
+        TextView ipv6ActiveTextView = (TextView)view.findViewById(R.id.ipv6ActiveTextView);
+        TextView privateNetworkingActiveTextView = (TextView)view.findViewById(R.id.privateNetworkingActiveTextView);
+        TextView virtIOActiveTextView = (TextView)view.findViewById(R.id.virtioActiveTextView);
         TextView lockedTextView = (TextView)view.findViewById(R.id.lockedTextView);
         TextView createdAtTextView = (TextView)view.findViewById(R.id.createdAtTextView);
         TextView memoryTextView = (TextView)view.findViewById(R.id.memoryTextView);
@@ -71,7 +74,10 @@ public class DropletDetailsDialogFragment extends DialogFragment {
     	if(droplet.getNetworks().size() > 0){
     		ipAddressTextView.setText(droplet.getNetworks().get(0).getIpAddress());
     	}
-        //backupsActiveTextView.setText(droplet.isBackupsActive() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        backupsActiveTextView.setText(droplet.isBackupsEnabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        ipv6ActiveTextView.setText(droplet.isIpv6Enabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        privateNetworkingActiveTextView.setText(droplet.isPrivateNetworkingEnabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        virtIOActiveTextView.setText(droplet.isVirtIoEnabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         lockedTextView.setText(droplet.isLocked() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         createdAtTextView.setText(DateFormat.format("yyyy-MM-dd hh:mm", droplet.getCreatedAt()));
         statusTextView.setText(droplet.getStatus());

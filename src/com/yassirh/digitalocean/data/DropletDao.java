@@ -37,6 +37,10 @@ public class DropletDao extends SqlDao<Droplet> {
 		values.put(DropletTable.SIZE_SLUG, droplet.getSize().getSlug());
 		values.put(DropletTable.CREATED_AT, droplet.getCreatedAt().getTime());
 		values.put(DropletTable.LOCKED, droplet.isLocked());
+		values.put(DropletTable.BACKUPS_ENABLED, droplet.isBackupsEnabled());
+		values.put(DropletTable.IPV6_ENABLED, droplet.isIpv6Enabled());
+		values.put(DropletTable.PRIVATE_NETWORKING_ENABLED, droplet.isPrivateNetworkingEnabled());
+		values.put(DropletTable.VIRTIO_ENABLED, droplet.isVirtIoEnabled());
 		values.put(DropletTable.STATUS, droplet.getStatus());
 		long id = droplet.getId();
 		if(update){
@@ -71,6 +75,10 @@ public class DropletDao extends SqlDao<Droplet> {
 		droplet.setSize(size);
 		droplet.setCreatedAt(new Date(c.getLong(c.getColumnIndex(DropletTable.CREATED_AT))));
 		droplet.setLocked(c.getInt(c.getColumnIndex(DropletTable.LOCKED)) > 0);
+		droplet.setBackupsEnabled(c.getInt(c.getColumnIndex(DropletTable.BACKUPS_ENABLED)) > 0);
+		droplet.setIpv6Enabled(c.getInt(c.getColumnIndex(DropletTable.IPV6_ENABLED)) > 0);
+		droplet.setPrivateNetworkingEnabled(c.getInt(c.getColumnIndex(DropletTable.PRIVATE_NETWORKING_ENABLED)) > 0);
+		droplet.setVirtIoEnabled(c.getInt(c.getColumnIndex(DropletTable.VIRTIO_ENABLED)) > 0);
 		droplet.setStatus(c.getString(c.getColumnIndex(DropletTable.STATUS)));
 		return droplet;
 	}

@@ -179,6 +179,60 @@
 	    </TableRow>
 	    
 	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/virtio_active_label" />
+	
+	        <TextView
+	            android:id="@+id/virtioActiveTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dip"
+	            android:text="" />
+	
+	    </TableRow>
+	    
+	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ipv6_active_label" />
+	
+	        <TextView
+	            android:id="@+id/ipv6ActiveTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dip"
+	            android:text="" />
+	
+	    </TableRow>
+	    
+	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/private_networking_active_label" />
+	
+	        <TextView
+	            android:id="@+id/privateNetworkingActiveTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dip"
+	            android:text="" />
+	
+	    </TableRow>
+	    
+	    <TableRow
 	        android:id="@+id/tableRow2"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >

@@ -280,7 +280,7 @@ public class DropletService {
 					DropletService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
 					e.printStackTrace();
-				}  
+				}
 		    }			
 		});
 	}
@@ -339,6 +339,19 @@ public class DropletService {
 			JSONObject networkJSONObject = v6JSONArray.getJSONObject(i);
 			Network network = jsonObjectToNetwork(networkJSONObject);
 			networks.add(network);
+		}
+		
+		JSONArray featuresJSONArray = dropletJSONObject.getJSONArray("features");
+		for (int i = 0; i < featuresJSONArray.length(); i++) {
+			if("ipv6".equals(featuresJSONArray.getString(i))){
+				droplet.setIpv6Enabled(true);
+			}else if("virtio".equals(featuresJSONArray.getString(i))){
+				droplet.setVirtIoEnabled(true);
+			}else if("private_networking".equals(featuresJSONArray.getString(i))){
+				droplet.setPrivateNetworkingEnabled(true);
+			}else if("backups".equals(featuresJSONArray.getString(i))){
+				droplet.setBackupsEnabled(true);
+			}
 		}
 		
 		droplet.setNetworks(networks);

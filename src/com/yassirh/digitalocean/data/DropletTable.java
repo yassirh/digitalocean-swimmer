@@ -11,6 +11,10 @@ public class DropletTable extends TableHelper {
 	public static final String REGION_SLUG = "region_slug";
 	public static final String LOCKED = "locked";
 	public static final String STATUS = "status";
+	public static final String BACKUPS_ENABLED = "backups_enabled";
+	public static final String IPV6_ENABLED = "ipv6_enabled";
+	public static final String PRIVATE_NETWORKING_ENABLED = "private_networking_enabled";
+	public static final String VIRTIO_ENABLED = "virtio_enabled";
 	public static final String CREATED_AT = "created_at";
 	
 	public DropletTable(){		
@@ -24,6 +28,10 @@ public class DropletTable extends TableHelper {
 		columns.put(REGION_SLUG, "string");
 		columns.put(LOCKED, "integer");
 		columns.put(STATUS, "text");
+		columns.put(BACKUPS_ENABLED, "integer");
+		columns.put(IPV6_ENABLED, "integer");
+		columns.put(PRIVATE_NETWORKING_ENABLED, "integer");
+		columns.put(VIRTIO_ENABLED, "integer");
 		columns.put(CREATED_AT, "long");
 		TABLE_NAME = "droplets";
 	}	
