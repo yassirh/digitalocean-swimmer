@@ -49,7 +49,10 @@
     <string name="action_about">Über</string>
     <string name="action_switch_account">Account wechseln</string>
     <string name="action_add_account">Account hinzufügen</string>
-    <string name="backups_active_label">Backups aktiviert:</string>
+    <string name="backups_active_label">Backups:</string>
+    <string name="virtio_active_label">VirtIO:</string>
+    <string name="private_networking_active_label">Private Netzwerke:</string>
+    <string name="ipv6_active_label">IPv6:</string>
     <string name="locked_label">Gesperrt:</string>
     <string name="created_at_label">Erstellt:</string>
     <string name="memory_label">RAM:</string>
