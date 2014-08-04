@@ -164,7 +164,7 @@
     <string name="reminde_me_later">Später erinnern</string>
     <string name="no_thanks">Nein danke</string>
     <string name="rate_app">Bewerte %1$s</string>
-    <string name="message_feature_disabled_api">Operation abgebrochen : dieses Feature ist in der API deaktivieren</string>
+    <string name="message_feature_disabled_api">Operation abgebrochen : dieses Feature ist in der API deaktiviert</string>
     <string name="message_press_again_to_exit">Zum Beenden erneut zurück drücken!</string>
     <!-- Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Zurück</string>
