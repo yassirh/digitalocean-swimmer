@@ -17,6 +17,12 @@
             android:key="pref_sync_frequency"
             android:summary="@string/summary_sync_frequency"
             android:title="@string/pref_sync_frequency_key_label" />
+        <ListPreference
+            android:entries="@array/pref_locale_entries"
+            android:entryValues="@array/pref_locale_values"
+            android:key="pref_locale"
+            android:summary="@string/summary_locale"
+            android:title="@string/pref_locale_key_label" />
     </PreferenceCategory>
 
 </PreferenceScreen>

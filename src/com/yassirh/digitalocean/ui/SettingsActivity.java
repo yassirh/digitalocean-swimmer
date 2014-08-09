@@ -1,30 +1,26 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.data.AccountDao;
-import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.model.Account;
-import com.yassirh.digitalocean.service.DomainService;
-import com.yassirh.digitalocean.service.DropletService;
-import com.yassirh.digitalocean.service.ImageService;
-import com.yassirh.digitalocean.service.RegionService;
-import com.yassirh.digitalocean.service.SSHKeyService;
-import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyApplication;
+import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 public class SettingsActivity extends ActionBarActivity{
 
-	static SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = 
+	SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = 
 			new OnSharedPreferenceChangeListener() {
 		
 				@Override
@@ -43,6 +39,17 @@ public class SettingsActivity extends ActionBarActivity{
 							currentAccount.setName("default");
 						}
 						ApiHelper.selectAccount(context, currentAccount);
+					}					
+					if(key.equals("pref_locale")){
+						Context context = MyApplication.getAppContext();
+						Locale locale = PreferencesHelper.getLocal(context);
+				        Locale.setDefault(locale);
+				        Configuration config = new Configuration();
+				        config.locale = locale;
+				        context.getResources().updateConfiguration(config, null);
+						Intent intent = new Intent(MyApplication.getAppContext(),SettingsActivity.class);
+						SettingsActivity.this.startActivity(intent);
+						SettingsActivity.this.finish();
 					}
 				}
 			};
@@ -74,7 +81,7 @@ public class SettingsActivity extends ActionBarActivity{
 		finish();
 	}
 		
-	public static class PrefsFragment extends PreferenceFragment {
+	public class PrefsFragment extends PreferenceFragment {
 		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {

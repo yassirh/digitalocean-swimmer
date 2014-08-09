@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="locale" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +29,8 @@
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings" 
+            android:configChanges="locale">
         </activity>
 
         <receiver android:name=".utils.MyBroadcastReceiver" >
@@ -36,7 +38,8 @@
 
         <activity
             android:name=".ui.AddAccountActivity"
-            android:label="@string/title_activity_add_account" >
+            android:label="@string/title_activity_add_account" 
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
