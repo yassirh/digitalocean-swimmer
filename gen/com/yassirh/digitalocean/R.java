@@ -1495,6 +1495,8 @@ containing a value of this type.
         public static final int app_name=0x7f0c000d;
         /**  Strings for possible PreferenceActivity Back/Next buttons 
  Strings for possible PreferenceActivity Back/Next buttons 
+ Strings for possible PreferenceActivity Back/Next buttons 
+ Strings for possible PreferenceActivity Back/Next buttons 
          */
         public static final int back_button_label=0x7f0c009d;
         public static final int backups_active_label=0x7f0c0025;
@@ -1594,6 +1596,8 @@ containing a value of this type.
         public static final int shut_down=0x7f0c003d;
         public static final int shut_down_alert=0x7f0c006f;
         /**  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
+ Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
+ Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
          */
         public static final int skip_button_label=0x7f0c009f;

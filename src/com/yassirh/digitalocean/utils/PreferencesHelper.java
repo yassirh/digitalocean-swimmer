@@ -22,6 +22,12 @@ public class PreferencesHelper {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String localPreference = sharedPreferences.getString("pref_locale", "");
 		if(!"".equals(localPreference)){
+			if(localPreference.equals("zh_CN")){
+			    return Locale.SIMPLIFIED_CHINESE;
+			}
+			else if(localPreference.equals("zh_TW")){
+			    return Locale.TRADITIONAL_CHINESE;
+			}
 			return new Locale(localPreference);
 		}
 		return Locale.getDefault();

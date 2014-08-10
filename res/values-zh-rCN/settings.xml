@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DO Swimmer</string>
+
+    <string-array name="main_navigation_array">
+        <item>DO水滴</item>
+        <item>网域名称</item>
+        <item>系统映像</item>
+        <item>SSH金钥</item>
+        <item>主机地区</item>
+        <item>主机规格</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_entries">
+        <item name="0">从不 (手动同步)</item>
+        <item name="1">每1分钟</item>
+        <item name="30">每30分钟</item>
+        <item name="60">每1小时</item>
+        <item name="240">每4小时</item>
+        <item name="1440">每24小时</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="30">30</item>
+        <item name="60">60</item>
+        <item name="240">240</item>
+        <item name="1440">1440</item>
+    </string-array>
+    <string-array name="pref_locale_entries">
+        <item name="0">English</item>
+        <item name="1">Deutsch</item>
+        <item name="2">繁體中文</item>
+        <item name="3">簡體中文</item>
+    </string-array>
+    <string-array name="pref_locale_values">
+        <item name="0">en_US</item>
+        <item name="1">de_DE</item>
+        <item name="2">zh_TW</item>
+        <item name="3">zh_CN</item>
+    </string-array>
+    <string name="pref_sync_frequency_key_label">同步间隔时间</string>
+    <string name="summary_sync_frequency">设定与系统同步的间隔时间</string>
+    <string name="pref_locale_key_label">语言</string>
+    <string name="summary_locale">选择语言</string>
+    <string name="not_yet_implemented">尚未执行</string>
+    <string name="no_ssh_client">查无SSH客户端! 请安装SSH以继续此项功能</string>
+    <string name="drawer_open">开启导览列</string>
+    <string name="drawer_close">开启导览列</string>
+    <string name="no_images">没有系统映像!</string>
+    <string name="no_regions">没有主机地区!</string>
+    <string name="no_sizes">没有主机规格!</string>
+    <string name="no_domains">没有网域名称!</string>
+    <string name="no_droplets">没有DO水滴!</string>
+    <string name="no_records">没有记录!</string>
+    <string name="no_ssh_keys">没有SSH金钥!</string>
+    <string name="public_visibility">公开</string>
+    <string name="private_visibility">私人</string>
+    <string name="monthly">每个月</string>
+    <string name="hourly">每小时</string>
+    <string name="action_settings">设定</string>
+    <string name="action_about">相关</string>
+    <string name="action_switch_account">切换帐号</string>
+    <string name="action_add_account">新增帐号</string>
+    <string name="backups_active_label">备份:</string>
+    <string name="virtio_active_label">效能加速:</string>
+    <string name="private_networking_active_label">私人网络:</string>
+    <string name="ipv6_active_label">IPv6:</string>
+    <string name="locked_label">锁定:</string>
+    <string name="created_at_label">建立于:</string>
+    <string name="memory_label">记忆体:</string>
+    <string name="disk_label">硬碟空间:</string>
+    <string name="cpus_label">处理器:</string>
+    <string name="region_label">主机地区:</string>
+    <string name="image_label">系统映像:</string>
+    <string name="record_type_label">记录方式:</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="ok">好的</string>
+    <string name="cancel">取消</string>
+    <string name="add_record">新增记录</string>
+    <string name="add_ssh_key">新增SSH金钥</string>
+    <string name="visit_domain">访问域名</string>
+    <string name="ssh_to_droplet">SSH到DO水滴</string>
+    <string name="reboot">重新启动</string>
+    <string name="power_cycle">系统重新启动</string>
+    <string name="power_off">电源关闭</string>
+    <string name="power_on">电源开启</string>
+    <string name="shut_down">系统关机</string>
+    <string name="password_reset">密码重设</string>
+    <string name="resize">更改规格</string>
+    <string name="snapshot">系统快照</string>
+    <string name="restore">重新载入</string>
+    <string name="rebuild">重新建立</string>
+    <string name="enable_backups">开启备份功能</string>
+    <string name="disable_backups">关闭备份功能</string>
+    <string name="rename">更换名称</string>
+    <string name="destroy">销毁</string>
+    <string name="sync">同步</string>
+    <string name="settings">设定</string>
+    <string name="synchronising">同步中</string>
+    <string name="synchronising_keys">SSH金钥同步中...</string>
+    <string name="synchronising_keys_completed">SSH金钥同步完成</string>
+    <string name="synchronising_images">系统映像同步中...</string>
+    <string name="synchronising_images_completed">同步完成</string>
+    <string name="synchronising_domains">网域同步中...</string>
+    <string name="synchronising_domains_completed">网域同步完成</string>
+    <string name="synchronising_droplets">DO水滴同步中...</string>
+    <string name="synchronising_droplets_completed">DO水滴同步完成</string>
+    <string name="synchronising_sizes">主机规格同步中...</string>
+    <string name="synchronising_sizes_completed">主机规格同步完成</string>
+    <string name="synchronising_regions">主机地区同步中...</string>
+    <string name="synchronising_regions_completed">主机地区同步完成</string>
+    <string name="access_denied_message">无法登入系统! 请重新确认您的帐号及API金钥</string>
+    <string name="action_add_droplet">新增DO水滴</string>
+    <string name="action_add_domain">新增网域</string>
+    <string name="action_add_record">新增记录</string>
+    <string name="action_add_ssh_key">新增SSH金钥</string>
+    <string name="hostname_label">主机名称:</string>
+    <string name="select_size_label">选择主机规格:</string>
+    <string name="select_image_label">选择系统映像:</string>
+    <string name="select_region_label">选择主机地区:</string>
+    <string name="select_droplet_label">选择DO水滴:</string>
+    <string name="ssh_keys_label">SSH金钥:</string>
+    <string name="private_networking_label">私人网络</string>
+    <string name="domain_name_label">网域名称</string>
+    <string name="create_droplet">产生DO水滴</string>
+    <string name="create_domain">产生网域名称</string>
+    <string name="create_account">产生帐号</string>
+    <string name="save_account">储存帐号</string>
+    <string name="creating_droplet">水滴 产生中</string>
+    <string name="creating_domain">网域 产生中</string>
+    <string name="creating_record">记录 产生中</string>
+    <string name="destroying_domain">网域 销毁中</string>
+    <string name="destroying_record">记录 销毁中</string>
+    <string name="destroying_ssh_key">SSH金钥 销毁中</string>
+    <string name="power_cycle_alert">这将会重启您这个DO水滴.\n\n我们建议您使用命令列方式来重启DO水滴, 因为这里采用的电源强制重启方式有可能会导致您的资料受损.\n\n您确定要执行这个指令吗?</string>
+    <string name="reboot_alert">这将会重启您这个DO水滴.\n\n您确定要执行这个指令吗?</string>
+    <string name="shut_down_alert">这将把您这个DO水滴进行关机.\n\n您确定要执行这个指令吗?</string>
+    <string name="power_off_alert">这将关闭您这个DO水滴的电源.\n\n我们建议您使用命令列方式来关闭DO水滴, 因为这里采用的电源强制重启方式有可能会导致您的资料受损.\n\n您确定要执行这个指令吗?</string>
+    <string name="power_on_alert">这将会重启您这个DO水滴.\n\n您确定要执行这个指令吗?</string>
+    <string name="destroy_droplet_alert">这是一个不可逆的行为. 我们将销毁您这个DO水滴以及其相关的所有备份.\n\n您确定要执行这个指令吗?</string>
+    <string name="destroy_ssh_key_alert">您确定要销毁?</string>
+    <string name="restore_alert">这项功能将使用您之前保存的某个系统快照来重建您目前的DO水滴. 也就是说, 您的DO水滴将被复制成为之前某次系统快照的内容. 请确保您已经对目前系统内的重要资料进行备份.</string>
+    <string name="rebuild_alert">这项功能将允许您使用预设的系统映像来重建您目前的DO水滴. 也就是说, 如果您想从新来过, 但同时保留原有的IP位址时, 就是用这招啦.</string>
+    <string name="enable_backups_alert">这将启动每天的自动化备份排程, 将您的DO水滴的数据进行备份.</string>
+    <string name="disable_backups_alert">这将关闭每天的自动化备份排程, 您的DO水滴的备份工作将停止.</string>
+    <string name="destroy_domain_alert">这将销毁您的网域名称. 您确定吗?</string>
+    <string name="name">名称</string>
+    <string name="title_activity_settings">设定</string>
+    <string name="title_resize_droplet">更改DO水滴</string>
+    <string name="title_snapshot_droplet">快照DO水滴</string>
+    <string name="title_restore_droplet">复原DO水滴</string>
+    <string name="title_rebuild_droplet">重建DO水滴</string>
+    <string name="summary_client_id">客户帐号</string>
+    <string name="client_id_label">客户帐号</string>
+    <string name="summary_api_key">API金钥</string>
+    <string name="api_key_label">API金钥</string>
+    <string name="summary_token">认证API金钥的号码产生器</string>
+    <string name="summary_account_name">客户名称</string>
+    <string name="account_name_label">客户名称</string>
+    <string name="api_settings_title">API设定</string>
+    <string name="preferences_title">首选项</string>
+    <string name="records">记录</string>
+    <string name="scrub_data">消除数据</string>
+    <string name="ip_address_label">IP位址:</string>
+    <string name="name_label">名称:</string>
+    <string name="priority_label">优先排序:</string>
+    <string name="text_label">内容:</string>
+    <string name="port_label">端口:</string>
+    <string name="weight_label">比重:</string>
+    <string name="create_record">产生记录</string>
+    <string name="edit_record">编辑记录</string>
+    <string name="edit_ssh_key">编辑SSH金钥</string>
+    <string name="saving_ssh_key">储存SSH金钥</string>
+    <string name="add_existing_account">增加已存在的帐号</string>
+    <string name="create_new_account">建立新的帐号</string>
+    <string name="switch_account">切换帐号</string>
+    <string name="rate_message">如果您觉得 %1$s 不错, 请用您一点点的时间为我们评分. 谢谢您的大大力支持!</string>
+    <string name="reminde_me_later">请稍后提醒我</string>
+    <string name="no_thanks">不, 谢谢</string>
+    <string name="rate_app">请评分 %1$s</string>
+    <string name="message_feature_disabled_api">操作终止 : API禁止这个行为</string>
+    <string name="message_press_again_to_exit">请再按上一步按钮以退出!</string>
+    <!-- Strings for possible PreferenceActivity Back/Next buttons -->
+    <string name="back_button_label">上一步</string>
+    <string name="next_button_label">下一步</string>
+
+    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
+    <string name="skip_button_label">略过</string>
+    <string name="public_ssh_key_label">公开的SSH金钥:</string>
+    <string name="title_activity_add_account">增加帐号活动</string>
+    <string name="token_label">号码产生器</string>
+
+</resources>
