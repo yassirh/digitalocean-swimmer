@@ -97,6 +97,9 @@ public class ApiHelper {
         else if(distribution.equals("Arch Linux")){
         	return status.equals("active") ? R.drawable.arch_linux_active : R.drawable.arch_linux;
         }		
+        else if(distribution.equals("CoreOS")){
+        	return status.equals("active") ? R.drawable.coreos_active : R.drawable.coreos;
+        }
 		return R.drawable.unknown;
 	}
 	

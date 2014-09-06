@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.utils.ApiHelper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,30 +56,10 @@ public class ImageAdapter extends BaseAdapter {
 	        }
 	        TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
 	        ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
-	        //TextView slugTextView = (TextView)vi.findViewById(R.id.slugTextView);
-	        TextView visibilityTextView = (TextView)vi.findViewById(R.id.visibilityTextView);
-	        
-	        if(image.getDistribution().equals("Ubuntu")){
-	        	distroImageView.setImageResource(R.drawable.ubuntu_active);
-	        }
-	        else if(image.getDistribution().equals("Debian")){
-	        	distroImageView.setImageResource(R.drawable.debian_active);
-	        }
-	        else if(image.getDistribution().equals("CentOS")){
-	        	distroImageView.setImageResource(R.drawable.centos_active);
-	        }
-	        else if(image.getDistribution().equals("Fedora")){
-	        	distroImageView.setImageResource(R.drawable.fedora_active);
-	        }
-	        else if(image.getDistribution().equals("Arch Linux")){
-	        	distroImageView.setImageResource(R.drawable.arch_linux_active);
-	        }
+	        TextView visibilityTextView = (TextView)vi.findViewById(R.id.visibilityTextView);	        
+	        distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), "active"));
 	        
 	        nameTextView.setText(image.getName());
-	        /*if(image.getSlug().equals(""))
-	        	slugTextView.setVisibility(View.GONE);
-	        else
-	        	slugTextView.setText(image.getSlug());*/
 	        String visibility = vi.getResources().getString(R.string.public_visibility);
 	        if(!image.isPublic())
 	        	visibility = vi.getResources().getString(R.string.private_visibility);
