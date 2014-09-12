@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
@@ -47,16 +48,18 @@ public class SizeAdapter extends BaseAdapter {
         
         TextView ramcpuTextView = (TextView)vi.findViewById(R.id.ramcpuTextView);
         TextView diskTextView = (TextView)vi.findViewById(R.id.diskTextView);
-        TextView pricingTextView = (TextView)vi.findViewById(R.id.pricingTextView);
+        TextView transferTextView = (TextView)vi.findViewById(R.id.transferTextView);
+        TextView monthlyPriceTextView = (TextView)vi.findViewById(R.id.monthlyPriceTextView);
+        TextView hourlyPriceTextView = (TextView)vi.findViewById(R.id.hourlyPriceTextView);
         
-        ramcpuTextView.setText(size.getSlug() + "/" + size.getCpu() + " CPU");
-        diskTextView.setText(size.getDisk() +"GB SSD");
+        ramcpuTextView.setText(size.getSlug().toUpperCase() + "/" + size.getCpu() + "CPU");
+        diskTextView.setText(size.getDisk() +"GB SSD DISK");
+        transferTextView.setText(size.getTransfer() + "TB TRANSFER");
         Formatter formatter = new Formatter();
-
-        pricingTextView.setText(vi.getResources().getString(R.string.monthly) + ": $" + size.getCostPerMonth() +", " + vi.getResources().getString(R.string.hourly) + ": $" + formatter.format("%1.5f", size.getCostPerHour()));
+        monthlyPriceTextView.setText("$" + size.getCostPerMonth()+"/mo");
+        hourlyPriceTextView.setText("$" + formatter.format("%1.5f",size.getCostPerHour())+"/hour");
         formatter.close();
-        if(!mShowPrice)
-        	pricingTextView.setVisibility(View.GONE);
+        
         return vi;
     }
 }

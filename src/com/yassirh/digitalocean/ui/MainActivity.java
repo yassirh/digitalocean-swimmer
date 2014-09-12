@@ -64,7 +64,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     
     private DropletService mDropletService;
     private DomainService mDomainService;
-        
+    Intent intent;
+    
     @SuppressLint("HandlerLeak")
 	Handler mUiHandler = new Handler(){
         @Override
@@ -247,74 +248,15 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	}
         	return true;
         case R.id.action_add_droplet:
-        	ImageService mImageService;
-        	SizeService mSizeService;
-        	RegionService mRegionService;
-        	
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	    LayoutInflater inflater = getLayoutInflater();
-    		View view = inflater.inflate(R.layout.dialog_droplet_create, null);
-    		mDropletService = new DropletService(this);
-    		mImageService = new ImageService(this);
-    		mSizeService = new SizeService(this);
-    		mRegionService = new RegionService(this);
-    		builder.setTitle(getResources().getString(R.string.create_droplet));	
-    		builder.setView(view);
-    		final Spinner imageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
-    		final Spinner regionSpinner = (Spinner)view.findViewById(R.id.regionSpinner);
-    		final Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
-    		final EditText hostnameEditText = (EditText)view.findViewById(R.id.hostnameEditText);
-    		final MultiSelectSpinner sshKeysMultiSelectSpinner = (MultiSelectSpinner) view.findViewById(R.id.sshKeysMultiSelectSpinner);
-    		final TextView sshKeysTextView = (TextView) view.findViewById(R.id.sshKeysTextView);
-    		final CheckBox privateNetworkingCheckBox = (CheckBox)view.findViewById(R.id.privateNetworkingCheckBox);
-    		final CheckBox enableBackupsCheckBox = (CheckBox)view.findViewById(R.id.enableBackupsCheckBox);
-    		List<Image> images = new ArrayList<Image>();
-    		images.addAll(mImageService.getSnapshotsOnly());
-    		images.addAll(mImageService.getImagesOnly());
-    		imageSpinner.setAdapter(new ImageAdapter(this, images));
-    		List<String> sshKeysNames = new ArrayList<String>();
-    		List<Long> sshKeysIds = new ArrayList<Long>();
-    		SSHKeyService mSSHKeyService = new SSHKeyService(this);
-    		List<SSHKey> sshKeys = mSSHKeyService.getAllSSHKeys();
-    		for (SSHKey sshKey : sshKeys) {
-				sshKeysIds.add(sshKey.getId());
-				sshKeysNames.add(sshKey.getName());
-			}
-    		sshKeysMultiSelectSpinner.setIds(sshKeysIds);
-    		sshKeysMultiSelectSpinner.setItems(sshKeysNames);
-    		if(sshKeys.size() == 0){
-    			sshKeysMultiSelectSpinner.setVisibility(View.GONE);
-    			sshKeysTextView.setVisibility(View.GONE);
-    		}
-    		regionSpinner.setAdapter(new RegionAdapter(this, mRegionService.getAllRegionsOrderedByName()));
-    		sizeSpinner.setAdapter(new SizeAdapter(this, mSizeService.getAllSizes(SizeTable.MEMORY),false));
-    		builder.setPositiveButton(R.string.ok, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Long imageId = imageSpinner.getSelectedItemId();
-    				Long regionId = regionSpinner.getSelectedItemId();
-    				Long sizeId = sizeSpinner.getSelectedItemId();
-    				String hostname = hostnameEditText.getText().toString();
-    				boolean virtualNetworking = privateNetworkingCheckBox.isChecked();
-    				boolean enableBackups = enableBackupsCheckBox.isChecked();
-    				List<Long> selectedSSHKeysIds = sshKeysMultiSelectSpinner.getSelectedIds();
-    				mDropletService.createDroplet(hostname,imageId,regionId,sizeId,virtualNetworking,enableBackups,selectedSSHKeysIds);
-				}
-			});
-    		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-    		builder.show().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        	intent = new Intent(MainActivity.this, NewDropletActivity.class);
+        	startActivity(intent);
         	return true;
         case R.id.action_add_domain:
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	    LayoutInflater inflater = getLayoutInflater();
         	builder = new AlertDialog.Builder(this);
     	    inflater = getLayoutInflater();
-    		view = inflater.inflate(R.layout.dialog_domain_create, null);
+    		View view = inflater.inflate(R.layout.dialog_domain_create, null);
     		mDropletService = new DropletService(this);
     		getResources().getString(R.string.create_domain);
     		builder.setView(view);
@@ -355,7 +297,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			switchAccountDialogFragment.show(fm, "switch_account");
         	return true;
         case R.id.action_settings:
-        	Intent intent = new Intent(this, SettingsActivity.class);
+        	intent = new Intent(this, SettingsActivity.class);
         	startActivity(intent);
         	finish();
         	return true;

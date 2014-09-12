@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_new_droplet"
+        android:icon="@drawable/ic_action_new"
+        android:title="@string/create_droplet"
+        app:showAsAction="ifRoom"/>
+
+</menu>

@@ -47,11 +47,11 @@ import com.yassirh.digitalocean.service.SizeService;
 
 public class DropletsFragment extends ListFragment implements OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, Updatable{
 		
-	private DropletAdapter mDropletAdapter;
-	private List<Droplet> mDroplets = new ArrayList<Droplet>();
-	private DropletService mDropletService;
-	private ImageService mImageService;
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private DropletAdapter dropletAdapter;
+	private List<Droplet> droplets = new ArrayList<Droplet>();
+	private DropletService dropletService;
+	private ImageService imageService;
+	private SwipeRefreshLayout swipeRefreshLayout;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -62,13 +62,13 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mDropletService = new DropletService(this.getActivity());
-		mImageService = new ImageService(getActivity());
+		dropletService = new DropletService(this.getActivity());
+		imageService = new ImageService(getActivity());
 		update(this.getActivity());
 		View layout = inflater.inflate(R.layout.fragment_droplets, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
+		swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		swipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
 	            R.color.green_light,
 	            R.color.orange_light,
 	            R.color.red_light);
@@ -95,7 +95,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
 		            enable = firstItemVisible && topOfFirstItemVisible;
 		        }
-			    mSwipeRefreshLayout.setEnabled(enable);
+			    swipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);
@@ -103,9 +103,9 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	
 	@Override
 	public void update(Context context) {
-		mDroplets = new DropletService(context).getAllDroplets();
-		mDropletAdapter = new DropletAdapter(context, mDroplets);
-		setListAdapter(mDropletAdapter);
+		droplets = new DropletService(context).getAllDroplets();
+		dropletAdapter = new DropletAdapter(context, droplets);
+		setListAdapter(dropletAdapter);
 	}
 	
 	// droplet that holds the selected droplet from the contextual menu
@@ -132,7 +132,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -144,7 +144,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -156,7 +156,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -168,7 +168,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -180,13 +180,13 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_password_reset:
-			mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
+			dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
 			break;
 		case R.id.action_destroy:
 			builder = new AlertDialog.Builder(getActivity());
@@ -204,7 +204,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 						params.put("scrub_data", "true");
 					else
 						params.put("scrub_data", "false");
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, params);
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, params);
 				}
 			});
 			builder.setNegativeButton(R.string.no, new OnClickListener() {
@@ -257,7 +257,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put(DropletTable.SIZE_SLUG, sizeSpinner.getSelectedItemId()+"");
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESIZE, params);
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESIZE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -282,7 +282,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("name", nameEditText.getText().toString());
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -300,7 +300,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		    view = inflater.inflate(R.layout.dialog_droplet_restore,null);
 			builder.setTitle(R.string.title_restore_droplet);
 			final Spinner restoreImageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
-			restoreImageSpinner.setAdapter(new ImageAdapter(getActivity(), mImageService.getSnapshotsOnly()));
+			restoreImageSpinner.setAdapter(new ImageAdapter(getActivity(), imageService.getSnapshotsOnly()));
 			builder.setView(view);
 			builder.setPositiveButton(R.string.ok, new OnClickListener() {
 				
@@ -308,7 +308,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image_id", restoreImageSpinner.getSelectedItemId()+"");
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESTORE, params);
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESTORE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -326,7 +326,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		    view = inflater.inflate(R.layout.dialog_droplet_rebuild,null);
 			builder.setTitle(R.string.title_rebuild_droplet);
 			final Spinner rebuildImageSpinner = (Spinner)view.findViewById(R.id.imageSpinner);
-			rebuildImageSpinner.setAdapter(new ImageAdapter(getActivity(), mImageService.getImagesOnly()));
+			rebuildImageSpinner.setAdapter(new ImageAdapter(getActivity(), imageService.getImagesOnly()));
 			builder.setView(view);
 			builder.setPositiveButton(R.string.ok, new OnClickListener() {
 				
@@ -334,7 +334,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image_id", rebuildImageSpinner.getSelectedItemId()+"");
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBUILD, params);
+					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBUILD, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -397,17 +397,17 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 
 	@Override
 	public void onRefresh() {
-		mDropletService.getAllDropletsFromAPI(true);
+		dropletService.getAllDropletsFromAPI(true);
 		handler.post(refreshing);
 	}
 	
 	private final Runnable refreshing = new Runnable(){
 	    public void run(){
 	        try {
-	        	if(mDropletService.isRefreshing()){
+	        	if(dropletService.isRefreshing()){
 	        		handler.postDelayed(this, 1000);   
 	        	}else{
-	        		mSwipeRefreshLayout.setRefreshing(false);
+	        		swipeRefreshLayout.setRefreshing(false);
 	        	}
 	        }
 	        catch (Exception e) {

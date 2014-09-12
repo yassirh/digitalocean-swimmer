@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.service;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,7 +29,6 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
 import com.yassirh.digitalocean.data.NetworkDao;
-import com.yassirh.digitalocean.data.NetworkTable;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
@@ -39,7 +39,7 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class DropletService {
 
-	private Context mContext;
+	private Context context;
 	@SuppressLint("SimpleDateFormat")
 	private static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
@@ -51,23 +51,23 @@ public class DropletService {
 	}
 		
 	public DropletService(Context context) {
-		mContext = context;
+		this.context = context;
 	}
 	
 	
 	public void setRequiresRefresh(Boolean requireRefresh){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("droplet_require_refresh", requireRefresh);
 		editor.commit();
 	}
 	public Boolean requiresRefresh(){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("droplet_require_refresh", true);
 	}
 	
 	public void ExecuteAction(final long dropletId,final DropletActions dropletAction, HashMap<String,String> params){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
@@ -82,7 +82,7 @@ public class DropletService {
 					String status = jsonObject.getString("status");
 					if(ApiHelper.API_STATUS_OK.equals(status)){
 						Long eventId = jsonObject.getLong("event_id");
-						new EventService(mContext).trackEvent(eventId, DropletService.this.findById(dropletId).getName(),getActionName(dropletAction));
+						new EventService(context).trackEvent(eventId, DropletService.this.findById(dropletId).getName(),getActionName(dropletAction));
 					}
 					else{
 						// TODO handle error Access Denied/Not Found
@@ -159,43 +159,43 @@ public class DropletService {
 		String action = "";
 		switch (dropletAction) {
 		case REBOOT:
-			action = mContext.getResources().getString(R.string.reboot);
+			action = context.getResources().getString(R.string.reboot);
 			break;
 		case POWER_CYCLE:
-			action = mContext.getResources().getString(R.string.power_cycle);
+			action = context.getResources().getString(R.string.power_cycle);
 			break;
 		case SHUTDOWN:
-			action = mContext.getResources().getString(R.string.shut_down);
+			action = context.getResources().getString(R.string.shut_down);
 			break;
 		case POWER_OFF:
-			action = mContext.getResources().getString(R.string.power_off);
+			action = context.getResources().getString(R.string.power_off);
 			break;
 		case POWER_ON:
-			action = mContext.getResources().getString(R.string.power_on);
+			action = context.getResources().getString(R.string.power_on);
 			break;
 		case PASSWORD_RESET:
-			action = mContext.getResources().getString(R.string.password_reset);
+			action = context.getResources().getString(R.string.password_reset);
 			break;
 		case DESTROY:
-			action = mContext.getResources().getString(R.string.destroy);
+			action = context.getResources().getString(R.string.destroy);
 			break;
 		case RESIZE:
-			action = mContext.getResources().getString(R.string.resize);
+			action = context.getResources().getString(R.string.resize);
 			break;
 		case SNAPSHOT:
-			action = mContext.getResources().getString(R.string.snapshot);
+			action = context.getResources().getString(R.string.snapshot);
 			break;
 		case RESTORE:
-			action = mContext.getResources().getString(R.string.restore);
+			action = context.getResources().getString(R.string.restore);
 			break;
 		case REBUILD:
-			action = mContext.getResources().getString(R.string.rebuild);
+			action = context.getResources().getString(R.string.rebuild);
 			break;
 		case ENABLE_BACKUPS:
-			action = mContext.getResources().getString(R.string.enable_backups);
+			action = context.getResources().getString(R.string.enable_backups);
 			break;
 		case DISABLE_BACKUPS:
-			action = mContext.getResources().getString(R.string.disable_backups);
+			action = context.getResources().getString(R.string.disable_backups);
 			break;
 		default:
 			break;
@@ -204,7 +204,7 @@ public class DropletService {
 	}
 
 	private String getActionUrl(long dropletId,String action, HashMap<String,String> params) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		String url = "";//String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
@@ -215,29 +215,29 @@ public class DropletService {
 	}
 
 	public void getAllDropletsFromAPI(final boolean showProgress){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
 		isRefreshing = true;
-		String url = String.format("%s/droplets", ApiHelper.API_URL);//"https://api.digitalocean.com/droplets/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = String.format("%s/droplets", ApiHelper.API_URL);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
+			NotificationManager notifyManager;
+			NotificationCompat.Builder builder;
 			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_droplets))
+					notifyManager =
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					builder = new NotificationCompat.Builder(context);
+					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, mBuilder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, builder.build());
 				}
 			}
 			
@@ -245,7 +245,7 @@ public class DropletService {
 			public void onFinish() {
 				isRefreshing = false;
 				if(showProgress){
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
+					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
 				}
 			}
 			
@@ -259,8 +259,8 @@ public class DropletService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, mBuilder.build());
+					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, builder.build());
 				}
 			}
 			
@@ -286,9 +286,9 @@ public class DropletService {
 	}
 	
 	public void deleteAll() {
-		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
 		dropletDao.deleteAll();
-		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(context));
 		networkDao.deleteAll();
 	}
 
@@ -365,8 +365,8 @@ public class DropletService {
 	}
 
 	protected void saveAll(List<Droplet> droplets) {
-		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
-		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(context));
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
 		networkDao.deleteAll();
 		for (Droplet droplet : droplets) {
 			long id = dropletDao.createOrUpdate(droplet);
@@ -380,8 +380,8 @@ public class DropletService {
 	}
 	
 	public List<Droplet> getAllDroplets(){
-		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
-		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(context));
 		List<Droplet> droplets = dropletDao.getAll(null);
 		for (Droplet droplet : droplets) {
 			droplet.setNetworks(networkDao.findByDropletId(droplet.getId()));
@@ -390,93 +390,83 @@ public class DropletService {
 	}
 
 	public Droplet findById(long id) {
-		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
-		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(mContext));
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
+		NetworkDao networkDao = new NetworkDao(DatabaseHelper.getInstance(context));
 		Droplet droplet = dropletDao.findById(id);
 		List<Network> networks = networkDao.findByDropletId(id);
 		droplet.setNetworks(networks);
 		return droplet;
 	}
 
-	public void createDroplet(String hostname, Long imageId, Long regionId, Long sizeId,
-			boolean privateNetworking, boolean enableBackups, List<Long> selectedSSHKeysIds) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+	public void createDroplet(String hostname, Long imageId, String regionSlug, String sizeSlug,
+			boolean privateNetworking, boolean enableBackups, boolean enableIPv6, String userData, List<Long> selectedSSHKeysIds) {
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		String sshKeys = "";
-		if(selectedSSHKeysIds.size() > 0){
-			StringBuilder sb = new StringBuilder();
-			for (Long l : selectedSSHKeysIds)
-				sb.append("," + l);
-			sshKeys = "&ssh_key_ids=" + sb.substring(1);
+		
+		String url = String.format("%s/droplets", ApiHelper.API_URL);
+				
+		HashMap<String,Object> options = new HashMap<String, Object>();
+		options.put("name", hostname);
+		options.put("region", regionSlug);
+		options.put("size", sizeSlug);
+		options.put("image", imageId);
+		options.put("ssh_keys", selectedSSHKeysIds);
+		options.put("backups", enableBackups);
+		options.put("ipv6", enableIPv6);
+		options.put("private_networking", privateNetworking);
+		if(!userData.equals("")){
+			options.put("user_data", userData);
 		}
-		String url = "";
-		/*String url = "https://api.digitalocean.com/droplets/new?client_id=" + currentAccount.getClientId() + 
-				"&api_key=" + currentAccount.getApiKey() + 
-				"&name=" + hostname +
-				"&size_id=" + sizeId + 
-				"&image_id=" + imageId + 
-				"&region_id=" + regionId +
-				"&private_networking" + privateNetworking +
-				"&backups_enabled=" + enableBackups +
-				sshKeys;*/
+		
+		JSONObject jsonObject = new JSONObject(options);
 		
 		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONObject dropletJsonObject = jsonObject.getJSONObject("droplet");
-						Long eventId = dropletJsonObject.getLong("event_id");
-						new EventService(mContext).trackEvent(eventId, mContext.getString(R.string.creating_droplet),"");
-					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		    @Override
-		    public void onFinish() {
-		    }
-		});
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+		ByteArrayEntity entity;
+		try {
+			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+			    @Override
+			    public void onSuccess(String response) {
+			        // TODO: show progress
+			    }
+			});
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public void getDropletFromAPI(long dropletId, final boolean showProgress) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
 		String url = "";//String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
+			NotificationManager notifyManager;
+			NotificationCompat.Builder builder;
 			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_droplets))
+					notifyManager =
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					builder = new NotificationCompat.Builder(context);
+					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
 					    .setSmallIcon(R.drawable.ic_launcher);
 
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, mBuilder.build());
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, builder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
 				if(showProgress)
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_DROPLET);
+					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_DROPLET);
 			}
 			
 			@Override
@@ -489,8 +479,8 @@ public class DropletService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, mBuilder.build());
+					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, builder.build());
 				}
 			}
 			
@@ -519,7 +509,7 @@ public class DropletService {
 	}
 
 	protected void update(Droplet droplet) {
-		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(mContext));
+		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
 		dropletDao.createOrUpdate(droplet);
 	}
 	public boolean isRefreshing() {
