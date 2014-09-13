@@ -41,6 +41,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DropletTable;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.SizeService;
@@ -109,7 +110,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 	}
 	
 	// droplet that holds the selected droplet from the contextual menu
-	Droplet mDroplet;
+	Droplet droplet;
 	@SuppressLint("CutPasteId")
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -126,73 +127,73 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		});
 		switch (item.getItemId()) {
 		case R.id.action_power_cycle:
-			alertDialog.setTitle(getString(R.string.power_cycle) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.power_cycle) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.power_cycle_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_reboot:
-			alertDialog.setTitle(getString(R.string.reboot) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.reboot) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.reboot_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_shutdown:
-			alertDialog.setTitle(getString(R.string.shut_down) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.shut_down) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.shut_down_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_power_off:
-			alertDialog.setTitle(getString(R.string.power_off) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.power_off) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.power_off_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_power_on:
-			alertDialog.setTitle(getString(R.string.power_on) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.power_on) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.power_on_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
 			break;
 		case R.id.action_password_reset:
-			dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
+			dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
 			break;
 		case R.id.action_destroy:
 			builder = new AlertDialog.Builder(getActivity());
 			inflater = getActivity().getLayoutInflater();
 			view = inflater.inflate(R.layout.dialog_droplet_destroy, null);
-			builder.setTitle(getString(R.string.destroy) + " : " + mDroplet.getName());
+			builder.setTitle(getString(R.string.destroy) + " : " + droplet.getName());
 			final CheckBox scrubDataCheckBox = (CheckBox) view.findViewById(R.id.scrubDataCheckBox);
 			builder.setView(view);
 			builder.setPositiveButton(R.string.yes, new OnClickListener() {
@@ -204,7 +205,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 						params.put("scrub_data", "true");
 					else
 						params.put("scrub_data", "false");
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DESTROY, params);
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.DESTROY, params);
 				}
 			});
 			builder.setNegativeButton(R.string.no, new OnClickListener() {
@@ -257,7 +258,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put(DropletTable.SIZE_SLUG, sizeSpinner.getSelectedItemId()+"");
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESIZE, params);
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RESIZE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -282,7 +283,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("name", nameEditText.getText().toString());
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -308,7 +309,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image_id", restoreImageSpinner.getSelectedItemId()+"");
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.RESTORE, params);
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RESTORE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -334,7 +335,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image_id", rebuildImageSpinner.getSelectedItemId()+"");
-					dropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.REBUILD, params);
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.REBUILD, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -348,7 +349,14 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			break;
 		case R.id.action_ssh:
 			try {
-				//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + mDroplet.getIpAddress() + "/#" + mDroplet.getName())));
+				String ipAddress = "";
+				for (Network network : droplet.getNetworks()) {
+					if(network.getType().equals("public")){
+						ipAddress = network.getIpAddress();
+						break;
+					}
+				}
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + ipAddress + "/#" + droplet.getName())));
 			} catch (ActivityNotFoundException e) {
 				Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
 			}
@@ -364,11 +372,11 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		mDroplet = new DropletService(getActivity()).findById(info.id);
+		droplet = new DropletService(getActivity()).findById(info.id);
 		MenuInflater inflater = getActivity().getMenuInflater();
 		inflater.inflate(R.menu.droplet_context, menu);
 		
-		if(mDroplet.getStatus().equals("active")){
+		if(droplet.getStatus().equals("active")){
 			menu.removeItem(R.id.action_power_on);
 		}
 		else{

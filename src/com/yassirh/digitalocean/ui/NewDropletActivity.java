@@ -52,7 +52,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog_droplet_create);
+		setContentView(R.layout.new_droplet);
 		
 		dropletService = new DropletService(this);
 		imageService = new ImageService(this);
