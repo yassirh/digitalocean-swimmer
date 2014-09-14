@@ -42,10 +42,11 @@ public class NetworkDao extends SqlDao<Network> {
 	}
 
 	public void createOrUpdate(Network network) {
-		boolean update = findById(network.getId()) != null;
+		boolean update = network.getId() != 0 && findById(network.getId()) != null;
 		
 		ContentValues values = new ContentValues();
-		values.put(NetworkTable.ID, network.getId());
+		if(update)
+			values.put(NetworkTable.ID, network.getId());
 		values.put(NetworkTable.CIDR, network.getCidr());
 		values.put(NetworkTable.GATEWAY, network.getGateway());
 		values.put(NetworkTable.IP_ADDRESS, network.getIpAddress());
@@ -56,7 +57,7 @@ public class NetworkDao extends SqlDao<Network> {
 		if(update){
 			db.updateWithOnConflict(getTableHelper().TABLE_NAME,values,NetworkTable.ID +"= ?",new String[]{network.getId()+""},SQLiteDatabase.CONFLICT_REPLACE);
 		}else{
-			db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
+			db.insert(getTableHelper().TABLE_NAME, null, values);
 		}
 	}
 

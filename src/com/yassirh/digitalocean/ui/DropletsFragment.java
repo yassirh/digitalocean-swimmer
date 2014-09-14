@@ -26,11 +26,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,16 +38,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.data.DropletTable;
 import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Network;
+import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.SizeService;
 
 public class DropletsFragment extends ListFragment implements OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, Updatable{
-		
+
+	// droplet that holds the selected droplet from the contextual menu
+	private Droplet droplet;
 	private DropletAdapter dropletAdapter;
 	private List<Droplet> droplets = new ArrayList<Droplet>();
 	private DropletService dropletService;
@@ -109,8 +112,6 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		setListAdapter(dropletAdapter);
 	}
 	
-	// droplet that holds the selected droplet from the contextual menu
-	Droplet droplet;
 	@SuppressLint("CutPasteId")
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -200,12 +201,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					HashMap<String, String> params = new HashMap<String, String>();
-					if(scrubDataCheckBox.isChecked())
-						params.put("scrub_data", "true");
-					else
-						params.put("scrub_data", "false");
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.DESTROY, params);
+					dropletService.destroyDroplet(droplet.getId());
 				}
 			});
 			builder.setNegativeButton(R.string.no, new OnClickListener() {
@@ -218,30 +214,28 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			builder.show();
 			break;
 		case R.id.action_enable_backups:
-			Toast.makeText(getActivity(), getString(R.string.message_feature_disabled_api), Toast.LENGTH_SHORT).show();
-			/*alertDialog.setTitle(getString(R.string.enable_backups) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.enable_backups) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.enable_backups_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
-			alertDialog.show();*/
+			alertDialog.show();
 			break;
 		case R.id.action_disable_backups:
-			Toast.makeText(getActivity(), getString(R.string.message_feature_disabled_api), Toast.LENGTH_SHORT).show();
-			/*alertDialog.setTitle(getString(R.string.disable_backups) + " : " + mDroplet.getName());
+			alertDialog.setTitle(getString(R.string.disable_backups) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.disable_backups_alert);
 			alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDropletService.ExecuteAction(mDroplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
+					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
-			alertDialog.show();*/
+			alertDialog.show();
 			break;
 		case R.id.action_resize:
 			builder = new AlertDialog.Builder(getActivity());
@@ -257,7 +251,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put(DropletTable.SIZE_SLUG, sizeSpinner.getSelectedItemId()+"");
+					params.put("size", ((Size)sizeSpinner.getSelectedItem()).getSlug());
 					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RESIZE, params);
 				}
 			});
@@ -334,7 +328,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put("image_id", rebuildImageSpinner.getSelectedItemId()+"");
+					params.put("image", ((Image)rebuildImageSpinner.getSelectedItem()).getSlug());
 					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.REBUILD, params);
 				}
 			});
@@ -386,10 +380,10 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			menu.removeItem(R.id.action_power_cycle);
 			menu.removeItem(R.id.action_ssh);
 		}		
-		/*if(mDroplet.isBackupsActive())
+		if(droplet.isBackupsEnabled())
 			menu.removeItem(R.id.action_enable_backups);
 		else
-			menu.removeItem(R.id.action_disable_backups);*/
+			menu.removeItem(R.id.action_disable_backups);
 	}
 
 	

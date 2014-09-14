@@ -5,8 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import org.apache.http.Header;
@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -47,7 +48,7 @@ public class DropletService {
 	public enum DropletActions{
 		REBOOT, POWER_CYCLE, SHUTDOWN, POWER_OFF, POWER_ON,
 		PASSWORD_RESET, RESIZE, SNAPSHOT, RESTORE, REBUILD, 
-		ENABLE_BACKUPS, DISABLE_BACKUPS, RENAME, DESTROY
+		ENABLE_BACKUPS, DISABLE_BACKUPS, RENAME 
 	}
 		
 	public DropletService(Context context) {
@@ -72,39 +73,39 @@ public class DropletService {
 			return;
 		}
 		String action = getAction(dropletAction);
-		String url = getActionUrl(dropletId,action,params);
+		String url = String.format(Locale.US,"%s/droplets/%d/actions", ApiHelper.API_URL, dropletId);
+		
+		HashMap<String,Object> options = new HashMap<String, Object>();
+		options.put("type", action);
+		for (Entry<String, String> param : params.entrySet()) {
+			options.put(param.getKey(), param.getValue());
+		}
+		
+		JSONObject jsonObject = new JSONObject(options);
+		
 		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						Long eventId = jsonObject.getLong("event_id");
-						new EventService(context).trackEvent(eventId, DropletService.this.findById(dropletId).getName(),getActionName(dropletAction));
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+		ByteArrayEntity entity;
+		try {
+
+			Log.v("test","JSON : " + jsonObject.toString());
+			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+			    @Override
+			    public void onSuccess(String response) {
+			        // TODO: show progress
+			    	getDropletFromAPI(dropletId, false);
+			    }
+			    @Override
+				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+					if(statusCode == 401){
+						ApiHelper.showAccessDenied();
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		    
-		    @Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
-					ApiHelper.showAccessDenied();
 				}
-			}
-		    
-		    @Override
-		    public void onFinish() {
-		    	getDropletFromAPI(dropletId, false);
-		    }
-		});
+			});
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String getAction(DropletActions dropletAction) {
@@ -127,9 +128,6 @@ public class DropletService {
 			break;
 		case PASSWORD_RESET:
 			action = "password_reset";
-			break;
-		case DESTROY:
-			action = "destroy";
 			break;
 		case RESIZE:
 			action = "resize";
@@ -155,65 +153,6 @@ public class DropletService {
 		return action;
 	}
 	
-	private String getActionName(DropletActions dropletAction) {
-		String action = "";
-		switch (dropletAction) {
-		case REBOOT:
-			action = context.getResources().getString(R.string.reboot);
-			break;
-		case POWER_CYCLE:
-			action = context.getResources().getString(R.string.power_cycle);
-			break;
-		case SHUTDOWN:
-			action = context.getResources().getString(R.string.shut_down);
-			break;
-		case POWER_OFF:
-			action = context.getResources().getString(R.string.power_off);
-			break;
-		case POWER_ON:
-			action = context.getResources().getString(R.string.power_on);
-			break;
-		case PASSWORD_RESET:
-			action = context.getResources().getString(R.string.password_reset);
-			break;
-		case DESTROY:
-			action = context.getResources().getString(R.string.destroy);
-			break;
-		case RESIZE:
-			action = context.getResources().getString(R.string.resize);
-			break;
-		case SNAPSHOT:
-			action = context.getResources().getString(R.string.snapshot);
-			break;
-		case RESTORE:
-			action = context.getResources().getString(R.string.restore);
-			break;
-		case REBUILD:
-			action = context.getResources().getString(R.string.rebuild);
-			break;
-		case ENABLE_BACKUPS:
-			action = context.getResources().getString(R.string.enable_backups);
-			break;
-		case DISABLE_BACKUPS:
-			action = context.getResources().getString(R.string.disable_backups);
-			break;
-		default:
-			break;
-		}
-		return action;
-	}
-
-	private String getActionUrl(long dropletId,String action, HashMap<String,String> params) {
-		Account currentAccount = ApiHelper.getCurrentAccount(context);
-		String url = "";//String url  = "https://api.digitalocean.com/droplets/" + dropletId + "/" + action + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
-		Iterator<Entry<String, String>> it = params.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, String> pairs = it.next();
-			url += "&" + pairs.getKey() + "=" + pairs.getValue();
-		}
-		return url;
-	}
-
 	public void getAllDropletsFromAPI(final boolean showProgress){
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
@@ -432,6 +371,14 @@ public class DropletService {
 			    public void onSuccess(String response) {
 			        // TODO: show progress
 			    }
+			    
+			    @Override
+				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+					if(statusCode == 401){
+						ApiHelper.showAccessDenied();
+					}
+				}
+			    
 			});
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
@@ -514,5 +461,32 @@ public class DropletService {
 	}
 	public boolean isRefreshing() {
 		return isRefreshing;
+	}
+
+
+	public void destroyDroplet(long dropletId) {
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
+		if(currentAccount == null){
+			return;
+		}
+		
+		String url = String.format(Locale.US,"%s/droplets/%d", ApiHelper.API_URL, dropletId);		
+				
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+		client.delete(url, new AsyncHttpResponseHandler() {
+		    @Override
+		    public void onSuccess(String response) {
+		        // TODO: show progress
+		    }
+		    
+		    @Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				if(statusCode == 401){
+					ApiHelper.showAccessDenied();
+				}
+			}
+		    
+		});	
 	}	
 }
