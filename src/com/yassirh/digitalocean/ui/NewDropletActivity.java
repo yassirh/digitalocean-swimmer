@@ -53,7 +53,8 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_droplet);
-		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		dropletService = new DropletService(this);
 		imageService = new ImageService(this);
 		sizeService = new SizeService(this);
@@ -115,6 +116,8 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 			String userData = userDataEditText.getText().toString();
 			List<Long> selectedSSHKeysIds = sshKeysMultiSelectSpinner.getSelectedIds();
 			dropletService.createDroplet(hostname,imageId,regionSlug,sizeSlug,virtualNetworking,enableBackups,enableIPv6,userData,selectedSSHKeysIds);
+			finish();
+		}else if(item.getItemId() == android.R.id.home){
 			finish();
 		}
 		return true;

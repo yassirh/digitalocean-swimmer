@@ -1,62 +1,62 @@
 package com.yassirh.digitalocean.model;
 
 public class Record {
-	private long mId;
-	private Domain mDomain;
-	private String mRecordType;
-	private String mName;
-	private String mData;
-	private Integer mPriority;
-	private Integer mPort;
-	private Integer mWeight;
+	private long id;
+	private Domain domain;
+	private String recordType;
+	private String name;
+	private String data;
+	private Integer priority;
+	private Integer port;
+	private Integer weight;
 	
 	public long getId() {
-		return mId;
+		return id;
 	}
-	public void setId(long mId) {
-		this.mId = mId;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public Domain getDomain() {
-		return mDomain;
+		return domain;
 	}
-	public void setDomain(Domain mDomain) {
-		this.mDomain = mDomain;
+	public void setDomain(Domain domain) {
+		this.domain = domain;
 	}
 	public String getRecordType() {
-		return mRecordType;
+		return recordType;
 	}
-	public void setRecordType(String mRecordType) {
-		this.mRecordType = mRecordType;
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
 	}
 	public String getName() {
-		return mName;
+		return name;
 	}
-	public void setName(String mName) {
-		this.mName = mName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getData() {
-		return mData;
+		return data;
 	}
-	public void setData(String mData) {
-		this.mData = mData;
+	public void setData(String data) {
+		this.data = data;
 	}
 	public Integer getPriority() {
-		return mPriority;
+		return priority;
 	}
 	public void setPriority(Integer priority) {
-		this.mPriority = priority;
+		this.priority = priority;
 	}
 	public Integer getPort() {
-		return mPort;
+		return port;
 	}
 	public void setPort(Integer port) {
-		this.mPort = port;
+		this.port = port;
 	}
 	public Integer getWeight() {
-		return mWeight;
+		return weight;
 	}
 	public void setWeight(Integer weight) {
-		this.mWeight = weight;
+		this.weight = weight;
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ public class Record {
 	        return false;
 	    if (o instanceof Record){
 	        Record other = (Record)o;
-	        return other.getId() == mId;	        		
+	        return other.getId() == id;	        		
 	    }
 	    else
 	        return false;

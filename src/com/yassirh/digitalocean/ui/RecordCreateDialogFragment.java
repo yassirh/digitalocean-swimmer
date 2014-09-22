@@ -26,37 +26,38 @@ import com.yassirh.digitalocean.service.RecordService;
 
 public class RecordCreateDialogFragment extends DialogFragment {
 	
-	private long mRecordId = 0L;
-	private long mDomainId = 0L;
-	private RecordService mRecordService;
-	private DomainService mDomainService;
-	AlertDialog.Builder mBuilder;
+	private long recordId = 0L;
+	private String domainName = "";
+	private RecordService recordService;
+	private DomainService domainService;
+	AlertDialog.Builder builder;
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Bundle args = getArguments();
 		if(args != null){
-			mRecordId = args.getLong("id",0);
-			mDomainId = args.getLong("domain_id",0);
+			recordId = args.getLong("id",0);
+			domainName = args.getString("domain_name");
 		}
-		mRecordService = new RecordService(getActivity());
-		mDomainService = new DomainService(getActivity());
-		List<Domain> domains = mDomainService.getAllDomains();
+		recordService = new RecordService(getActivity());
+		domainService = new DomainService(getActivity());
+		List<Domain> domains = domainService.getAllDomains();
 		LayoutInflater inflater;
-		mBuilder = new AlertDialog.Builder(getActivity());
+		builder = new AlertDialog.Builder(getActivity());
 		inflater = getActivity().getLayoutInflater();
 		final View view = inflater.inflate(R.layout.dialog_record_create, null);
 		final Spinner domainSpinner = (Spinner) view.findViewById(R.id.domainSpinner);
 		domainSpinner.setAdapter(new DomainAdapter(getActivity(), domains));
-		final Record record = mRecordService.findById(mRecordId);
-		final Domain domain = mDomainService.findById(mDomainId);
+		final Record record = recordService.findById(recordId);
+		final Domain domain = domainService.findByDomainName(domainName);
 		if(record != null){
 			domainSpinner.setSelection(domains.indexOf(record.getDomain()));
-			mBuilder.setTitle(getString(R.string.edit_record));
+			builder.setTitle(getString(R.string.edit_record));
 		}
 		else{
 			if(domain != null)
 				domainSpinner.setSelection(domains.indexOf(domain));
-			mBuilder.setTitle(getString(R.string.add_record));
+			builder.setTitle(getString(R.string.add_record));
 		}
 		final Spinner recordTypeSpinner = (Spinner) view.findViewById(R.id.recordTypeSpinner);
 		final RecordTypeAdapter recordTypeAdapter = new RecordTypeAdapter(getActivity());
@@ -161,46 +162,46 @@ public class RecordCreateDialogFragment extends DialogFragment {
 				aaaaIpAddressEditText.setText(record.getData());
 			}
 		}
-		mBuilder.setView(view);
+		builder.setView(view);
 		int positiveString = R.string.edit_record;
 		if(record == null)
 			 positiveString = R.string.add_record;
-		mBuilder.setPositiveButton(positiveString, new OnClickListener() {
+		builder.setPositiveButton(positiveString, new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				HashMap<String, String> params = new HashMap<String, String>();
 				
-				if(record != null)
-					params.put("record_id", record.getId() + "");
+				/*if(record != null)
+					params.put("id", record.getId() + "");*/
 				switch ((Integer)recordTypeAdapter.getItem(recordTypeSpinner.getSelectedItemPosition())) {
 				case R.drawable.a:
-					params.put("record_type", "A");
+					params.put("type", "A");
 					params.put("name", aHostnameEditText.getText().toString());
 					params.put("data", aIpAddressEditText.getText().toString());
 					break;
 				case R.drawable.aaaa:
-					params.put("record_type", "AAAA");
+					params.put("type", "AAAA");
 					params.put("name", aaaaHostnameEditText.getText().toString());
 					params.put("data", aaaaIpAddressEditText.getText().toString());
 					break;
 				case R.drawable.cname:
-					params.put("record_type", "CNAME");
+					params.put("type", "CNAME");
 					params.put("name", cnameNameEditText.getText().toString());
 					params.put("data", cnameHostnameEditText.getText().toString());
 					break;
 				case R.drawable.mx:
-					params.put("record_type", "MX");
+					params.put("type", "MX");
 					params.put("data", mxHostnameEditText.getText().toString());
 					params.put("priority", mxPriorityEditText.getText().toString());
 					break;
 				case R.drawable.txt:
-					params.put("record_type", "TXT");
+					params.put("type", "TXT");
 					params.put("name", txtNameEditText.getText().toString());
 					params.put("data", txtTextEditText.getText().toString());
 					break;
 				case R.drawable.srv:
-					params.put("record_type", "SRV");
+					params.put("type", "SRV");
 					params.put("name", srvNameEditText.getText().toString());
 					params.put("data", srvHostnameEditText.getText().toString());
 					params.put("priority", srvPriorityEditText.getText().toString());
@@ -215,19 +216,23 @@ public class RecordCreateDialogFragment extends DialogFragment {
 					break;
 				}
 				long recordId = 0L;
-				if(record != null)
+				if(record != null){
 					recordId = record.getId();
-				mRecordService.createOrUpdateRecord(domainSpinner.getSelectedItemId(), params, recordId, true);
+					recordService.updateRecord(((Domain)domainSpinner.getSelectedItem()).getName(), params, recordId, true);
+				}else{
+					recordService.createRecord(((Domain)domainSpinner.getSelectedItem()).getName(), params, true);
+				}
+				
 			}
 		});
-		mBuilder.setNegativeButton(R.string.cancel, new OnClickListener() {
+		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		return mBuilder.create();
+		return builder.create();
 	}
 	
 	@Override

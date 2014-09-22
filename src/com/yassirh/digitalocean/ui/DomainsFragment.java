@@ -35,11 +35,11 @@ import com.yassirh.digitalocean.service.DomainService;
 
 public class DomainsFragment extends ListFragment implements OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, Updatable{
 		
-	private DomainAdapter mDomainAdapter;
-	private DomainService mDomainService;
-	private List<Domain> mDomains;
-	private Domain mDomain;
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private DomainAdapter domainAdapter;
+	private DomainService domainService;
+	private List<Domain> domains;
+	private Domain domain;
+	private SwipeRefreshLayout swipeRefreshLayout;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -50,12 +50,12 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mDomainService = new DomainService(getActivity());
+		domainService = new DomainService(getActivity());
 		update(this.getActivity());
 		View layout = inflater.inflate(R.layout.fragment_domains, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
+		swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		swipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
 	            R.color.green_light,
 	            R.color.orange_light,
 	            R.color.red_light);
@@ -82,7 +82,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
 		            enable = firstItemVisible && topOfFirstItemVisible;
 		        }
-			    mSwipeRefreshLayout.setEnabled(enable);
+			    swipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);
@@ -90,9 +90,9 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 
 
 	public void update(Context context) {
-		mDomains = new DomainService(context).getAllDomains();
-		mDomainAdapter = new DomainAdapter(context, mDomains);
-		setListAdapter(mDomainAdapter);
+		domains = new DomainService(context).getAllDomains();
+		domainAdapter = new DomainAdapter(context, domains);
+		setListAdapter(domainAdapter);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		mDomain = new DomainService(getActivity()).findById(info.id);
+		domain = (Domain)(domainAdapter.getItem(info.position));
 		MenuInflater inflater = getActivity().getMenuInflater();
 		inflater.inflate(R.menu.domain_context, menu);
 	}
@@ -117,7 +117,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 		});
 		switch (item.getItemId()) {
 			case R.id.action_destroy:
-				alertDialog.setTitle(getString(R.string.destroy) + " : " + mDomain.getName());
+				alertDialog.setTitle(getString(R.string.destroy) + " : " + domain.getName());
 				alertDialog.setMessage(R.string.destroy_domain_alert);
 				alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 					
@@ -139,7 +139,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 				recordCreateDialogFragment.show(fm, "create_record");
 				return true;
 			case R.id.action_visit_domain:
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + mDomain.getName()));
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + domain.getName()));
 				startActivity(browserIntent);
 				return true;
 		}
@@ -149,7 +149,8 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Bundle args = new Bundle();
-        args.putLong("id", id);
+		Domain domain = (Domain) domainAdapter.getItem(position);
+        args.putString("domainName", domain.getName());
 		DomainDetailsDialogFragment domainDetailsDialogFragment = new DomainDetailsDialogFragment();
 		domainDetailsDialogFragment.setArguments(args);
 		FragmentManager supportFragment = ((FragmentActivity)this.getActivity()).getSupportFragmentManager();
@@ -158,17 +159,17 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 	
 	@Override
 	public void onRefresh() {
-		mDomainService.getAllDomainsFromAPI(true);
+		domainService.getAllDomainsFromAPI(true);
 		handler.post(refreshing);
 	}
 	
 	private final Runnable refreshing = new Runnable(){
 	    public void run(){
 	        try {
-	        	if(mDomainService.isRefreshing()){
+	        	if(domainService.isRefreshing()){
 	        		handler.postDelayed(this, 1000);   
 	        	}else{
-	        		mSwipeRefreshLayout.setRefreshing(false);
+	        		swipeRefreshLayout.setRefreshing(false);
 	        	}
 	        }
 	        catch (Exception e) {

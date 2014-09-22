@@ -24,8 +24,8 @@ import com.yassirh.digitalocean.service.RecordService;
 public class DomainDetailsDialogFragment extends DialogFragment {
 
 
-	DomainService mDomainService;
-	RecordService mRecordService;
+	DomainService domainService;
+	RecordService recordService;
 	
 	public DomainDetailsDialogFragment() {
 	}
@@ -35,10 +35,10 @@ public class DomainDetailsDialogFragment extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View vi = inflater.inflate(R.layout.dialog_domain_details, container);
-		long id = getArguments().getLong("id");
-		mDomainService = new DomainService(getActivity());
-		mRecordService = new RecordService(getActivity());
-		Domain domain = mDomainService.findById(id);
+		String domainName = getArguments().getString("domainName");
+		domainService = new DomainService(getActivity());
+		recordService = new RecordService(getActivity());
+		Domain domain = domainService.findByDomainName(domainName);
         RecordAdapter recordAdapter = new RecordAdapter(getActivity(), domain.getRecords());
         
 		getDialog().setTitle(domain.getName());
@@ -55,13 +55,13 @@ public class DomainDetailsDialogFragment extends DialogFragment {
 		return vi;
 	}
 	
-	private Record mRecord;
+	private Record record;
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.recordsListView) {
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-			mRecord = new RecordService(getActivity()).findById(info.id);
+			record = new RecordService(getActivity()).findById(info.id);
 			MenuInflater inflater = getActivity().getMenuInflater();
 			inflater.inflate(R.menu.record_context, menu);
 			
@@ -82,15 +82,15 @@ public class DomainDetailsDialogFragment extends DialogFragment {
 		switch (item.getItemId()) {
 			case R.id.action_edit_record:
 				Bundle args = new Bundle();
-				args.putLong("id", mRecord.getId());
+				args.putLong("id", record.getId());
+				args.putString("domain_name", record.getDomain().getName());
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 				recordCreateDialogFragment.setArguments(args);
 				recordCreateDialogFragment.show(fm, "create_record");
 				return true;
 			case R.id.action_destroy:
-				// FIXME
-				//mRecordService.deleteDomainRecord(mRecord.getDomain().getId(), mRecord.getId(), true);
+				recordService.deleteDomainRecord(record.getDomain().getName(), record.getId(), true);
 				this.dismiss();
 				return true;				
 		}

@@ -12,16 +12,16 @@ import com.yassirh.digitalocean.model.Record;
 
 public class RecordDao extends SqlDao<Record> {
 
-	private DatabaseHelper mDatabaseHelper;
+	private DatabaseHelper databaseHelper;
 
 	public RecordDao(DatabaseHelper databaseHelper) {
 		super();
-		this.mDatabaseHelper = databaseHelper;
+		this.databaseHelper = databaseHelper;
 	}
 
 	public Record newInstance(Cursor c) {
 		Record record = new Record();
-		Domain domain = new DomainDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(RecordTable.DOMAIN_ID)));
+		Domain domain = new DomainDao(databaseHelper).findByProperty(DomainTable.NAME, c.getString(c.getColumnIndex(RecordTable.DOMAIN_NAME)));
 		record.setId(c.getLong(c.getColumnIndex(RecordTable.ID)));
 		record.setName(c.getString(c.getColumnIndex(RecordTable.NAME)));
 		record.setDomain(domain);
@@ -35,7 +35,7 @@ public class RecordDao extends SqlDao<Record> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return mDatabaseHelper;
+		return databaseHelper;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class RecordDao extends SqlDao<Record> {
 		ContentValues values = new ContentValues();
 		values.put(RecordTable.ID, record.getId());
 		values.put(RecordTable.NAME, record.getName());
-		//values.put(RecordTable.DOMAIN_ID, record.getDomain().getId());
+		values.put(RecordTable.DOMAIN_NAME, record.getDomain().getName());
 		values.put(RecordTable.RECORD_TYPE, record.getRecordType());
 		values.put(RecordTable.DATA, record.getData());
 		values.put(RecordTable.PORT, record.getPort());
@@ -63,10 +63,10 @@ public class RecordDao extends SqlDao<Record> {
 		}
 	}
 
-	public List<Record> getAllByDomain(long domainId) {
+	public List<Record> getAllByDomain(String domainName) {
 		List<Record> records = new ArrayList<Record>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
-				getTableHelper().getAllColumns(), RecordTable.DOMAIN_ID + " = " + domainId, null, null, null, null);
+				getTableHelper().getAllColumns(), RecordTable.DOMAIN_NAME + " = '" + domainName + "'", null, null, null, null);
 		
 		if(cursor.moveToFirst()){
 			while (!cursor.isAfterLast()) {
@@ -79,8 +79,8 @@ public class RecordDao extends SqlDao<Record> {
 		return records;
 	}
 
-	public void deleteAllRecordsByDomain(long domainId) {
-		db.delete(getTableHelper().TABLE_NAME, RecordTable.DOMAIN_ID + " = " + domainId, null);
+	public void deleteAllRecordsByDomain(String domainName) {
+		db.delete(getTableHelper().TABLE_NAME, RecordTable.DOMAIN_NAME + " = '" + domainName + "'", null);
 	}
 	
 }
