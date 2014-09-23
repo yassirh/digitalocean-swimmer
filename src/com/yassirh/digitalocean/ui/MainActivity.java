@@ -1,8 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -30,44 +28,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Droplet;
-import com.yassirh.digitalocean.model.Image;
-import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
-import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 public class MainActivity extends ActionBarActivity implements Updatable {
 
-	private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+	private DrawerLayout drawerLayout;
+    private ListView drawerList;
+    private ActionBarDrawerToggle drawerToggle;
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mNavigationTitles;
+    private CharSequence drawerTitle;
+    private CharSequence title;
+    private String[] navigationTitles;
     
-    private DropletService mDropletService;
-    private DomainService mDomainService;
-    Intent intent;
-    
+    private DropletService dropletService;
+    private DomainService domainService;
+    private Intent intent;
+
+	private long lastBackPressed;
+	Fragment fragment = new Fragment();
+    Integer currentSelected = 0;
+	
     @SuppressLint("HandlerLeak")
-	Handler mUiHandler = new Handler(){
+	Handler uiHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){
             update(MainActivity.this);
@@ -81,80 +77,79 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 				try {
 					Thread.sleep(1000);
 					Boolean update = false;
-					if(MainActivity.this.mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
+					if(currentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
 						DropletService dropletService = new DropletService(MainActivity.this);
 						update = dropletService.requiresRefresh();
 						dropletService.setRequiresRefresh(false);
 					}
-					else if(MainActivity.this.mCurrentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
+					else if(currentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
 						ImageService imageService = new ImageService(MainActivity.this);
 						update = imageService.requiresRefresh();
 						imageService.setRequiresRefresh(false);
 					}
-					else if(MainActivity.this.mCurrentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
+					else if(currentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
 						DomainService domainService = new DomainService(MainActivity.this);
 						update = domainService.requiresRefresh();
 						domainService.setRequiresRefresh(false);
 					}
-					else if(MainActivity.this.mCurrentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
+					else if(currentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
 						SizeService sizeService = new SizeService(MainActivity.this);
 						update = sizeService.requiresRefresh();
 						sizeService.setRequiresRefresh(false);
 					}
-					else if(MainActivity.this.mCurrentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
+					else if(currentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
 						RegionService regionService = new RegionService(MainActivity.this);
 						update = regionService.requiresRefresh();
 						regionService.setRequiresRefresh(false);
 					}
-					else if(MainActivity.this.mCurrentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
+					else if(currentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
 						SSHKeyService sshKeyService = new SSHKeyService(MainActivity.this);
 						update = sshKeyService.requiresRefresh();
 						sshKeyService.setRequiresRefresh(false);
 					}
 					if(update)
-						mUiHandler.sendMessage(new Message());
+						uiHandler.sendMessage(new Message());
 					
 				} catch (InterruptedException e) {
 				}
 			}
 		}
 	});
-	private long lastBackPressed;
     	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		mTitle = mDrawerTitle = getTitle();
-		mNavigationTitles = getResources().getStringArray(R.array.main_navigation_array);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		title = drawerTitle = getTitle();
+		navigationTitles = getResources().getStringArray(R.array.main_navigation_array);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerList = (ListView) findViewById(R.id.left_drawer);
 		
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(new NavigationDrawerAdapter(this, mNavigationTitles));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        drawerList.setAdapter(new NavigationDrawerAdapter(this, navigationTitles));
+        drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         
-        mDrawerToggle = new ActionBarDrawerToggle(
+        drawerToggle = new ActionBarDrawerToggle(
                 this,
-                mDrawerLayout,
+                drawerLayout,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close
                 ) {
             public void onDrawerClosed(View view) {
-            	getSupportActionBar().setTitle(mTitle);
+            	getSupportActionBar().setTitle(title);
             	supportInvalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-            	getSupportActionBar().setTitle(mDrawerTitle);
+            	getSupportActionBar().setTitle(drawerTitle);
             	supportInvalidateOptionsMenu();
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         if (savedInstanceState == null) {
             selectItem(0);
@@ -216,33 +211,33 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         FragmentManager fm;
         switch(item.getItemId()) {
         case R.id.action_sync:
-        	if(mCurrentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
+        	if(currentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
         		DropletService dropletService = new DropletService(this);
         		dropletService.getAllDropletsFromAPI(true);
         	}
-        	else if(mCurrentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
+        	else if(currentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
         		DomainService domainService = new DomainService(this);
         		domainService.getAllDomainsFromAPI(true);
         	}
-        	else if(mCurrentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
+        	else if(currentSelected == DrawerPositions.IMAGES_FRAGMENT_POSITION){
         		ImageService imageService = new ImageService(this);
         		imageService.getAllImagesFromAPI(true);	
         	}
-        	else if(mCurrentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
+        	else if(currentSelected == DrawerPositions.REGIONS_FRAGMENT_POSITION){
         		RegionService regionService = new RegionService(this);
         		regionService.getAllRegionsFromAPI(true);	
         	}
-        	else if(mCurrentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
+        	else if(currentSelected == DrawerPositions.SIZES_FRAGMENT_POSITION){
         		SizeService sizeService = new SizeService(this);
         		sizeService.getAllSizesFromAPI(true);
         	}    		
-        	else if(mCurrentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
+        	else if(currentSelected == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
         		SSHKeyService sshKeysService = new SSHKeyService(this);
         		sshKeysService.getAllSSHKeysFromAPI(true);
         	}
@@ -257,19 +252,19 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	builder = new AlertDialog.Builder(this);
     	    inflater = getLayoutInflater();
     		View view = inflater.inflate(R.layout.dialog_domain_create, null);
-    		mDropletService = new DropletService(this);
+    		dropletService = new DropletService(this);
     		getResources().getString(R.string.create_domain);
     		builder.setView(view);
     		
     		final EditText domainNameEditText = (EditText)view.findViewById(R.id.domainNameEditText);
     		final Spinner dropletSpinner = (Spinner)view.findViewById(R.id.dropletSpinner);
-    		dropletSpinner.setAdapter(new DropletAdapter(this, mDropletService.getAllDroplets()));
+    		dropletSpinner.setAdapter(new DropletAdapter(this, dropletService.getAllDroplets()));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mDomainService = new DomainService(MainActivity.this);
-					mDomainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getNetworks().get(0).getIpAddress(),true);
+					domainService = new DomainService(MainActivity.this);
+					domainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getNetworks().get(0).getIpAddress(),true);
 				}
 			});
     		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -313,32 +308,31 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mCurrentSelected = position;
+            currentSelected = position;
             selectItem(position);
         }
     }
     
-    Fragment mFragment = new Fragment();
-    Integer mCurrentSelected = 0;
+    
     private void selectItem(int position) {
     	
     	if(position == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
-    		mFragment = new DropletsFragment();
+    		fragment = new DropletsFragment();
     	}
     	else if(position == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
-    		mFragment = new DomainsFragment();
+    		fragment = new DomainsFragment();
     	}
     	else if(position == DrawerPositions.IMAGES_FRAGMENT_POSITION){
-    		mFragment = new ImagesFragment();
+    		fragment = new ImagesFragment();
     	}
     	else if(position == DrawerPositions.REGIONS_FRAGMENT_POSITION){
-    		mFragment = new RegionsFragment();
+    		fragment = new RegionsFragment();
     	}
     	else if(position == DrawerPositions.SIZES_FRAGMENT_POSITION){
-    		mFragment = new SizesFragment();
+    		fragment = new SizesFragment();
     	}
     	else if(position == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
-    		mFragment = new SSHKeyFragment();
+    		fragment = new SSHKeyFragment();
     	}
     	else if(position == DrawerPositions.SETTINGS_POSITION){
     		Intent intent = new Intent(this, SettingsActivity.class);
@@ -346,37 +340,37 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	finish();
     	}
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, mFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mNavigationTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        drawerList.setItemChecked(position, true);
+        setTitle(navigationTitles[position]);
+        drawerLayout.closeDrawer(drawerList);
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        this.mTitle = title;
+        this.title = title;
         getSupportActionBar().setTitle(title);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-        selectItem(mCurrentSelected);
+        drawerToggle.onConfigurationChanged(newConfig);
+        selectItem(currentSelected);
         update(this);
     }
 
 	@Override
 	public void update(Context context) {
 		try {
-			((Updatable)mFragment).update(context);
+			((Updatable)fragment).update(context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

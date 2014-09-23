@@ -2,8 +2,6 @@ package com.yassirh.digitalocean.utils;
 
 import java.util.Locale;
 
-import com.yassirh.digitalocean.R;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
