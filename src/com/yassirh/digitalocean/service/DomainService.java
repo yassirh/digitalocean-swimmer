@@ -1,10 +1,13 @@
 package com.yassirh.digitalocean.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -106,7 +110,7 @@ public class DomainService {
 					for (Domain domain : domains) {
 						new RecordService(context).getRecordsByDomainFromAPI(domain.getName(),false);
 					}
-					DomainService.this.setRequiresRefresh(true);
+					setRequiresRefresh(true);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}  
@@ -153,66 +157,65 @@ public class DomainService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "";//"https://api.digitalocean.com/domains/new?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey() + "&name=" + domainName + "&ip_address=" + ipAddress;
+		String url = String.format(Locale.US,"%s/domains", ApiHelper.API_URL);
+		
+		HashMap<String,Object> options = new HashMap<String, Object>();
+		options.put("name", domainName);
+		options.put("ip_address", ipAddress);
+		
+		JSONObject jsonObject = new JSONObject(options);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager notifyManager;
-			NotificationCompat.Builder builder;
-			
-			@Override
-			public void onStart() {
-				if(showProgress){
-					notifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					builder = new NotificationCompat.Builder(context);
-					builder.setContentTitle(context.getResources().getString(R.string.creating_domain))
-					    .setContentText("")
-					    .setSmallIcon(R.drawable.ic_launcher);
-
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
-				}
-			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						
+		try {
+			ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+				NotificationManager notifyManager;
+				NotificationCompat.Builder builder;
+				
+				@Override
+				public void onStart() {
+					if(showProgress){
+						notifyManager =
+						        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+						builder = new NotificationCompat.Builder(context);
+						builder.setContentTitle(context.getResources().getString(R.string.creating_domain))
+						    .setContentText("")
+						    .setSmallIcon(R.drawable.ic_launcher);
+	
+						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
 					}
-					else{
-						// TODO handle error Access Denied/Not Found
+				}
+				
+			    @Override
+			    public void onSuccess(String response) {
+			    }
+			    
+			    @Override
+				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			    	Log.v("test",new String(responseBody));
+					if(statusCode == 401){
+						ApiHelper.showAccessDenied();
 					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		    
-		    @Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
-					ApiHelper.showAccessDenied();
 				}
-			}
-		    
-		    @Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
+			    
+			    @Override
+				public void onProgress(int bytesWritten, int totalSize) {	
+					if(showProgress){
+						builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
+					}
 				}
-			}
-		    
-		    @Override
-		    public void onFinish() {
-		    	if(showProgress)
-					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN);
-		    	DomainService.this.getAllDomainsFromAPI(false);
-		    }
-		});
+			    
+			    @Override
+			    public void onFinish() {
+			    	if(showProgress)
+						notifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN);
+			    	DomainService.this.getAllDomainsFromAPI(false);
+			    }
+			});
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Domain findByDomainName(String domainName) {
@@ -224,14 +227,15 @@ public class DomainService {
 		return domain;
 	}
 
-	public void deleteDomain(final long id, final boolean showProgress) {
+	public void deleteDomain(final String domainName, final boolean showProgress) {
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		String url = "";//String url = "https://api.digitalocean.com/domains/"  + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = String.format(Locale.US,"%s/domains/%s", ApiHelper.API_URL, domainName);
 		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+		client.delete(url, new AsyncHttpResponseHandler() {
 			NotificationManager notifyManager;
 			NotificationCompat.Builder builder;
 			
@@ -251,19 +255,9 @@ public class DomainService {
 			
 		    @Override
 		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						
-					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
+		    	DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(context));
+		    	domainDao.deleteByName(domainName);
+		    	setRequiresRefresh(true);
 		    }
 		    
 		    @Override
@@ -285,9 +279,6 @@ public class DomainService {
 		    public void onFinish() {
 		    	if(showProgress)
 					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN);
-		    	DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(context));
-		    	domainDao.delete(id);
-		    	DomainService.this.setRequiresRefresh(true);
 		    }
 		});
 	}

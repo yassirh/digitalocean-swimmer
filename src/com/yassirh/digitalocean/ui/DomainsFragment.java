@@ -123,8 +123,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// FIXME
-						//mDomainService.deleteDomain(mDomain.getId(),true);
+						domainService.deleteDomain(domain.getName(),true);
 					}
 				});
 				alertDialog.show();

@@ -87,8 +87,6 @@ public class DropletService {
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		ByteArrayEntity entity;
 		try {
-
-			Log.v("test","JSON : " + jsonObject.toString());
 			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 			    @Override

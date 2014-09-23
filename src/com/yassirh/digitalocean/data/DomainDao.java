@@ -8,11 +8,11 @@ import com.yassirh.digitalocean.model.Domain;
 
 public class DomainDao extends SqlDao<Domain> {
 
-	private DatabaseHelper mDatabaseHelper;
+	private DatabaseHelper databaseHelper;
 
 	public DomainDao(DatabaseHelper databaseHelper) {
 		super();
-		this.mDatabaseHelper = databaseHelper;
+		this.databaseHelper = databaseHelper;
 	}
 
 	public long create(Domain domain) {		
@@ -34,11 +34,16 @@ public class DomainDao extends SqlDao<Domain> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.mDatabaseHelper;
+		return this.databaseHelper;
 	}
 
 	@Override
 	public TableHelper getTableHelper() {
 		return new DomainTable();
+	}
+
+	public void deleteByName(String domainName) {
+		db.delete(getTableHelper().TABLE_NAME,DomainTable.NAME + " = ?", new String[]{domainName});
+		// TODO: Delete domain records 
 	}	
 }

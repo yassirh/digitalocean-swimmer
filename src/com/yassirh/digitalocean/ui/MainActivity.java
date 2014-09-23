@@ -269,7 +269,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					mDomainService = new DomainService(MainActivity.this);
-					//mDomainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getIpAddress(),true);
+					mDomainService.createDomain(domainNameEditText.getText().toString(),((Droplet)dropletSpinner.getSelectedItem()).getNetworks().get(0).getIpAddress(),true);
 				}
 			});
     		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
