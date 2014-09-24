@@ -3,7 +3,7 @@
 $code = $_GET['code'];
 $clientId = "<CHANGE ME!>";
 $clientSecret = "<CHANGE ME!>";
-$redirectionUrl = rawurlencode("<CHANGE ME!>/genrate_token.php");
+$redirectionUrl = rawurlencode("<CHANGE ME!>/generate_token.php");
 $url = sprintf("https://cloud.digitalocean.com/v1/oauth/token?client_id=%s&client_secret=%s&grant_type=authorization_code&code=%s&redirect_uri=%s", $clientId, $clientSecret, $code, $redirectionUrl);
 
 $fields = array();

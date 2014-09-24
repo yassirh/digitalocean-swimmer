@@ -1,10 +1,13 @@
 package com.yassirh.digitalocean.utils;
 
+import java.util.Date;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import com.yassirh.digitalocean.model.Account;
+import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -41,6 +44,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		
 		SizeService sizeService = new SizeService(context);
 		sizeService.getAllSizesFromAPI(false);
+		
+		// 3 days until access token expires 
+		if(currentAccount.getExpiresIn().getTime() - new Date().getTime() < 259200000){
+			AccountService accountService = new AccountService(context);
+			accountService.getNewToken();
+		}
 	}
 	
 }
