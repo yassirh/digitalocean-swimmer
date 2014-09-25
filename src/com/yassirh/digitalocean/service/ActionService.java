@@ -47,9 +47,7 @@ public class ActionService {
 		t = new Thread(new Runnable() {
 			NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);;
 			NotificationCompat.Builder builder;
-			
-			boolean sleep = false;
-			Object sleepLock = new Object();
+			Set<Integer> shownNotifications = new HashSet<Integer>();
 			@Override
 			public void run() {
 				for (;;) {
@@ -67,17 +65,25 @@ public class ActionService {
 										JSONObject actionJSONObject = actionsJSONArray.getJSONObject(i);
 										Action action = jsonObjectToAction(actionJSONObject);
 										if(action.getStatus().equals("in-progress")){
-											builder = new NotificationCompat.Builder(context);
-											if(action.getResourceType().equals("droplet") && (dropletDao.findById(action.getResourceId())) != null){
-												builder.setContentTitle(dropletDao.findById(action.getResourceId()).getName())
-												.setContentText(action.getType() + " - In progress")
-												.setSmallIcon(R.drawable.ic_launcher);	
+											if(!shownNotifications.contains((int)action.getId())){
+												builder = new NotificationCompat.Builder(context);
+												if(action.getResourceType().equals("droplet")){
+													builder.setContentTitle(dropletDao.findById(action.getResourceId()).getName())
+													.setContentText(action.getType() + " - in progress")
+													.setSmallIcon(R.drawable.ic_launcher);	
+													builder.setProgress(0, 0, true);
+												}
+												
+												builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+												notifyManager.notify((int)action.getId(), builder.build());
+												shownNotifications.add((int)action.getId());
 											}
-											
-											builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-											notifyManager.notify((int)action.getId(), builder.build());
 										}
 										else{
+											if(shownNotifications.contains((int)action.getId())){
+												new DropletService(context).getAllDropletsFromAPI(false);
+												shownNotifications.remove((int)action.getId());
+											}
 											notifyManager.cancel((int)action.getId());
 										}
 									}

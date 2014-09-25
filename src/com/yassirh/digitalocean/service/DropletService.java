@@ -90,10 +90,7 @@ public class DropletService {
 		try {
 			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
-			    @Override
-			    public void onSuccess(String response) {
-			    	getDropletFromAPI(dropletId, false);
-			    }
+			    
 			    @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
@@ -388,31 +385,10 @@ public class DropletService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = "";//String url = "https://api.digitalocean.com/droplets/" + dropletId + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
+		String url = String.format(Locale.US, "%s/droplets/%d", ApiHelper.API_URL, dropletId);
 		AsyncHttpClient client = new AsyncHttpClient();
+		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager notifyManager;
-			NotificationCompat.Builder builder;
-			
-			@Override
-			public void onStart() {
-				if(showProgress){
-					notifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					builder = new NotificationCompat.Builder(context);
-					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
-					    .setSmallIcon(R.drawable.ic_launcher);
-
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, builder.build());
-				}
-			}
-			
-			@Override
-			public void onFinish() {
-				if(showProgress)
-					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_DROPLET);
-			}
 			
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
@@ -421,32 +397,15 @@ public class DropletService {
 				}
 			}
 			
-			@Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_DROPLET, builder.build());
-				}
-			}
-			
 		    @Override
 		    public void onSuccess(String response) { 
 		        try {
 					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					List<Droplet> droplets = new ArrayList<Droplet>();
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONObject dropletJSONObject = jsonObject.getJSONObject("droplet");
-						Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
-						droplets.add(droplet);
-						DropletService.this.update(droplet);
-						DropletService.this.setRequiresRefresh(true);
-					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
+					JSONObject dropletJSONObject = jsonObject.getJSONObject("droplet");
+					Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
+					DropletService.this.update(droplet);
+					DropletService.this.setRequiresRefresh(true);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}  
 		    }			
@@ -457,10 +416,10 @@ public class DropletService {
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
 		dropletDao.createOrUpdate(droplet);
 	}
+	
 	public boolean isRefreshing() {
 		return isRefreshing;
 	}
-
 
 	public void destroyDroplet(long dropletId) {
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
