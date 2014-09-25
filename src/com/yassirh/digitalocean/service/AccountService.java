@@ -1,6 +1,7 @@
 package com.yassirh.digitalocean.service;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.Header;
@@ -58,5 +59,11 @@ public class AccountService {
 			}
 			
 		});
+	}
+
+	public boolean hasAccounts() {
+		AccountDao accountDao = new AccountDao(DatabaseHelper.getInstance(context));
+		List<Account> accounts = accountDao.getAll(null);
+		return accounts.size() > 0;
 	}
 }

@@ -34,13 +34,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
@@ -151,6 +154,13 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         };
         drawerLayout.setDrawerListener(drawerToggle);
 
+		AccountService accountService = new AccountService(this);
+		if(!accountService.hasAccounts()){
+			FragmentManager fm = getSupportFragmentManager();
+			SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
+			switchAccountDialogFragment.show(fm, "switch_account");
+		}
+        
         if (savedInstanceState == null) {
             selectItem(0);
             update(this);
