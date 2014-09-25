@@ -37,6 +37,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.AccountService;
+import com.yassirh.digitalocean.service.ActionService;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
@@ -160,6 +161,9 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
 			switchAccountDialogFragment.show(fm, "switch_account");
 		}
+		
+		ActionService actionService = new ActionService(this);
+		actionService.trackEvents();
         
         if (savedInstanceState == null) {
             selectItem(0);

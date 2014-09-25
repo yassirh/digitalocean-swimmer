@@ -62,6 +62,7 @@ public class DropletService {
 		editor.putBoolean("droplet_require_refresh", requireRefresh);
 		editor.commit();
 	}
+	
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("droplet_require_refresh", true);
@@ -91,7 +92,6 @@ public class DropletService {
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 			    @Override
 			    public void onSuccess(String response) {
-			        // TODO: show progress
 			    	getDropletFromAPI(dropletId, false);
 			    }
 			    @Override
