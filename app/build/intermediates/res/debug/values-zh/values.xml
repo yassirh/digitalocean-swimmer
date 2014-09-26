@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/D:/Projects/digitalocean-swimmer/app/src/main/res/values-zh/strings.xml -->
+    <eat-comment />
+
+    <string-array name="main_navigation_array">
+        <item>DO水滴</item>
+        <item>網域名稱</item>
+        <item>系統映像</item>
+        <item>SSH金鑰</item>
+        <item>主機地區</item>
+        <item>主機規格</item>
+    </string-array>
+    <string-array name="pref_locale_entries">
+        <item name="0">English</item>
+        <item name="1">Deutsch</item>
+        <item name="2">繁體中文</item>
+        <item name="3">簡體中文</item>
+    </string-array>
+    <string-array name="pref_locale_values">
+        <item name="0">en_US</item>
+        <item name="1">de_DE</item>
+        <item name="2">zh_TW</item>
+        <item name="3">zh_CN</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_entries">
+        <item name="0">從不 (手動同步)</item>
+        <item name="1">每1分鐘</item>
+        <item name="30">每30分鐘</item>
+        <item name="60">每1小時</item>
+        <item name="240">每4小時</item>
+        <item name="1440">每24小時</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="30">30</item>
+        <item name="60">60</item>
+        <item name="240">240</item>
+        <item name="1440">1440</item>
+    </string-array>
+
+    <string name="access_denied_message">無法登入系統! 請重新確認您的帳號及API金鑰</string>
+    <string name="account_name_label">客戶名稱</string>
+    <string name="action_about">相關</string>
+    <string name="action_add_account">新增帳號</string>
+    <string name="action_add_domain">新增網域</string>
+    <string name="action_add_droplet">新增DO水滴</string>
+    <string name="action_add_record">新增記錄</string>
+    <string name="action_add_ssh_key">新增SSH金鑰</string>
+    <string name="action_settings">設定</string>
+    <string name="action_switch_account">切換帳號</string>
+    <string name="add_existing_account">增加已存在的帳號</string>
+    <string name="add_record">新增記錄</string>
+    <string name="add_ssh_key">新增SSH金鑰</string>
+    <string name="api_key_label">API金鑰</string>
+    <string name="api_settings_title">API設定</string>
+    <string name="app_name">DO Swimmer</string>
+    <string name="back_button_label">上一步</string>
+    <string name="backups_active_label">備份:</string>
+    <string name="cancel">取消</string>
+    <string name="client_id_label">客戶帳號</string>
+    <string name="cpus_label">處理器:</string>
+    <string name="create_account">產生帳號</string>
+    <string name="create_domain">產生網域名稱</string>
+    <string name="create_droplet">產生DO水滴</string>
+    <string name="create_new_account">建立新的帳號</string>
+    <string name="create_record">產生記錄</string>
+    <string name="created_at_label">建立於:</string>
+    <string name="creating_domain">網域 產生中</string>
+    <string name="creating_droplet">水滴 產生中</string>
+    <string name="creating_record">記錄 產生中</string>
+    <string name="destroy">銷毀</string>
+    <string name="destroy_domain_alert">這將銷毀您的網域名稱. 您確定嗎?</string>
+    <string name="destroy_droplet_alert">這是一個不可逆的行為. 我們將銷毀您這個DO水滴以及其相關的所有備份.\n\n您確定要執行這個指令嗎?</string>
+    <string name="destroy_ssh_key_alert">您確定要銷毀?</string>
+    <string name="destroying_domain">網域 銷毀中</string>
+    <string name="destroying_record">記錄 銷毀中</string>
+    <string name="destroying_ssh_key">SSH金鑰 銷毀中</string>
+    <string name="disable_backups">關閉備份功能</string>
+    <string name="disable_backups_alert">這將關閉每天的自動化備份排程, 您的DO水滴的備份工作將停止.</string>
+    <string name="disk_label">硬碟空間:</string>
+    <string name="domain_name_label">網域名稱</string>
+    <string name="drawer_close">開啟導覽列</string>
+    <string name="drawer_open">開啟導覽列</string>
+    <string name="edit_record">編輯記錄</string>
+    <string name="edit_ssh_key">編輯SSH金鑰</string>
+    <string name="enable_backups">開啟備份功能</string>
+    <string name="enable_backups_alert">這將啟動每天的自動化備份排程, 將您的DO水滴的數據進行備份.</string>
+    <string name="hostname_label">主機名稱:</string>
+    <string name="hourly">每小時</string>
+    <string name="image_label">系統映像:</string>
+    <string name="ip_address_label">IP位址:</string>
+    <string name="ipv6_active_label">IPv6:</string>
+    <string name="locked_label">鎖定:</string>
+    <string name="memory_label">記憶體:</string>
+    <string name="message_feature_disabled_api">操作終止 : API禁止這個行為</string>
+    <string name="message_press_again_to_exit">請再按上一步按鈕以退出!</string>
+    <string name="monthly">每個月</string>
+    <string name="name">名稱</string>
+    <string name="name_label">名稱:</string>
+    <string name="next_button_label">下一步</string>
+    <string name="no">否</string>
+    <string name="no_domains">沒有網域名稱!</string>
+    <string name="no_droplets">沒有DO水滴!</string>
+    <string name="no_images">沒有系統映像!</string>
+    <string name="no_records">沒有記錄!</string>
+    <string name="no_regions">沒有主機地區!</string>
+    <string name="no_sizes">沒有主機規格!</string>
+    <string name="no_ssh_client">查無SSH客戶端! 請安裝SSH以繼續此項功能</string>
+    <string name="no_ssh_keys">沒有SSH金鑰!</string>
+    <string name="no_thanks">不, 謝謝</string>
+    <string name="not_yet_implemented">尚未執行</string>
+    <string name="ok">好的</string>
+    <string name="password_reset">密碼重設</string>
+    <string name="port_label">端口:</string>
+    <string name="power_cycle">系統重新啟動</string>
+    <string name="power_cycle_alert">這將會重啟您這個DO水滴.\n\n我們建議您使用命令列方式來重啟DO水滴, 因為這裡採用的電源強制重啟方式有可能會導致您的資料受損.\n\n您確定要執行這個指令嗎?</string>
+    <string name="power_off">電源關閉</string>
+    <string name="power_off_alert">這將關閉您這個DO水滴的電源.\n\n我們建議您使用命令列方式來關閉DO水滴, 因為這裡採用的電源強制重啟方式有可能會導致您的資料受損.\n\n您確定要執行這個指令嗎?</string>
+    <string name="power_on">電源開啟</string>
+    <string name="power_on_alert">這將會重啟您這個DO水滴.\n\n您確定要執行這個指令嗎?</string>
+    <string name="pref_locale_key_label">語言</string>
+    <string name="pref_sync_frequency_key_label">同步間隔時間</string>
+    <string name="preferences_title">偏好設定</string>
+    <string name="priority_label">優先排序:</string>
+    <string name="private_networking_active_label">私人網路:</string>
+    <string name="private_networking_label">私人網路</string>
+    <string name="private_visibility">私人</string>
+    <string name="public_ssh_key_label">公開的SSH金鑰:</string>
+    <string name="public_visibility">公開</string>
+    <string name="rate_app">請評分 %1$s</string>
+    <string name="rate_message">如果您覺得 %1$s 不錯, 請用您一點點的時間為我們評分. 謝謝您的大大力支持!</string>
+    <string name="reboot">重新啟動</string>
+    <string name="reboot_alert">這將會重啟您這個DO水滴.\n\n您確定要執行這個指令嗎?</string>
+    <string name="rebuild">重新建立</string>
+    <string name="rebuild_alert">這項功能將允許您使用預設的系統映像來重建您目前的DO水滴. 也就是說, 如果您想從新來過, 但同時保留原有的IP位址時, 就是用這招啦.</string>
+    <string name="record_type_label">記錄方式:</string>
+    <string name="records">記錄</string>
+    <string name="region_label">主機地區:</string>
+    <string name="reminde_me_later">請稍後提醒我</string>
+    <string name="rename">更換名稱</string>
+    <string name="resize">更改規格</string>
+    <string name="restore">重新載入</string>
+    <string name="restore_alert">這項功能將使用您之前保存的某個系統快照來重建您目前的DO水滴. 也就是說, 您的DO水滴將被複製成為之前某次系統快照的內容. 請確保您已經對目前系統內的重要資料進行備份.</string>
+    <string name="save_account">儲存帳號</string>
+    <string name="saving_ssh_key">儲存SSH金鑰</string>
+    <string name="scrub_data">消除數據</string>
+    <string name="select_droplet_label">選擇DO水滴:</string>
+    <string name="select_image_label">選擇系統映像:</string>
+    <string name="select_region_label">選擇主機地區:</string>
+    <string name="select_size_label">選擇主機規格:</string>
+    <string name="settings">設定</string>
+    <string name="shut_down">系統關機</string>
+    <string name="shut_down_alert">這將把您這個DO水滴進行關機.\n\n您確定要執行這個指令嗎?</string>
+    <string name="skip_button_label">略過</string>
+    <string name="snapshot">系統快照</string>
+    <string name="ssh_keys_label">SSH金鑰:</string>
+    <string name="ssh_to_droplet">SSH到DO水滴</string>
+    <string name="summary_account_name">客戶名稱</string>
+    <string name="summary_api_key">API金鑰</string>
+    <string name="summary_client_id">客戶帳號</string>
+    <string name="summary_locale">選擇語言</string>
+    <string name="summary_sync_frequency">設定與系統同步的間隔時間</string>
+    <string name="summary_token">認證API金鑰的號碼產生器</string>
+    <string name="switch_account">切換帳號</string>
+    <string name="sync">同步</string>
+    <string name="synchronising">同步中</string>
+    <string name="synchronising_domains">網域同步中...</string>
+    <string name="synchronising_domains_completed">網域同步完成</string>
+    <string name="synchronising_droplets">DO水滴同步中...</string>
+    <string name="synchronising_droplets_completed">DO水滴同步完成</string>
+    <string name="synchronising_images">系統映像同步中...</string>
+    <string name="synchronising_images_completed">同步完成</string>
+    <string name="synchronising_keys">SSH金鑰同步中...</string>
+    <string name="synchronising_keys_completed">SSH金鑰同步完成</string>
+    <string name="synchronising_regions">主機地區同步中...</string>
+    <string name="synchronising_regions_completed">主機地區同步完成</string>
+    <string name="synchronising_sizes">主機規格同步中...</string>
+    <string name="synchronising_sizes_completed">主機規格同步完成</string>
+    <string name="text_label">內容:</string>
+    <string name="title_activity_add_account">增加帳號活動</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="title_rebuild_droplet">重建DO水滴</string>
+    <string name="title_resize_droplet">更改DO水滴</string>
+    <string name="title_restore_droplet">復原DO水滴</string>
+    <string name="title_snapshot_droplet">快照DO水滴</string>
+    <string name="token_label">號碼產生器</string>
+    <string name="virtio_active_label">效能加速:</string>
+    <string name="visit_domain">訪問域名</string>
+    <string name="weight_label">比重:</string>
+    <string name="yes">是</string>
+
+</resources>

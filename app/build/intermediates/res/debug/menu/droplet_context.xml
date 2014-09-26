@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_ssh" android:title="@string/ssh_to_droplet"></item>
+    <item android:id="@+id/action_reboot" android:title="@string/reboot"></item>
+    <item android:id="@+id/action_power_cycle" android:title="@string/power_cycle"></item>
+    <item android:id="@+id/action_shutdown" android:title="@string/shut_down"></item>
+    <item android:id="@+id/action_power_off" android:title="@string/power_off"></item>
+    <item android:id="@+id/action_power_on" android:title="@string/power_on"></item>    
+    <item android:id="@+id/action_password_reset" android:title="@string/password_reset"></item>
+    <item android:id="@+id/action_resize" android:title="@string/resize"></item>
+    <item android:id="@+id/action_snapshot" android:title="@string/snapshot"></item>
+    <item android:id="@+id/action_restore" android:title="@string/restore"></item>
+    <item android:id="@+id/action_rebuild" android:title="@string/rebuild"></item>
+    <item android:id="@+id/action_enable_backups" android:title="@string/enable_backups"></item>
+    <item android:id="@+id/action_disable_backups" android:title="@string/disable_backups"></item>
+    <item android:id="@+id/action_rename" android:title="@string/rename"></item>
+    <item android:id="@+id/action_destroy" android:title="@string/destroy"></item>
+</menu>
+<!-- From: file:/D:/Projects/digitalocean-swimmer/app/src/main/res/menu/droplet_context.xml -->

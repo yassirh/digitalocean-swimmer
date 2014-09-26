@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yassirh.digitalocean"
+    android:installLocation="auto"
+    android:versionCode="22"
+    android:versionName="2.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="20" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.yassirh.digitalocean.utils.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.yassirh.digitalocean.ui.MainActivity"
+            android:configChanges="locale"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.yassirh.digitalocean.ui.NewDropletActivity"
+            android:configChanges="locale"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.yassirh.digitalocean.ui.SettingsActivity"
+            android:configChanges="locale"
+            android:label="@string/title_activity_settings" >
+        </activity>
+
+        <receiver android:name="com.yassirh.digitalocean.utils.MyBroadcastReceiver" >
+        </receiver>
+
+        <activity
+            android:name="com.yassirh.digitalocean.ui.AddAccountActivity"
+            android:configChanges="locale"
+            android:label="@string/title_activity_add_account" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.yassirh.digitalocean"
+                    android:scheme="callback" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/D:/Projects/digitalocean-swimmer/app/src/main/res/values-de/strings.xml -->
+    <eat-comment />
+
+    <string-array name="main_navigation_array">
+        <item>Droplets</item>
+        <item>Domänen</item>
+        <item>Abbilder</item>
+        <item>SSH-Schlüssel</item>
+        <item>Regionen</item>
+        <item>Größen</item>
+    </string-array>
+    <string-array name="pref_locale_entries">
+        <item name="0">English</item>
+        <item name="1">Deutsch</item>
+        <item name="2">繁體中文</item>
+        <item name="3">簡體中文</item>
+    </string-array>
+    <string-array name="pref_locale_values">
+        <item name="0">en_US</item>
+        <item name="1">de_DE</item>
+        <item name="2">zh_TW</item>
+        <item name="3">zh_CN</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_entries">
+        <item name="0">Nie (manuell updaten)</item>
+        <item name="1">Jede Minute</item>
+        <item name="30">Jede 30 Minuten</item>
+        <item name="60">Jede Stunde</item>
+        <item name="240">Jede 4 Stunden</item>
+        <item name="1440">Jeden Tag</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="30">30</item>
+        <item name="60">60</item>
+        <item name="240">240</item>
+        <item name="1440">1440</item>
+    </string-array>
+    <!-- From: file:/D:/Projects/digitalocean-swimmer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/res/values-de/values.xml -->
+    <eat-comment />
+
+    <string name="abc_action_bar_home_description" msgid="4600421777120114993">"Zur Startseite"</string>
+    <string name="abc_action_bar_up_description" msgid="1594238315039666878">"Nach oben"</string>
+    <string name="abc_action_menu_overflow_description" msgid="3588849162933574182">"Weitere Optionen"</string>
+    <string name="abc_action_mode_done" msgid="4076576682505996667">"Fertig"</string>
+    <string name="abc_activity_chooser_view_see_all" msgid="7468859129482906941">"Alle ansehen"</string>
+    <string name="abc_activitychooserview_choose_application" msgid="2031811694353399454">"App auswählen"</string>
+    <string name="abc_searchview_description_clear" msgid="3691816814315814921">"Suchanfrage löschen"</string>
+    <string name="abc_searchview_description_query" msgid="2550479030709304392">"Suchanfrage"</string>
+    <string name="abc_searchview_description_search" msgid="8264924765203268293">"Suchen"</string>
+    <string name="abc_searchview_description_submit" msgid="8928215447528550784">"Suchanfrage senden"</string>
+    <string name="abc_searchview_description_voice" msgid="893419373245838918">"Sprachsuche"</string>
+    <string name="abc_shareactionprovider_share_with" msgid="3421042268587513524">"Freigeben für"</string>
+    <string name="abc_shareactionprovider_share_with_application" msgid="7165123711973476752">"Freigeben für %s"</string>
+    <!-- From: file:/D:/Projects/digitalocean-swimmer/app/src/main/res/values-de/strings.xml -->
+    <eat-comment />
+
+    <string name="access_denied_message">Zugriff verweigert! Bitte überprüfen Sie die Client-ID und den API-Schlüssel.</string>
+    <string name="account_name_label">Account-Name</string>
+    <string name="action_about">Über</string>
+    <string name="action_add_account">Account hinzufügen</string>
+    <string name="action_add_domain">Domäne hinzufügen</string>
+    <string name="action_add_droplet">Droplet hinzufügen</string>
+    <string name="action_add_record">Record hinzufügen</string>
+    <string name="action_add_ssh_key">SSH-Schlüssel hinzufügen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_switch_account">Account wechseln</string>
+    <string name="add_existing_account">Account hinzufügen</string>
+    <string name="add_record">Record hinzufügen</string>
+    <string name="add_ssh_key">SSH-Schlüssel hinzufügen</string>
+    <string name="api_key_label">API-Schlüssel</string>
+    <string name="api_settings_title">API-Einstellungen</string>
+    <string name="app_name">DO Swimmer</string>
+    <string name="back_button_label">Zurück</string>
+    <string name="backups_active_label">Backups:</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="client_id_label">Client ID</string>
+    <string name="cpus_label">CPUs:</string>
+    <string name="create_account">Account erstellen</string>
+    <string name="create_domain">Domäne erstellen</string>
+    <string name="create_droplet">Droplet erstellen</string>
+    <string name="create_new_account">Account erstellen</string>
+    <string name="create_record">Erstelle Record</string>
+    <string name="created_at_label">Erstellt:</string>
+    <string name="creating_domain">Erstelle Domäne</string>
+    <string name="creating_droplet">Erstelle Droplet</string>
+    <string name="creating_record">Erstelle Record</string>
+    <string name="destroy">Zerstören</string>
+    <string name="destroy_domain_alert">Dies wird Ihre Domain löschen. Sind Sie sicher?</string>
+    <string name="destroy_droplet_alert">Dies wird den Droplet und alle zugehörigen Backups unwiderruflich löschen.\n\nWollen Sie fortfahren?</string>
+    <string name="destroy_ssh_key_alert">Sind Sie sicher?</string>
+    <string name="destroying_domain">Lösche Domäne</string>
+    <string name="destroying_record">Lösche Record</string>
+    <string name="destroying_ssh_key">Lösche SSH-Schlüssel</string>
+    <string name="disable_backups">Backups deaktivieren</string>
+    <string name="disable_backups_alert">Diese Methode deaktiviert automatische Backups.</string>
+    <string name="disk_label">Speicher:</string>
+    <string name="domain_name_label">Domänen-Name</string>
+    <string name="drawer_close">Navigation schliessen</string>
+    <string name="drawer_open">Navigation öffnen</string>
+    <string name="edit_record">Bearbeite record</string>
+    <string name="edit_ssh_key">Bearbeite SSH-Schlüssel</string>
+    <string name="enable_backups">Backups aktivieren</string>
+    <string name="enable_backups_alert">Diese Methode aktiviert automatische Backups, diese laufen täglich im Hintergrund ab und sichern die Daten Ihres Droplets.</string>
+    <string name="hostname_label">Hostname:</string>
+    <string name="hourly">Stündlich</string>
+    <string name="image_label">Abbild:</string>
+    <string name="ip_address_label">IP-Adresse:</string>
+    <string name="ipv6_active_label">IPv6:</string>
+    <string name="locked_label">Gesperrt:</string>
+    <string name="memory_label">RAM:</string>
+    <string name="message_feature_disabled_api">Operation abgebrochen : dieses Feature ist in der API deaktiviert</string>
+    <string name="message_press_again_to_exit">Zum Beenden erneut zurück drücken!</string>
+    <string name="monthly">Monatlich</string>
+    <string name="name">Name</string>
+    <string name="name_label">Name:</string>
+    <string name="next_button_label">Vor</string>
+    <string name="no">Nein</string>
+    <string name="no_domains">Keine Domänen!</string>
+    <string name="no_droplets">Keine Droplets!</string>
+    <string name="no_images">Keine Abbilder!</string>
+    <string name="no_records">Keine Records!</string>
+    <string name="no_regions">Keine Regionen!</string>
+    <string name="no_sizes">Keine Größen!</string>
+    <string name="no_ssh_client">Kein SSH-Klient gefunden! Bitte installieren einen SSH-Klienten um dieses Feature zu nutzen.</string>
+    <string name="no_ssh_keys">Keine SSH-Schlüssel!</string>
+    <string name="no_thanks">Nein danke</string>
+    <string name="not_yet_implemented">Noch nicht implementiert</string>
+    <string name="ok">OK</string>
+    <string name="password_reset">Password zurücksetzen</string>
+    <string name="port_label">Port:</string>
+    <string name="power_cycle">Aus- und Einschalten</string>
+    <string name="power_cycle_alert">Dies wird den Droplet aus- und einschalten.\n\nWir empfehlen den Droplet über die Kommando-Zeile neuzustarten da diese Aktion zu Datenverlust führen kann.\n\nWollen Sie fortfahren?</string>
+    <string name="power_off">Ausschalten</string>
+    <string name="power_off_alert">Dies wird den Droplet ausschalten.\n\nWir empfehlen den Droplet über die Kommando-Zeile auszuschalten da diese Aktion zu Datenverlust führen kann.\n\nWollen Sie fortfahren?</string>
+    <string name="power_on">Einschalten</string>
+    <string name="power_on_alert">Dies wird den Droplet starten.\n\nWollen Sie fortfahren?</string>
+    <string name="pref_locale_key_label">Sprache</string>
+    <string name="pref_sync_frequency_key_label">Synchronisierungs-Interval</string>
+    <string name="preferences_title">Einstellungen</string>
+    <string name="priority_label">Priorität:</string>
+    <string name="private_networking_active_label">Private Netzwerke:</string>
+    <string name="private_networking_label">Privates Netzwerk</string>
+    <string name="private_visibility">Privat</string>
+    <string name="public_ssh_key_label">Öffentlicher SSH-Schlüssel:</string>
+    <string name="public_visibility">Öffentlich</string>
+    <string name="rate_app">Bewerte %1$s</string>
+    <string name="rate_message">Wenn Ihnen %1$s gefällt bewerten Sie es doch bitte. Vielen Dank für die Unterstützung!</string>
+    <string name="reboot">Neustart</string>
+    <string name="reboot_alert">Dies wird den Droplet neustarten.\n\nWollen Sie fortfahren?</string>
+    <string name="rebuild">Zurücksetzen</string>
+    <string name="rebuild_alert">Diese Methode erlaubt Ihnen, einen Droplet aus einem Standard-Abbild wiederherzustellen. Dies ist nützlich wenn Sie von vorn beginnen wollen, aber die IP-Adresse beibehalten möchten.</string>
+    <string name="record_type_label">Record-Typ:</string>
+    <string name="records">Records</string>
+    <string name="region_label">Region:</string>
+    <string name="reminde_me_later">Später erinnern</string>
+    <string name="rename">Umbenennen</string>
+    <string name="resize">Größe ändern</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="restore_alert">Diese Methode erlaubt Ihnen, einen Droplet aus einem bestehenden Abbild bzw. Backup wiederherzustellen. Dies ist eine exakte Kopie des Abbildes bzw. Backups in Ihren Droplet. Stellen Sie zuvor sicher, dass Sie alle notwendigen Informationen gesichert haben.</string>
+    <string name="save_account">Account speichern</string>
+    <string name="saving_ssh_key">Speichere SSH-Schlüssel</string>
+    <string name="scrub_data">Daten bereinigen</string>
+    <string name="select_droplet_label">Droplet auswählen:</string>
+    <string name="select_image_label">Abbild auswählen:</string>
+    <string name="select_region_label">Region auswählen:</string>
+    <string name="select_size_label">Größe auswählen:</string>
+    <string name="settings">Einstellungen</string>
+    <string name="shut_down">Herunterfahren</string>
+    <string name="shut_down_alert">Dies wird den Droplet herunterfahren.\n\nWollen Sie fortfahren?</string>
+    <string name="skip_button_label">Überspringen</string>
+    <string name="snapshot">Abbild</string>
+    <string name="ssh_keys_label">SSH-Schlüssel:</string>
+    <string name="ssh_to_droplet">SSH auf Droplet</string>
+    <string name="summary_account_name">Account-Name</string>
+    <string name="summary_api_key">API-Schlüssel</string>
+    <string name="summary_client_id">Client ID</string>
+    <string name="summary_locale">Sprache ändern</string>
+    <string name="summary_sync_frequency">Synchronisierungs-Häufigkeit</string>
+    <string name="summary_token">Token zur Authentifizierung von API-Requests</string>
+    <string name="switch_account">Account wechseln</string>
+    <string name="sync">Synchronisieren</string>
+    <string name="synchronising">Synchronisiere</string>
+    <string name="synchronising_domains">Synchronisiere Domänen</string>
+    <string name="synchronising_domains_completed">Domänen-Synchronisierung abgeschlossen</string>
+    <string name="synchronising_droplets">Synchronisiere Droplets</string>
+    <string name="synchronising_droplets_completed">Droplet-Synchronisierung abgeschlossen</string>
+    <string name="synchronising_images">Synchronisiere Abbilder</string>
+    <string name="synchronising_images_completed">Abbilder-Synchronisierung abgeschlossen</string>
+    <string name="synchronising_keys">Synchronisiere Schlüssel</string>
+    <string name="synchronising_keys_completed">Schlüssel-Synchronisierung abgeschlossen</string>
+    <string name="synchronising_regions">Synchronisiere Regionen</string>
+    <string name="synchronising_regions_completed">Regions-Synchronisierung abgeschlossen</string>
+    <string name="synchronising_sizes">Synchronisiere Größen</string>
+    <string name="synchronising_sizes_completed">Größen-Synchronisierung abgeschlossen</string>
+    <string name="text_label">Text:</string>
+    <string name="title_activity_add_account">AddAccountActivity</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_rebuild_droplet">Droplet neubauen</string>
+    <string name="title_resize_droplet">Droplet-Größe ändern</string>
+    <string name="title_restore_droplet">Droplet wiederherstellen</string>
+    <string name="title_snapshot_droplet">Droplet-Snapshot erstellen</string>
+    <string name="token_label">Token</string>
+    <string name="virtio_active_label">VirtIO:</string>
+    <string name="visit_domain">Öffnen</string>
+    <string name="weight_label">Gewichtung:</string>
+    <string name="yes">Ja</string>
+
+</resources>
