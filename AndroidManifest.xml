@@ -3,7 +3,7 @@
     package="com.yassirh.digitalocean"
     android:installLocation="auto"
     android:versionCode="21"
-    android:versionName="2.0.0-snapshot" >
+    android:versionName="2.0.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
