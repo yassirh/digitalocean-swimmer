@@ -40,14 +40,14 @@ public class AccountDao extends SqlDao<Account> {
 
 	public Long createOrUpdate(Account account) {
 		SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
-		boolean update = account.getId() == null ? false : findById(account.getId()) != null;
-		db = mDatabaseHelper.getWritableDatabase();
+		boolean update = account.getId() != null && findById(account.getId()) != null;
 		ContentValues values = new ContentValues();
 		values.put(AccountTable.ID, account.getId());
 		values.put(AccountTable.NAME, account.getName());
 		values.put(AccountTable.TOKEN, account.getToken());
 		values.put(AccountTable.REFRESH_TOKEN, account.getRefreshToken());
-		values.put(AccountTable.EXPIRES_IN, account.getExpiresIn().getTime());
+        if(account.getExpiresIn() != null)
+		    values.put(AccountTable.EXPIRES_IN, account.getExpiresIn().getTime());
 		values.put(AccountTable.SELECTED, account.isSelected() ? 1 : 0);
 		long id;
 		if(update){
