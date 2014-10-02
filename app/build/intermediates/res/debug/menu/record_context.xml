@@ -1,5 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/action_edit_record" android:title="@string/edit_record"></item>
-    <item android:id="@+id/action_destroy" android:title="@string/destroy"></item>
-</menu>
-<!-- From: file:/D:/Projects/digitalocean-swimmer/app/src/main/res/menu/record_context.xml -->

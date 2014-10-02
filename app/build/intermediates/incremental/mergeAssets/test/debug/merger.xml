@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="D:\Projects\digitalocean-swimmer\app\src\androidTest\assets" />
-    </dataSet>
-
-</merger>
