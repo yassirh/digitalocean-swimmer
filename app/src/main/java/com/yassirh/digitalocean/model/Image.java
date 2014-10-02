@@ -15,6 +15,7 @@ public class Image {
 		this.id = id;
 		this.name = name;
 		this.distribution = distribution;
+        this.slug = slug;
 		this.isPublic = isPublic;
 	}
 	

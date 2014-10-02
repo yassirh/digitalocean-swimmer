@@ -1,6 +1,8 @@
 package com.yassirh.digitalocean.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,6 +25,7 @@ public class ApiHelper {
 	public static final String API_STATUS_OK = "OK";
 	public static final String API_STATUS_ERROR = "ERROR";
 	public static final String API_URL = "https://api.digitalocean.com/v2";
+    public static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
 	
 	public static Account getCurrentAccount(Context context){
 		Account currentAccount = null;
@@ -60,11 +63,8 @@ public class ApiHelper {
 	}
 
 	public static boolean isValidToken(String token) {
-		if(token == null){
-			return false;
-		}
-		return token.matches("^[a-f0-9]{64}$");
-	}
+        return token != null && token.matches("^[a-f0-9]{64}$");
+    }
 
 	public static List<Account> getAllAccounts(Context context){
 		AccountDao accountDao = new AccountDao(DatabaseHelper.getInstance(context));

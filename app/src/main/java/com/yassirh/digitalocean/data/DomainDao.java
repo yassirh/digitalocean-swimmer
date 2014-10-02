@@ -20,8 +20,7 @@ public class DomainDao extends SqlDao<Domain> {
 		values.put(DomainTable.NAME, domain.getName());
 		values.put(DomainTable.TTL, domain.getTtl());
 		values.put(DomainTable.ZONE_FILE, domain.getLiveZoneFile());
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		return id;
+        return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
 	public Domain newInstance(Cursor c) {

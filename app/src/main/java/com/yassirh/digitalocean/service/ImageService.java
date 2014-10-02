@@ -2,6 +2,7 @@ package com.yassirh.digitalocean.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -25,21 +26,20 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class ImageService {
 
-	private Context mContext;
-	private boolean mIsRefreshing;
+	private Context context;
+	private boolean isRefreshing;
 	
 	public ImageService(Context context) {
-		this.mContext = context;
+		this.context = context;
 	}
 	
 	public void getAllImagesFromAPI(final boolean showProgress){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		mIsRefreshing = true;
-		//String url = "https://api.digitalocean.com/images/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
-		String url = String.format("%s/images?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
+		isRefreshing = true;
+		String url = String.format(Locale.US ,"%s/images?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -50,19 +50,19 @@ public class ImageService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_images))
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_images))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
-				mIsRefreshing = false;
+				isRefreshing = false;
 				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
 				}
@@ -121,48 +121,45 @@ public class ImageService {
 	}
 	
 	protected void saveAll(List<Image> images) {
-		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
 		for (Image image : images) {
 			imageDao.create(image);
 		}
 	}
 	
 	public List<Image> getAllImages(){
-		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
-		List<Image> images = imageDao.getAll(null);
-		return images;
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
+        return imageDao.getAll(null);
 	}
 
 	public void deleteAll() {
-		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
 		imageDao.deleteAll();	
 	}
 
 	public void setRequiresRefresh(Boolean requireRefresh){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("image_require_refresh", requireRefresh);
 		editor.commit();
 	}
 	
 	public Boolean requiresRefresh(){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("image_require_refresh", true);
 	}
 
 	public List<Image> getSnapshotsOnly() {
-		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
-		List<Image> images = imageDao.getSnapshotsOnly();
-		return images;
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
+        return imageDao.getSnapshotsOnly();
 	}
 	
 	public List<Image> getImagesOnly() {
-		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(mContext));
-		List<Image> images = imageDao.getImagesOnly();
-		return images;
+		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
+        return imageDao.getImagesOnly();
 	}
 
 	public boolean isRefreshing() {
-		return mIsRefreshing;
+		return isRefreshing;
 	}
 }

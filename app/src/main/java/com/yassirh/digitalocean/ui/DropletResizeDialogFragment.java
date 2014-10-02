@@ -33,7 +33,7 @@ public class DropletResizeDialogFragment extends DialogFragment {
 	    SizeService sizeService = new SizeService(getActivity());
 		getDialog().setTitle(R.string.title_resize_droplet);
 		Spinner sizeSpinner = (Spinner)view.findViewById(R.id.sizeSpinner);
-		sizeSpinner.setAdapter(new SizeAdapter(getActivity(), sizeService.getAllSizes(SizeTable.MEMORY),false));
+		sizeSpinner.setAdapter(new SizeAdapter(getActivity(), sizeService.getAllSizes(SizeTable.MEMORY)));
 		builder.setView(view);
 		builder.setPositiveButton(R.string.ok, new OnClickListener() {
 			

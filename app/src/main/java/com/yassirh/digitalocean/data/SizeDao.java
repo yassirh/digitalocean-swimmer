@@ -24,8 +24,7 @@ public class SizeDao extends SqlDao<Size> {
 		values.put(SizeTable.TRANSFER, size.getTransfer());
 		values.put(SizeTable.COST_PER_HOUR, size.getCostPerHour());
 		values.put(SizeTable.COST_PER_MONTH, size.getCostPerMonth());
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		return id;
+        return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
 	public Size newInstance(Cursor c) {

@@ -13,7 +13,7 @@ public class PreferencesHelper {
 		String val = sharedPreferences.getString("pref_sync_frequency", "");
 		if(val.equals("")){
 			val = "60";
-			sharedPreferences.edit().putString("pref_sync_frequency", val);
+			sharedPreferences.edit().putString("pref_sync_frequency", val).commit();
 		}
 		return Integer.parseInt(val);
 	}

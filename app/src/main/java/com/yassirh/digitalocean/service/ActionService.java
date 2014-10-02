@@ -1,22 +1,10 @@
 package com.yassirh.digitalocean.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -24,16 +12,22 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
 import com.yassirh.digitalocean.model.Account;
-import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Action;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ActionService {
 
 	private Context context;
 	private Thread t;
-	private static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	
+
 	public ActionService(Context context) {
 		this.context = context;
 	}
@@ -45,7 +39,7 @@ public class ActionService {
 		}
 		final String url = String.format("%s/actions", ApiHelper.API_URL); 
 		t = new Thread(new Runnable() {
-			NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);;
+			NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			NotificationCompat.Builder builder;
 			Set<Integer> shownNotifications = new HashSet<Integer>();
 			@Override
@@ -114,10 +108,10 @@ public class ActionService {
 			action.setResourceType(actionJSONObject.getString("resource_type"));
 			action.setRegion(actionJSONObject.getString("region"));
 			if(!actionJSONObject.getString("started_at").equals("null")){
-				action.setStartedAt(iso8601Format.parse(actionJSONObject.getString("started_at").replace("Z", "")));
+				action.setStartedAt(ApiHelper.iso8601Format.parse(actionJSONObject.getString("started_at").replace("Z", "")));
 			}
 			if(!actionJSONObject.getString("completed_at").equals("null")){
-				action.setCompletedAt(iso8601Format.parse(actionJSONObject.getString("completed_at").replace("Z", "")));
+				action.setCompletedAt(ApiHelper.iso8601Format.parse(actionJSONObject.getString("completed_at").replace("Z", "")));
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -125,6 +119,5 @@ public class ActionService {
 			e.printStackTrace();
 		}
 		return action;
-	};
-	
+	}
 }

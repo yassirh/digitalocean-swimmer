@@ -1,30 +1,27 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.Formatter;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Size;
+
+import java.util.Formatter;
+import java.util.List;
 
 
 public class SizeAdapter extends BaseAdapter {
     
     private List<Size> data;
     private static LayoutInflater inflater=null;
-    private boolean mShowPrice;
-    public SizeAdapter(Activity activity, List<Size> data,boolean showPrice) {
+    public SizeAdapter(Activity activity, List<Size> data) {
         this.data=data;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mShowPrice = showPrice;
     }
 
     public int getCount() {

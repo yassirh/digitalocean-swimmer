@@ -133,8 +133,7 @@ public class SizeService {
 	
 	public List<Size> getAllSizes(String orderBy){
 		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
-		List<Size> sizes = sizeDao.getAll(orderBy);
-		return sizes;
+        return sizeDao.getAll(orderBy);
 	}
 
 	public void deleteAll() {

@@ -1,7 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.Calendar;
-
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -34,7 +32,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.ActionService;
@@ -44,9 +41,10 @@ import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
-import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
+
+import java.util.Calendar;
 
 public class MainActivity extends ActionBarActivity implements Updatable {
 

@@ -23,8 +23,7 @@ public class RegionDao extends SqlDao<Region> {
 		values.put(RegionTable.REGION_SLUG, region.getSlug());
 		values.put(RegionTable.AVAILABLE, region.isAvailable());
 		values.put(RegionTable.FEATURES, region.getFeatures());
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		return id;
+        return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
 	public Region newInstance(Cursor c) {

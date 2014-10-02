@@ -75,7 +75,7 @@ public class SizesFragment extends ListFragment implements Updatable, SwipeRefre
 	@Override
 	public void update(Context context) {
 		mSizes = mSizeService.getAllSizes(SizeTable.MEMORY);
-		mSizeAdapter = new SizeAdapter(this.getActivity(), mSizes, true);
+		mSizeAdapter = new SizeAdapter(this.getActivity(), mSizes);
 		setListAdapter(mSizeAdapter);
 	}
 	

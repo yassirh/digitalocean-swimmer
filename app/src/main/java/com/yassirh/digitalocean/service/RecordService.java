@@ -80,14 +80,12 @@ public class RecordService {
 	
 	public List<Record> getAllRecords(){
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(context));
-		List<Record> records = recordDao.getAll(null);
-		return records;
+        return recordDao.getAll(null);
 	}
 
 	public Record findById(long id) {
 		RecordDao recordDao = new RecordDao(DatabaseHelper.getInstance(context));
-		Record record = recordDao.findById(id);
-		return record;
+        return recordDao.findById(id);
 	}
 
 

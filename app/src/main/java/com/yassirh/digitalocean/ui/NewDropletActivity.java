@@ -91,7 +91,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 			sshKeysTextView.setVisibility(View.GONE);
 		}
 		regionSpinner.setAdapter(new RegionAdapter(this, regionService.getAllRegionsOrderedByName()));
-		sizeSpinner.setAdapter(new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY),true));
+		sizeSpinner.setAdapter(new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY)));
 		regionSpinner.setOnItemSelectedListener(this);
 		userDataCheckBox.setOnCheckedChangeListener(this);
 	}

@@ -87,7 +87,7 @@ public class PreferenceManagerCompat {
 						new InvocationHandler() {
 					public Object invoke(Object proxy, Method method, Object[] args) {
 						if (method.getName().equals("onPreferenceTreeClick")) {
-							return Boolean.valueOf(listener.onPreferenceTreeClick((PreferenceScreen) args[0], (Preference) args[1]));
+							return listener.onPreferenceTreeClick((PreferenceScreen) args[0], (Preference) args[1]);
 						} else {
 							return null;
 						}
@@ -121,8 +121,7 @@ public class PreferenceManagerCompat {
 		try {
             Method m = PreferenceManager.class.getDeclaredMethod("inflateFromIntent", Intent.class, PreferenceScreen.class);
             m.setAccessible(true);
-            PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(manager, intent, screen);
-            return prefScreen;
+            return (PreferenceScreen) m.invoke(manager, intent, screen);
         } catch (Exception e) {
 			Log.w(TAG, "Couldn't call PreferenceManager.inflateFromIntent by reflection", e);
 		}
@@ -145,8 +144,7 @@ public class PreferenceManagerCompat {
 		try {
             Method m = PreferenceManager.class.getDeclaredMethod("inflateFromResource", Context.class, int.class, PreferenceScreen.class);
             m.setAccessible(true);
-            PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(manager, activity, resId, screen);
-            return prefScreen;
+            return (PreferenceScreen) m.invoke(manager, activity, resId, screen);
         } catch (Exception e) {
 			Log.w(TAG, "Couldn't call PreferenceManager.inflateFromResource by reflection", e);
 		}

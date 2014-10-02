@@ -135,14 +135,12 @@ public class RegionService {
 	
 	public List<Region> getAllRegions(){
 		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
-		List<Region> regions = regionDao.getAll(null);
-		return regions;
+        return regionDao.getAll(null);
 	}
 
 	public List<Region> getAllRegionsOrderedByName(){
 		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
-		List<Region> regions = regionDao.getAllOrderedByName();
-		return regions;
+        return regionDao.getAllOrderedByName();
 	}
 	
 	public void setRequiresRefresh(Boolean requireRefresh){

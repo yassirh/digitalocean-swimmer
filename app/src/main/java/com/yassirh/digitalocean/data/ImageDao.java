@@ -25,8 +25,7 @@ public class ImageDao extends SqlDao<Image> {
 		values.put(ImageTable.DISTRIBUTION, image.getDistribution());
 		values.put(ImageTable.SLUG, image.getSlug());
 		values.put(ImageTable.PUBLIC, image.isPublic() ? 1 : 0);
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		return id;
+        return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
 	public Image newInstance(Cursor c) {

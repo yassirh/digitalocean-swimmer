@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -27,19 +26,19 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class SSHKeyService {
 
-	private Context mContext;
-	private boolean mIsRefreshing;
+	private Context context;
+	private boolean isRefreshing;
 		
 	public SSHKeyService(Context context) {
-		this.mContext = context;
+		this.context = context;
 	}
 
 	public void getAllSSHKeysFromAPI(final boolean showProgress){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		mIsRefreshing = true;
+		isRefreshing = true;
 		String url = String.format("%s/account/keys/", ApiHelper.API_URL);//String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
@@ -51,19 +50,19 @@ public class SSHKeyService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_keys))
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_keys))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, mBuilder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
-				mIsRefreshing = false;
+				isRefreshing = false;
 				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
 				}
@@ -109,112 +108,42 @@ public class SSHKeyService {
 
 		});
 	}
-
-	/*private void getSSHKeyByIdFromAPI(long id, final boolean showProgress) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
-		if(currentAccount == null){
-			return;
-		}
-		String url = "";//"https://api.digitalocean.com/ssh_keys/" + id + "/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
-		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
-			
-			@Override
-			public void onStart() {
-				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_keys))
-					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, mBuilder.build());
-				}
-			}
-			
-			@Override
-			public void onFinish() {
-				if(showProgress){
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
-				}
-			}
-			
-			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
-				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, mBuilder.build());
-				}
-			}
-			
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
-					ApiHelper.showAccessDenied();
-				}
-			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");
-						SSHKey sshKey = new SSHKey();
-						sshKey.setId(sshKeysJSONObject.getLong("id"));
-						sshKey.setName(sshKeysJSONObject.getString("name"));
-						sshKey.setPublicKey(sshKeysJSONObject.getString("ssh_pub_key"));
-						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
-						sshKeyDao.create(sshKey);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }
-
-		});
-	}*/
 	
 	protected void saveAll(List<SSHKey> sshKeys) {
-		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
+		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 		for (SSHKey sshKey : sshKeys) {
 			sshKeyDao.create(sshKey);
 		}
 	}
 	
 	public void deleteAll() {
-		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
+		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 		sshKeyDao.deleteAll();
 	}
 	
 	public List<SSHKey> getAllSSHKeys(){
-		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
-		List<SSHKey> sshKeys = sshKeyDao.getAll(null);
-		return sshKeys;
+		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
+		return sshKeyDao.getAll(null);
 	}
 
 	public void setRequiresRefresh(Boolean requireRefresh){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("key_require_refresh", requireRefresh);
 		editor.commit();
 	}
 	public Boolean requiresRefresh(){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("key_require_refresh", true);
 	}
 	
 	public SSHKey findById(long id) {
-		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));		
+		SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 		return sshKeyDao.findById(id);
 	}
 
 	public void delete(final long id, final boolean showProgress) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
@@ -229,9 +158,9 @@ public class SSHKeyService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.destroying_ssh_key))
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.destroying_ssh_key))
 					    .setContentText("")
 					    .setSmallIcon(R.drawable.ic_launcher);
 
@@ -275,7 +204,7 @@ public class SSHKeyService {
 		    public void onFinish() {
 		    	if(showProgress)
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_DESTROY_SSH_KEY);
-		    	SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
+		    	SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 		    	sshKeyDao.delete(id);
 		    	SSHKeyService.this.setRequiresRefresh(true);
 		    }
@@ -283,7 +212,7 @@ public class SSHKeyService {
 	}
 
 	public void save(SSHKey sshKey, final boolean update, final boolean showProgress) {
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
@@ -310,12 +239,12 @@ public class SSHKeyService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.saving_ssh_key))
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.saving_ssh_key))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					if(update)
 						mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_UPDATE_SSH_KEY, mBuilder.build());
 					else
@@ -360,7 +289,7 @@ public class SSHKeyService {
 						sshKey.setId(sshKeysJSONObject.getLong("id"));
 						sshKey.setName(sshKeysJSONObject.getString("name"));
 						sshKey.setPublicKey(sshKeysJSONObject.getString("ssh_pub_key"));
-						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(mContext));
+						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 						sshKeyDao.create(sshKey);
 				    	SSHKeyService.this.setRequiresRefresh(true);
 					}
@@ -373,6 +302,6 @@ public class SSHKeyService {
 	}
 
 	public boolean isRefreshing() {
-		return mIsRefreshing;
+		return isRefreshing;
 	}
 }

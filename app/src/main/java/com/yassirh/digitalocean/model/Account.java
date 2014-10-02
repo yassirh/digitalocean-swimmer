@@ -20,6 +20,7 @@ public class Account {
 		this.name = name;
 		this.token = token;
 		this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
 		this.selected = selected;
 	}
 	

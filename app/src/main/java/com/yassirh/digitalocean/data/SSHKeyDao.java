@@ -21,8 +21,7 @@ public class SSHKeyDao extends SqlDao<SSHKey> {
 		values.put(SSHKeyTable.NAME, sshKey.getName());
 		values.put(SSHKeyTable.PUBLIC_KEY, sshKey.getPublicKey());
 		values.put(SSHKeyTable.FINGERPRINT, sshKey.getFingerprint());
-		long id = db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-		return id;
+        return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
 	public SSHKey newInstance(Cursor c) {
