@@ -89,8 +89,13 @@ public class DropletService {
 		try {
 			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
-			    
-			    @Override
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
@@ -156,7 +161,7 @@ public class DropletService {
 		String url = String.format("%s/droplets", ApiHelper.API_URL);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-		client.get(url, new AsyncHttpResponseHandler() {
+        client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager notifyManager;
 			NotificationCompat.Builder builder;
 			
@@ -196,25 +201,25 @@ public class DropletService {
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, builder.build());
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<Droplet> droplets = new ArrayList<Droplet>();
-					JSONArray dropletsJSONArray = jsonObject.getJSONArray("droplets");
-					for(int i = 0; i < dropletsJSONArray.length(); i++){
-						JSONObject dropletJSONObject = dropletsJSONArray.getJSONObject(i);
-						Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
-						droplets.add(droplet);
-					}
-					DropletService.this.deleteAll();
-					DropletService.this.saveAll(droplets);
-					DropletService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-		    }			
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<Droplet> droplets = new ArrayList<Droplet>();
+                    JSONArray dropletsJSONArray = jsonObject.getJSONArray("droplets");
+                    for(int i = 0; i < dropletsJSONArray.length(); i++){
+                        JSONObject dropletJSONObject = dropletsJSONArray.getJSONObject(i);
+                        Droplet droplet = jsonObjectToDroplet(dropletJSONObject);
+                        droplets.add(droplet);
+                    }
+                    DropletService.this.deleteAll();
+                    DropletService.this.saveAll(droplets);
+                    DropletService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 		});
 	}
 	
@@ -361,12 +366,13 @@ public class DropletService {
 		try {
 			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
-			    @Override
-			    public void onSuccess(String response) {
-			        // TODO: show progress
-			    }
-			    
-			    @Override
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
@@ -388,26 +394,26 @@ public class DropletService {
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			
-			@Override
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    JSONObject dropletJSONObject = jsonObject.getJSONObject("droplet");
+                    Droplet droplet = jsonObjectToDroplet(dropletJSONObject);
+                    DropletService.this.update(droplet);
+                    DropletService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) { 
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					JSONObject dropletJSONObject = jsonObject.getJSONObject("droplet");
-					Droplet droplet = jsonObjectToDroplet(dropletJSONObject);							
-					DropletService.this.update(droplet);
-					DropletService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }			
 		});
 	}
 
@@ -431,12 +437,13 @@ public class DropletService {
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.delete(url, new AsyncHttpResponseHandler() {
-		    @Override
-		    public void onSuccess(String response) {
-		        // TODO: show progress
-		    }
-		    
-		    @Override
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();

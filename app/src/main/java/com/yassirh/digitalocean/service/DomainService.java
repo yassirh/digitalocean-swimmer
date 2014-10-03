@@ -79,7 +79,7 @@ public class DomainService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					builder.setProgress(100, 100*bytesWritten/totalSize, false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, builder.build());
 				}
 			}
@@ -90,32 +90,32 @@ public class DomainService {
 					ApiHelper.showAccessDenied();
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<Domain> domains = new ArrayList<Domain>();
-					JSONArray domainJSONArray = jsonObject.getJSONArray("domains");
-					for(int i = 0; i < domainJSONArray.length(); i++){
-						JSONObject domainJSONObject = domainJSONArray.getJSONObject(i);
-						Domain domain = new Domain();
-						domain.setName(domainJSONObject.getString("name"));
-						domain.setTtl(domainJSONObject.getInt("ttl"));
-						domain.setLiveZoneFile(domainJSONObject.getString("zone_file"));
-						domains.add(domain);
-					}
-					DomainService.this.deleteAll();
-					DomainService.this.saveAll(domains);
-					for (Domain domain : domains) {
-						new RecordService(context).getRecordsByDomainFromAPI(domain.getName(),false);
-					}
-					setRequiresRefresh(true);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }
-		});
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<Domain> domains = new ArrayList<Domain>();
+                    JSONArray domainJSONArray = jsonObject.getJSONArray("domains");
+                    for(int i = 0; i < domainJSONArray.length(); i++){
+                        JSONObject domainJSONObject = domainJSONArray.getJSONObject(i);
+                        Domain domain = new Domain();
+                        domain.setName(domainJSONObject.getString("name"));
+                        domain.setTtl(domainJSONObject.getInt("ttl"));
+                        domain.setLiveZoneFile(domainJSONObject.getString("zone_file"));
+                        domains.add(domain);
+                    }
+                    DomainService.this.deleteAll();
+                    DomainService.this.saveAll(domains);
+                    for (Domain domain : domains) {
+                        new RecordService(context).getRecordsByDomainFromAPI(domain.getName());
+                    }
+                    setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
 	protected void saveAll(List<Domain> domains) {
@@ -185,12 +185,13 @@ public class DomainService {
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
 					}
 				}
-				
-			    @Override
-			    public void onSuccess(String response) {
-			    }
-			    
-			    @Override
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 			    	Log.v("test",new String(responseBody));
 					if(statusCode == 401){
@@ -201,7 +202,7 @@ public class DomainService {
 			    @Override
 				public void onProgress(int bytesWritten, int totalSize) {	
 					if(showProgress){
-						builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+						builder.setProgress(100, 100*bytesWritten/totalSize, false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
 					}
 				}
@@ -252,15 +253,13 @@ public class DomainService {
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN, builder.build());
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		    	DomainDao domainDao = new DomainDao(DatabaseHelper.getInstance(context));
-		    	domainDao.deleteByName(domainName);
-		    	setRequiresRefresh(true);
-		    }
-		    
-		    @Override
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
@@ -270,7 +269,7 @@ public class DomainService {
 		    @Override
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					builder.setProgress(100, 100*bytesWritten/totalSize, false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN, builder.build());
 				}
 			}

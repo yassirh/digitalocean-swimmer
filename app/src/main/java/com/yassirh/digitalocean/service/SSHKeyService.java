@@ -156,7 +156,12 @@ public class SSHKeyService {
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.delete(url, new AsyncHttpResponseHandler() {
 
-		    @Override
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();

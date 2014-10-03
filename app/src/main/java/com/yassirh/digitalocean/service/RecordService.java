@@ -1,18 +1,5 @@
 package com.yassirh.digitalocean.service;
 
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -29,11 +16,20 @@ import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.model.Record;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
+import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 public class RecordService {
 
 	private Context context;
-	@SuppressLint("SimpleDateFormat")
-	private SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			
 	public RecordService(Context context) {
 		this.context = context;
@@ -89,7 +85,7 @@ public class RecordService {
 	}
 
 
-	public void getRecordsByDomainFromAPI(final String domainName, final boolean showProgress) {
+	public void getRecordsByDomainFromAPI(final String domainName) {
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		final Domain domain = new Domain();
 		domain.setName(domainName);
@@ -111,24 +107,24 @@ public class RecordService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 			}
-			
-		    @Override
-		    public void onSuccess(String response) { 
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					RecordService.this.deleteAllRecordsByDomain(domainName);
-					JSONArray recordsJSONArray = jsonObject.getJSONArray("domain_records");
-					for(int i = 0; i < recordsJSONArray.length(); i++){
-						JSONObject recordJSONObject = recordsJSONArray.getJSONObject(i);
-						Record record = jsonObjectToRecord(recordJSONObject);	
-						record.setDomain(domain);
-						RecordService.this.update(record);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }			
-		});
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    RecordService.this.deleteAllRecordsByDomain(domainName);
+                    JSONArray recordsJSONArray = jsonObject.getJSONArray("domain_records");
+                    for(int i = 0; i < recordsJSONArray.length(); i++){
+                        JSONObject recordJSONObject = recordsJSONArray.getJSONObject(i);
+                        Record record = jsonObjectToRecord(recordJSONObject);
+                        record.setDomain(domain);
+                        RecordService.this.update(record);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
 	protected void deleteAllRecordsByDomain(String domainName) {
@@ -170,13 +166,13 @@ public class RecordService {
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
-				
-			    @Override
-			    public void onSuccess(String response) {
-		        	RecordService.this.getRecordsByDomainFromAPI(domainName, false);					
-			    }
-			    
-			    @Override
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    RecordService.this.getRecordsByDomainFromAPI(domainName);
+                }
+
+                @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
@@ -186,7 +182,7 @@ public class RecordService {
 			    @Override
 				public void onProgress(int bytesWritten, int totalSize) {	
 					if(showProgress){
-						builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+						builder.setProgress(100, 100*bytesWritten/totalSize, false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
@@ -232,13 +228,13 @@ public class RecordService {
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
-				
-			    @Override
-			    public void onSuccess(String response) {
-		        	RecordService.this.getRecordsByDomainFromAPI(domainName, false);					
-			    }
-			    
-			    @Override
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    RecordService.this.getRecordsByDomainFromAPI(domainName);
+                }
+
+                @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
@@ -248,7 +244,7 @@ public class RecordService {
 			    @Override
 				public void onProgress(int bytesWritten, int totalSize) {	
 					if(showProgress){
-						builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+						builder.setProgress(100, 100*bytesWritten/totalSize, false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
@@ -290,12 +286,13 @@ public class RecordService {
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD, builder.build());
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		    }
-		    
-		    @Override
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
@@ -305,7 +302,7 @@ public class RecordService {
 		    @Override
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					builder.setProgress(100, 100*bytesWritten/totalSize, false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD, builder.build());
 				}
 			}

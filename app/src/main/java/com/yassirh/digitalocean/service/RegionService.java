@@ -78,31 +78,31 @@ public class RegionService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					mBuilder.setProgress(100, 100*bytesWritten/totalSize, false);
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<Region> regions = new ArrayList<Region>();
-					JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
-					for(int i = 0; i < regionJSONArray.length(); i++){
-						JSONObject regionJSONObject = regionJSONArray.getJSONObject(i);
-						Region region = jsonObjectToRegion(regionJSONObject);
-						regions.add(region);
-					}
-					RegionService.this.deleteAll();
-					RegionService.this.saveAll(regions);
-					RegionService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		});
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<Region> regions = new ArrayList<Region>();
+                    JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
+                    for(int i = 0; i < regionJSONArray.length(); i++){
+                        JSONObject regionJSONObject = regionJSONArray.getJSONObject(i);
+                        Region region = jsonObjectToRegion(regionJSONObject);
+                        regions.add(region);
+                    }
+                    RegionService.this.deleteAll();
+                    RegionService.this.saveAll(regions);
+                    RegionService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
 

@@ -82,27 +82,27 @@ public class ImageService {
 					ApiHelper.showAccessDenied();
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<Image> images = new ArrayList<Image>();
-					JSONArray imageJSONArray = jsonObject.getJSONArray("images");
-					for(int i = 0; i < imageJSONArray.length(); i++){
-						JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
-						Image image = jsonObjectToImage(imageJSONObject);
-						images.add(image);
-					}
-					ImageService.this.deleteAll();
-					ImageService.this.saveAll(images);
-					ImageService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		});
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<Image> images = new ArrayList<Image>();
+                    JSONArray imageJSONArray = jsonObject.getJSONArray("images");
+                    for(int i = 0; i < imageJSONArray.length(); i++){
+                        JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
+                        Image image = jsonObjectToImage(imageJSONObject);
+                        images.add(image);
+                    }
+                    ImageService.this.deleteAll();
+                    ImageService.this.saveAll(images);
+                    ImageService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
 

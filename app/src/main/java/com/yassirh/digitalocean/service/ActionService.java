@@ -15,6 +15,7 @@ import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Action;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,43 +50,51 @@ public class ActionService {
 						AsyncHttpClient client = new AsyncHttpClient();
 						client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 						client.get(url, new AsyncHttpResponseHandler() {
-							@Override
-							public void onSuccess(String response) {
-								try {
-									DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
-									JSONObject jsonObject = new JSONObject(response);
-									JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
-									for(int i = 0; i < actionsJSONArray.length(); i++){
-										JSONObject actionJSONObject = actionsJSONArray.getJSONObject(i);
-										Action action = jsonObjectToAction(actionJSONObject);
-										if(action.getStatus().equals("in-progress")){
-											if(!shownNotifications.contains((int)action.getId())){
-												builder = new NotificationCompat.Builder(context);
-												if(action.getResourceType().equals("droplet")){
-													builder.setContentTitle(dropletDao.findById(action.getResourceId()).getName())
-													.setContentText(action.getType() + " - in progress")
-													.setSmallIcon(R.drawable.ic_launcher);	
-													builder.setProgress(0, 0, true);
-												}
-												
-												builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-												notifyManager.notify((int)action.getId(), builder.build());
-												shownNotifications.add((int)action.getId());
-											}
-										}
-										else{
-											if(shownNotifications.contains((int)action.getId())){
-												new DropletService(context).getAllDropletsFromAPI(false);
-												shownNotifications.remove((int)action.getId());
-											}
-											notifyManager.cancel((int)action.getId());
-										}
-									}
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-							}
-						});
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                try {
+                                    DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
+                                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                                    JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
+                                    for(int i = 0; i < actionsJSONArray.length(); i++){
+                                        JSONObject actionJSONObject = actionsJSONArray.getJSONObject(i);
+                                        Action action = jsonObjectToAction(actionJSONObject);
+                                        if(action.getStatus().equals("in-progress")){
+                                            if(!shownNotifications.contains((int)action.getId())){
+                                                builder = new NotificationCompat.Builder(context);
+                                                if(action.getResourceType().equals("droplet")){
+                                                    builder.setContentTitle(dropletDao.findById(action.getResourceId()).getName())
+                                                            .setContentText(action.getType() + " - in progress")
+                                                            .setSmallIcon(R.drawable.ic_launcher);
+                                                    builder.setProgress(0, 0, true);
+                                                }
+
+                                                builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+                                                notifyManager.notify((int)action.getId(), builder.build());
+                                                shownNotifications.add((int)action.getId());
+                                            }
+                                        }
+                                        else{
+                                            if(shownNotifications.contains((int)action.getId())){
+                                                new DropletService(context).getAllDropletsFromAPI(false);
+                                                shownNotifications.remove((int)action.getId());
+                                            }
+                                            notifyManager.cancel((int)action.getId());
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                if(statusCode == 401){
+                                    ApiHelper.showAccessDenied();
+                                }
+                            }
+                        });
 						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();

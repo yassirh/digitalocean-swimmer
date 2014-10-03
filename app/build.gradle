@@ -24,5 +24,5 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
-    compile files('libs/android-async-http-1.4.4.jar')
+    compile 'com.loopj.android:android-async-http:1.4.6'
 }

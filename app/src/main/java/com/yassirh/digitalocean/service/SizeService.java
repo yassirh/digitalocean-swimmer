@@ -26,53 +26,53 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class SizeService {
 
-	private Context mContext;
-	private boolean mIsRefreshing;
+	private Context context;
+	private boolean isRefreshing;
 	
 	public SizeService(Context context) {
-		mContext = context;
+		this.context = context;
 	}
 
 	public void getAllSizesFromAPI(final boolean showProgress){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}			
-		mIsRefreshing = true;
+		isRefreshing = true;
 		String url = String.format("%s/sizes/", ApiHelper.API_URL);//"https://api.digitalocean.com/sizes/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
+			NotificationManager notifyManager;
+			NotificationCompat.Builder builder;
 			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_sizes))
+					notifyManager =
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					builder = new NotificationCompat.Builder(context);
+					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_sizes))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, builder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
-				mIsRefreshing = false;
+				isRefreshing = false;
 				if(showProgress){
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES);
+					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES);
 				}
 			}
 			
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, mBuilder.build());
+					builder.setProgress(100, 100 * bytesWritten / totalSize, false);
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_SIZES, builder.build());
 				}
 			}
 			
@@ -82,27 +82,27 @@ public class SizeService {
 					ApiHelper.showAccessDenied();
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<Size> sizes = new ArrayList<Size>();
-					JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
-					for(int i = 0; i < sizeJSONArray.length(); i++){
-						JSONObject sizeJSONObject = sizeJSONArray.getJSONObject(i);
-						Size size = jsonObjectToSize(sizeJSONObject);
-						sizes.add(size);
-					}
-					SizeService.this.deleteAll();
-					SizeService.this.saveAll(sizes);
-					SizeService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		});
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<Size> sizes = new ArrayList<Size>();
+                    JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
+                    for(int i = 0; i < sizeJSONArray.length(); i++){
+                        JSONObject sizeJSONObject = sizeJSONArray.getJSONObject(i);
+                        Size size = jsonObjectToSize(sizeJSONObject);
+                        sizes.add(size);
+                    }
+                    SizeService.this.deleteAll();
+                    SizeService.this.saveAll(sizes);
+                    SizeService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
 	public static Size jsonObjectToSize(JSONObject sizeJSONObject)
@@ -125,34 +125,34 @@ public class SizeService {
 	}
 	
 	protected void saveAll(List<Size> sizes) {
-		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(context));
 		for (Size size : sizes) {
 			sizeDao.create(size);
 		}
 	}
 	
 	public List<Size> getAllSizes(String orderBy){
-		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(context));
         return sizeDao.getAll(orderBy);
 	}
 
 	public void deleteAll() {
-		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(mContext));
+		SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(context));
 		sizeDao.deleteAll();
 	}
 
 	public void setRequiresRefresh(Boolean requireRefresh){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("size_require_refresh", requireRefresh);
 		editor.commit();
 	}
 	public Boolean requiresRefresh(){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("size_require_refresh", true);
 	}
 
 	public boolean isRefreshing() {
-		return mIsRefreshing;
+		return isRefreshing;
 	}
 }
