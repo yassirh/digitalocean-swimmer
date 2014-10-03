@@ -25,7 +25,6 @@ public class DropletDao extends SqlDao<Droplet> {
 	public long createOrUpdate(Droplet droplet) {
 		SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
 		boolean update = findById(droplet.getId()) != null;
-		db = mDatabaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(DropletTable.ID, droplet.getId());
 		values.put(DropletTable.NAME, droplet.getName());

@@ -17,19 +17,20 @@ import com.yassirh.digitalocean.service.SSHKeyService;
 
 public class SSHKeyCreateDialogFragment extends DialogFragment {
 	
-	private long mSSHKeyId = 0L;
-	private SSHKeyService mSSHKeyService;
-	AlertDialog.Builder mBuilder;
+	private long sshKeyId = 0L;
+	private SSHKeyService sshKeyService;
+	AlertDialog.Builder builder;
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Bundle args = getArguments();
 		if(args != null){
-			mSSHKeyId = args.getLong("ssh_key_id",0);
+			sshKeyId = args.getLong("ssh_key_id",0);
 		}
-		mSSHKeyService = new SSHKeyService(getActivity());
-		final SSHKey sshKey = mSSHKeyService.findById(mSSHKeyId);
+		sshKeyService = new SSHKeyService(getActivity());
+		final SSHKey sshKey = sshKeyService.findById(sshKeyId);
 		LayoutInflater inflater;
-		mBuilder = new AlertDialog.Builder(getActivity());
+		builder = new AlertDialog.Builder(getActivity());
 		inflater = getActivity().getLayoutInflater();
 		final View view = inflater.inflate(R.layout.dialog_ssh_key_create, null);
 		
@@ -38,36 +39,35 @@ public class SSHKeyCreateDialogFragment extends DialogFragment {
 		if(sshKey != null){
 			nameEditText.setText(sshKey.getName());
 			publicSSHKeyEditText.setText(sshKey.getPublicKey());
+            publicSSHKeyEditText.setKeyListener(null);
 		}
-		mBuilder.setView(view);
+		builder.setView(view);
 		int positiveString = R.string.edit_ssh_key;
 		if(sshKey == null)
 			 positiveString = R.string.add_ssh_key;
-		mBuilder.setPositiveButton(positiveString, new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				SSHKey sshKey = new SSHKey();
-				sshKey.setName(nameEditText.getText().toString());
-				sshKey.setPublicKey(publicSSHKeyEditText.getText().toString());
-				if(mSSHKeyId == 0L){
-					sshKey.setId(0);
-					mSSHKeyService.save(sshKey,false,true);
-				}
-				else{
-					sshKey.setId(mSSHKeyId);
-					mSSHKeyService.save(sshKey,true,true);
-				}
-			}
-		});
-		mBuilder.setNegativeButton(R.string.cancel, new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		return mBuilder.create();
+		builder.setPositiveButton(positiveString, new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SSHKey sshKey = new SSHKey();
+                sshKey.setName(nameEditText.getText().toString());
+                sshKey.setPublicKey(publicSSHKeyEditText.getText().toString());
+                if (sshKeyId == 0L) {
+                    sshKeyService.create(sshKey);
+                } else {
+                    sshKey.setId(sshKeyId);
+                    sshKeyService.update(sshKey);
+                }
+            }
+        });
+		builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+		return builder.create();
 	}
 	
 	@Override

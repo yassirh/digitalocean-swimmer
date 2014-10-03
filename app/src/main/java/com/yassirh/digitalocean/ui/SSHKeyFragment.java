@@ -29,12 +29,12 @@ import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.service.SSHKeyService;
 
 public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener{
-		
-	SSHKeyAdapter sshKeyAdapter;
-	List<SSHKey> sshKeys;
-	SSHKeyService mSSHKeyService;
-	SSHKey mSSHKey;
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private SSHKeyAdapter sshKeyAdapter;
+    private List<SSHKey> sshKeys;
+    private SSHKeyService sshKeyService;
+	private SSHKey sshKey;
+	private SwipeRefreshLayout swipeRefreshLayout;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -45,15 +45,15 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mSSHKeyService = new SSHKeyService(getActivity());
+		sshKeyService = new SSHKeyService(getActivity());
 		update(this.getActivity());
 		View layout = inflater.inflate(R.layout.fragment_ssh_keys, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
-	            R.color.green_light,
-	            R.color.orange_light,
-	            R.color.red_light);
+		swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		swipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
+                R.color.green_light,
+                R.color.orange_light,
+                R.color.red_light);
 		return layout;
 	}
 	
@@ -76,7 +76,7 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
 		            enable = firstItemVisible && topOfFirstItemVisible;
 		        }
-			    mSwipeRefreshLayout.setEnabled(enable);
+			    swipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);
@@ -84,7 +84,7 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 
 	@Override
 	public void update(Context context) {
-		sshKeys = mSSHKeyService.getAllSSHKeys();
+		sshKeys = sshKeyService.getAllSSHKeys();
 		sshKeyAdapter = new SSHKeyAdapter(this.getActivity(), sshKeys);
 		setListAdapter(sshKeyAdapter);
 	}
@@ -94,15 +94,15 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		mSSHKey = mSSHKeyService.findById(info.id);
+		sshKey = sshKeyService.findById(info.id);
 		MenuInflater inflater = getActivity().getMenuInflater();
 		inflater.inflate(R.menu.ssh_key_context, menu);
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		if(mSSHKeyService == null)
-			mSSHKeyService = new SSHKeyService(getActivity());
+		if(sshKeyService == null)
+			sshKeyService = new SSHKeyService(getActivity());
 		AlertDialog.Builder alertDialog = new Builder(getActivity());
 		alertDialog.setNegativeButton(R.string.no, new OnClickListener() {
 			
@@ -114,20 +114,20 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 		switch (item.getItemId()) {
 			case R.id.action_edit:
 				Bundle args = new Bundle();
-		        args.putLong("ssh_key_id", mSSHKey.getId());
+		        args.putLong("ssh_key_id", sshKey.getId());
 		        FragmentManager fm = getActivity().getSupportFragmentManager();
 				SSHKeyCreateDialogFragment sshKeyCreateDialogFragment = new SSHKeyCreateDialogFragment();
 				sshKeyCreateDialogFragment.setArguments(args);
 				sshKeyCreateDialogFragment.show(fm, "edit_ssh_key");
 				return true;
 			case R.id.action_destroy:
-				alertDialog.setTitle(getString(R.string.destroy) + " : " + mSSHKey.getName());
+				alertDialog.setTitle(getString(R.string.destroy) + " : " + sshKey.getName());
 				alertDialog.setMessage(R.string.destroy_ssh_key_alert);
 				alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mSSHKeyService.delete(mSSHKey.getId(),true);
+						sshKeyService.delete(sshKey.getId());
 					}
 				});
 				alertDialog.show();
@@ -138,17 +138,17 @@ public class SSHKeyFragment extends ListFragment implements Updatable, SwipeRefr
 	
 	@Override
 	public void onRefresh() {
-		mSSHKeyService.getAllSSHKeysFromAPI(true);
+		sshKeyService.getAllSSHKeysFromAPI(true);
 		handler.post(refreshing);
 	}
 	
 	private final Runnable refreshing = new Runnable(){
 	    public void run(){
 	        try {
-	        	if(mSSHKeyService.isRefreshing()){
+	        	if(sshKeyService.isRefreshing()){
 	        		handler.postDelayed(this, 1000);   
 	        	}else{
-	        		mSwipeRefreshLayout.setRefreshing(false);
+	        		swipeRefreshLayout.setRefreshing(false);
 	        	}
 	        }
 	        catch (Exception e) {

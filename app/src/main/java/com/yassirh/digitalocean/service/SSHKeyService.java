@@ -1,9 +1,12 @@
 package com.yassirh.digitalocean.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,24 +42,24 @@ public class SSHKeyService {
 			return;
 		}
 		isRefreshing = true;
-		String url = String.format("%s/account/keys/", ApiHelper.API_URL);//String url = "https://api.digitalocean.com/ssh_keys/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
+		String url = String.format("%s/account/keys/", ApiHelper.API_URL);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
+			NotificationManager notifyManager;
+			NotificationCompat.Builder builder;
 			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mNotifyManager =
+					notifyManager =
 					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					builder = new NotificationCompat.Builder(context);
+					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
 					    .setContentText(context.getResources().getString(R.string.synchronising_keys))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, mBuilder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, builder.build());
 				}
 			}
 			
@@ -64,15 +67,15 @@ public class SSHKeyService {
 			public void onFinish() {
 				isRefreshing = false;
 				if(showProgress){
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
+					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS);
 				}
 			}
 			
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, mBuilder.build());
+					builder.setProgress(100, 100 * bytesWritten / totalSize, false);
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, builder.build());
 				}
 			}
 			
@@ -82,29 +85,30 @@ public class SSHKeyService {
 					ApiHelper.showAccessDenied();
 				}
 			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					List<SSHKey> sshKeys = new ArrayList<SSHKey>();
-					JSONArray sshKeysJSONArray = jsonObject.getJSONArray("ssh_keys");
-					for(int i = 0; i < sshKeysJSONArray.length(); i++){
-						JSONObject sshKeysJSONObject = sshKeysJSONArray.getJSONObject(i);
-						SSHKey sshKey = new SSHKey();
-						sshKey.setId(sshKeysJSONObject.getLong("id"));
-						sshKey.setName(sshKeysJSONObject.getString("name"));
-						sshKey.setFingerprint(sshKeysJSONObject.getString("fingerprint"));
-						sshKey.setPublicKey(sshKeysJSONObject.getString("public_key"));
-						sshKeys.add(sshKey);
-					}
-					SSHKeyService.this.deleteAll();
-					SSHKeyService.this.saveAll(sshKeys);
-					SSHKeyService.this.setRequiresRefresh(true);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    List<SSHKey> sshKeys = new ArrayList<SSHKey>();
+                    JSONArray sshKeysJSONArray = jsonObject.getJSONArray("ssh_keys");
+                    for(int i = 0; i < sshKeysJSONArray.length(); i++){
+                        JSONObject sshKeysJSONObject = sshKeysJSONArray.getJSONObject(i);
+                        SSHKey sshKey = new SSHKey();
+                        sshKey.setId(sshKeysJSONObject.getLong("id"));
+                        sshKey.setName(sshKeysJSONObject.getString("name"));
+                        sshKey.setFingerprint(sshKeysJSONObject.getString("fingerprint"));
+                        sshKey.setPublicKey(sshKeysJSONObject.getString("public_key"));
+                        sshKeys.add(sshKey);
+                    }
+                    SSHKeyService.this.deleteAll();
+                    SSHKeyService.this.saveAll(sshKeys);
+                    SSHKeyService.this.setRequiresRefresh(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
 
 		});
 	}
@@ -142,49 +146,16 @@ public class SSHKeyService {
 		return sshKeyDao.findById(id);
 	}
 
-	public void delete(final long id, final boolean showProgress) {
+	public void delete(final long id) {
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		String url = "";//"https://api.digitalocean.com/ssh_keys/" + id + "/destroy/" + "?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey();
-		
+		String url = String.format("%s/account/keys/%d", ApiHelper.API_URL, id);
 		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
-			
-			@Override
-			public void onStart() {
-				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.destroying_ssh_key))
-					    .setContentText("")
-					    .setSmallIcon(R.drawable.ic_launcher);
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+		client.delete(url, new AsyncHttpResponseHandler() {
 
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_SSH_KEY, mBuilder.build());
-				}
-			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						
-					}
-					else{
-						// TODO handle error Access Denied/Not Found
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-		    }
-		    
 		    @Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
@@ -193,17 +164,7 @@ public class SSHKeyService {
 			}
 		    
 		    @Override
-			public void onProgress(int bytesWritten, int totalSize) {	
-				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_SSH_KEY, mBuilder.build());
-				}
-			}
-		    
-		    @Override
 		    public void onFinish() {
-		    	if(showProgress)
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_DESTROY_SSH_KEY);
 		    	SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
 		    	sshKeyDao.delete(id);
 		    	SSHKeyService.this.setRequiresRefresh(true);
@@ -211,95 +172,99 @@ public class SSHKeyService {
 		});
 	}
 
-	public void save(SSHKey sshKey, final boolean update, final boolean showProgress) {
-		Account currentAccount = ApiHelper.getCurrentAccount(context);
-		if(currentAccount == null){
-			return;
-		}
-		String url = "";
-		if(update){
-			/*url = "https://api.digitalocean.com/ssh_keys/" + sshKey.getId() + "/edit/" + 
-					"?client_id=" + currentAccount.getClientId() + 
-					"&api_key=" + currentAccount.getApiKey() +
-					"&ssh_pub_key=" + sshKey.getSshPubKey() +
-					"&name=" + sshKey.getName();*/
-		} else{
-			/*url = "https://api.digitalocean.com/ssh_keys/new/" + 
-					"?client_id=" + currentAccount.getClientId() + 
-					"&api_key=" + currentAccount.getApiKey() +
-					"&ssh_pub_key=" + sshKey.getSshPubKey() +
-					"&name=" + sshKey.getName();*/
-		}
-		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
-			
-			@Override
-			public void onStart() {
-				if(showProgress){
-					mNotifyManager =
-					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
-					    .setContentText(context.getResources().getString(R.string.saving_ssh_key))
-					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					if(update)
-						mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_UPDATE_SSH_KEY, mBuilder.build());
-					else
-						mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_SSH_KEY, mBuilder.build());
-				}
-			}
-			
-			@Override
-			public void onFinish() {
-				if(showProgress && update)
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_UPDATE_SSH_KEY);
-				else if(showProgress && !update)
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_CREATE_SSH_KEY);
-			}
-			
-			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
-				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					if(update)
-						mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_UPDATE_SSH_KEY, mBuilder.build());
-					else
-						mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_SSH_KEY, mBuilder.build());
-				}
-			}
-			
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
-					ApiHelper.showAccessDenied();
-				}
-			}
-			
-		    @Override
-		    public void onSuccess(String response) {
-		        try {
-					JSONObject jsonObject = new JSONObject(response);
-					String status = jsonObject.getString("status");
-					if(ApiHelper.API_STATUS_OK.equals(status)){
-						JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");
-						SSHKey sshKey = new SSHKey();
-						sshKey.setId(sshKeysJSONObject.getLong("id"));
-						sshKey.setName(sshKeysJSONObject.getString("name"));
-						sshKey.setPublicKey(sshKeysJSONObject.getString("ssh_pub_key"));
-						SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
-						sshKeyDao.create(sshKey);
-				    	SSHKeyService.this.setRequiresRefresh(true);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}  
-		    }
+    public void create(SSHKey sshKey) {
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+        String url = String.format("%s/account/keys", ApiHelper.API_URL);
+        HashMap<String,Object> options = new HashMap<String, Object>();
+        options.put("name", sshKey.getName());
+        options.put("public_key", sshKey.getPublicKey());
+        JSONObject jsonObject = new JSONObject(options);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        try {
+            ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 
-		});
-	}
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if (statusCode == 401) {
+                        ApiHelper.showAccessDenied();
+                    }
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(new String(responseBody));
+                        JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");
+                        SSHKey sshKey = new SSHKey();
+                        sshKey.setId(sshKeysJSONObject.getLong("id"));
+                        sshKey.setName(sshKeysJSONObject.getString("name"));
+                        sshKey.setFingerprint(sshKeysJSONObject.getString("fingerprint"));
+                        sshKey.setPublicKey(sshKeysJSONObject.getString("public_key"));
+                        SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
+                        sshKeyDao.create(sshKey);
+                        SSHKeyService.this.setRequiresRefresh(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(SSHKey sshKey) {
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+        String url = String.format("%s/account/keys/%d", ApiHelper.API_URL, sshKey.getId());
+        HashMap<String,Object> options = new HashMap<String, Object>();
+        options.put("name", sshKey.getName());
+        JSONObject jsonObject = new JSONObject(options);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        try {
+            ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            client.put(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if (statusCode == 401) {
+                        ApiHelper.showAccessDenied();
+                    }
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(new String(responseBody));
+                        JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");
+                        SSHKey sshKey = new SSHKey();
+                        sshKey.setId(sshKeysJSONObject.getLong("id"));
+                        sshKey.setName(sshKeysJSONObject.getString("name"));
+                        sshKey.setFingerprint(sshKeysJSONObject.getString("fingerprint"));
+                        sshKey.setPublicKey(sshKeysJSONObject.getString("public_key"));
+                        SSHKeyDao sshKeyDao = new SSHKeyDao(DatabaseHelper.getInstance(context));
+                        sshKeyDao.delete(sshKey.getId());
+                        sshKeyDao.create(sshKey);
+                        SSHKeyService.this.setRequiresRefresh(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public boolean isRefreshing() {
 		return isRefreshing;

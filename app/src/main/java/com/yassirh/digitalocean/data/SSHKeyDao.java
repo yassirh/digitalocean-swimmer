@@ -8,11 +8,11 @@ import com.yassirh.digitalocean.model.SSHKey;
 
 public class SSHKeyDao extends SqlDao<SSHKey> {
 
-	private DatabaseHelper mDatabaseHelper;
+	private DatabaseHelper databaseHelper;
 	
 	public SSHKeyDao(DatabaseHelper databaseHelper) {
 		super();
-		this.mDatabaseHelper = databaseHelper;
+		this.databaseHelper = databaseHelper;
 	}
 
 	public long create(SSHKey sshKey) {
@@ -35,7 +35,7 @@ public class SSHKeyDao extends SqlDao<SSHKey> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.mDatabaseHelper;
+		return this.databaseHelper;
 	}
 
 	@Override
