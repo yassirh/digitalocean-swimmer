@@ -161,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 		}
 		
 		ActionService actionService = new ActionService(this);
-		actionService.trackEvents();
+		actionService.trackActions();
         
         if (savedInstanceState == null) {
             selectItem(0);

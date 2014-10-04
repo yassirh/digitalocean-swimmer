@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
@@ -33,7 +33,7 @@ public class ActionService {
 		this.context = context;
 	}
 
-	public void trackEvents(){
+	public void trackActions(){
 		final Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null || t != null){
 			return;
@@ -47,7 +47,7 @@ public class ActionService {
 			public void run() {
 				for (;;) {
 					try {
-						AsyncHttpClient client = new AsyncHttpClient();
+                        SyncHttpClient client = new SyncHttpClient();
 						client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 						client.get(url, new AsyncHttpResponseHandler() {
 
