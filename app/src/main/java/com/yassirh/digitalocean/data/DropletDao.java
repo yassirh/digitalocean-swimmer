@@ -10,20 +10,18 @@ import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
-import com.yassirh.digitalocean.utils.CachedImagesHelper;
-import com.yassirh.digitalocean.utils.CachedRegionsHelper;
 
 public class DropletDao extends SqlDao<Droplet> {
 
-	private DatabaseHelper mDatabaseHelper;
+	private DatabaseHelper databaseHelper;
 	
 	public DropletDao(DatabaseHelper databaseHelper) {
 		super();
-		this.mDatabaseHelper = databaseHelper;
+		this.databaseHelper = databaseHelper;
 	}
 
 	public long createOrUpdate(Droplet droplet) {
-		SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+		SQLiteDatabase db = databaseHelper.getWritableDatabase();
 		boolean update = findById(droplet.getId()) != null;
 		ContentValues values = new ContentValues();
 		values.put(DropletTable.ID, droplet.getId());
@@ -52,17 +50,9 @@ public class DropletDao extends SqlDao<Droplet> {
 
 
 	public Droplet newInstance(Cursor c) {
-		Image image = new ImageDao(mDatabaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
-		if(image == null){
-			// search cached images	
-			image = CachedImagesHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
-		}
-		Region region = new RegionDao(mDatabaseHelper).findByProperty(DropletTable.REGION_SLUG, c.getString(c.getColumnIndex(DropletTable.REGION_SLUG)));
-		if(region == null){
-			// search cached regions	
-			region = CachedRegionsHelper.getCachedImage(getDatabaseHelper().getContext(), c.getLong(c.getColumnIndex(DropletTable.REGION_SLUG)));
-		}
-		Size size = new SizeDao(mDatabaseHelper).findByProperty(DropletTable.SIZE_SLUG, c.getString(c.getColumnIndex(DropletTable.SIZE_SLUG)));
+		Image image = new ImageDao(databaseHelper).findById(c.getLong(c.getColumnIndex(DropletTable.IMAGE_ID)));
+		Region region = new RegionDao(databaseHelper).findByProperty(DropletTable.REGION_SLUG, c.getString(c.getColumnIndex(DropletTable.REGION_SLUG)));
+		Size size = new SizeDao(databaseHelper).findByProperty(DropletTable.SIZE_SLUG, c.getString(c.getColumnIndex(DropletTable.SIZE_SLUG)));
 		Droplet droplet = new Droplet();
 		droplet.setId(c.getLong(c.getColumnIndex(DropletTable.ID)));
 		droplet.setName(c.getString(c.getColumnIndex(DropletTable.NAME)));
@@ -84,7 +74,7 @@ public class DropletDao extends SqlDao<Droplet> {
 
 	@Override
 	public DatabaseHelper getDatabaseHelper() {
-		return this.mDatabaseHelper;
+		return this.databaseHelper;
 	}
 
 	@Override
