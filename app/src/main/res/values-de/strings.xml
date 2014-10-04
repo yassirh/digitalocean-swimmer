@@ -191,5 +191,7 @@
     <string name="public_ssh_key_label">Öffentlicher SSH-Schlüssel:</string>
     <string name="title_activity_add_account">AddAccountActivity</string>
     <string name="token_label">Token</string>
+    <string name="ipv6_label">IPv6</string>
+    <string name="enable_user_data_label">Nutzerdaten ermöglichen</string>
 
 </resources>
