@@ -43,20 +43,20 @@ public class ImageService {
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.get(url, new AsyncHttpResponseHandler() {
-			NotificationManager mNotifyManager;
-			NotificationCompat.Builder mBuilder;
+			NotificationManager notifyManager;
+			NotificationCompat.Builder builder;
 			
 			@Override
 			public void onStart() {
 				if(showProgress){
-					mNotifyManager =
+					notifyManager =
 					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(context);
-					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					builder = new NotificationCompat.Builder(context);
+					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
 					    .setContentText(context.getResources().getString(R.string.synchronising_images))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, builder.build());
 				}
 			}
 			
@@ -64,15 +64,15 @@ public class ImageService {
 			public void onFinish() {
 				isRefreshing = false;
 				if(showProgress){
-					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
+					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES);
 				}
 			}
 			
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {
 				if(showProgress){
-					mBuilder.setProgress(100, (int)100*bytesWritten/totalSize, false);
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, mBuilder.build());
+					builder.setProgress(100, 100 * bytesWritten / totalSize, false);
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, builder.build());
 				}
 			}
 			
@@ -92,13 +92,13 @@ public class ImageService {
                     for(int i = 0; i < imageJSONArray.length(); i++){
                         JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
                         Image image = jsonObjectToImage(imageJSONObject);
+                        image.setInUse(true);
                         images.add(image);
                     }
                     ImageService.this.deleteAll();
                     ImageService.this.saveAll(images);
                     ImageService.this.setRequiresRefresh(true);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -116,6 +116,7 @@ public class ImageService {
 			image.setSlug("");
 		else
 			image.setSlug(imageJSONObject.getString("slug"));
+        image.setInUse(true);
 		image.setPublic(imageJSONObject.getBoolean("public"));
 		return image;
 	}
@@ -127,10 +128,10 @@ public class ImageService {
 		}
 	}
 	
-	public List<Image> getAllImages(){
+	/*public List<Image> getAllImages(){
 		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
         return imageDao.getAll(null);
-	}
+	}*/
 
 	public void deleteAll() {
 		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));

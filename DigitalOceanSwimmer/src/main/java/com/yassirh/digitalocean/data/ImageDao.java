@@ -24,6 +24,7 @@ public class ImageDao extends SqlDao<Image> {
 		values.put(ImageTable.NAME, image.getName());
 		values.put(ImageTable.DISTRIBUTION, image.getDistribution());
 		values.put(ImageTable.SLUG, image.getSlug());
+        values.put(ImageTable.IS_IN_USE, image.isInUse());
 		values.put(ImageTable.PUBLIC, image.isPublic() ? 1 : 0);
         return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
@@ -51,7 +52,7 @@ public class ImageDao extends SqlDao<Image> {
 	public List<Image> getSnapshotsOnly() {
 		List<Image> snapshots = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
-				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "0", null, null, null, ImageTable.NAME);
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = ? AND " + ImageTable.IS_IN_USE + " = ?", new String[]{"0","1"}, null, null, ImageTable.NAME);
 		
 		if(cursor.moveToFirst()){
 			while (!cursor.isAfterLast()) {
@@ -67,8 +68,8 @@ public class ImageDao extends SqlDao<Image> {
 	public List<Image> getImagesOnly() {
 		List<Image> images = new ArrayList<Image>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
-				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = " + "1", null, null, null, ImageTable.NAME);
-		
+				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = ? AND " + ImageTable.IS_IN_USE + " = ?", new String[]{"1","1"}, null, null, ImageTable.NAME);
+
 		if(cursor.moveToFirst()){
 			while (!cursor.isAfterLast()) {
 				Image image = newInstance(cursor);
@@ -79,4 +80,8 @@ public class ImageDao extends SqlDao<Image> {
 		cursor.close();
 		return images;
 	}
+
+    public void deleteAll() {
+        db.delete(getTableHelper().TABLE_NAME, ImageTable.IS_IN_USE + " = ?", new String[]{"1"});
+    }
 }

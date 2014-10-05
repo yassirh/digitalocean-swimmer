@@ -42,7 +42,7 @@ public class DropletAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.droplet_list_row, null);
+            vi = inflater.inflate(R.layout.droplet_list_row, parent, false);
 
         final Droplet droplet = data.get(position);
         Region region = droplet.getRegion();
@@ -59,7 +59,7 @@ public class DropletAdapter extends BaseAdapter {
         else{
         	flagImageView.setVisibility(View.GONE);
         }
-        
+
         if(image != null){	
 	    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), droplet.getStatus()));
         }

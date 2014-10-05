@@ -1,6 +1,5 @@
 package com.yassirh.digitalocean.service;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,6 +12,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.data.NetworkDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
@@ -21,6 +21,7 @@ import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.utils.ApiHelper;
+import com.yassirh.digitalocean.utils.MyApplication;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -30,7 +31,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +40,6 @@ import java.util.Map.Entry;
 public class DropletService {
 
 	private Context context;
-	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
 	private boolean isRefreshing;
 	public enum DropletActions{
@@ -197,7 +195,7 @@ public class DropletService {
 			@Override
 			public void onProgress(int bytesWritten, int totalSize) {	
 				if(showProgress){
-					builder.setProgress(100, (int)100*bytesWritten/totalSize, false);
+					builder.setProgress(100, 100*bytesWritten/totalSize, false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, builder.build());
 				}
 			}
@@ -248,6 +246,11 @@ public class DropletService {
 	public static Droplet jsonObjectToDroplet(JSONObject dropletJSONObject) throws JSONException {
 		Droplet droplet = new Droplet();
 		Image image = ImageService.jsonObjectToImage(dropletJSONObject.getJSONObject("image"));
+        ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(MyApplication.getAppContext()));
+        if(imageDao.findById(image.getId()) == null){
+            image.setInUse(false);
+            imageDao.create(image);
+        }
 		Region region = RegionService.jsonObjectToRegion(dropletJSONObject.getJSONObject("region"));
 		Size size = SizeService.jsonObjectToSize(dropletJSONObject.getJSONObject("size"));
 		droplet.setId(dropletJSONObject.getLong("id"));
@@ -295,7 +298,7 @@ public class DropletService {
 		droplet.setNetworks(networks);
 		
 		try {
-			droplet.setCreatedAt(iso8601Format.parse(dropletJSONObject.getString("created_at").replace("Z", "")));
+			droplet.setCreatedAt(ApiHelper.iso8601Format.parse(dropletJSONObject.getString("created_at").replace("Z", "")));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -385,7 +388,7 @@ public class DropletService {
 		}
 	}
 
-	public void getDropletFromAPI(long dropletId, final boolean showProgress) {
+	/*public void getDropletFromAPI(long dropletId, final boolean showProgress) {
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
@@ -415,7 +418,7 @@ public class DropletService {
 				}
 			}
 		});
-	}
+	}*/
 
 	protected void update(Droplet droplet) {
 		DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));

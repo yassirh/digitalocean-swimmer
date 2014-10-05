@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.yassirh.digitalocean.utils.MyApplication;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 15;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();
@@ -20,8 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper networkTable = new NetworkTable();
 	
 	static DatabaseHelper sDatabaseHelper;
-	static SQLiteDatabase sSQLiteDatabase;
-	private Context context;
+    private Context context;
 	
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,24 +32,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public static DatabaseHelper getInstance(Context context) {
 		if (sDatabaseHelper == null) {
-			sDatabaseHelper = new DatabaseHelper(context.getApplicationContext());
+			sDatabaseHelper = new DatabaseHelper(context);
 		}
 		return sDatabaseHelper;
 	}
 	
 	public static SQLiteDatabase getWritableDatabaseInstance() {
 		if (sDatabaseHelper == null) {
-			// TODO
+            sDatabaseHelper = new DatabaseHelper(MyApplication.getAppContext());
 		}
 		return sDatabaseHelper.getWritableDatabase();
 	}
 	
-	public static SQLiteDatabase getReadableDatabaseInstance() {
+	/*public static SQLiteDatabase getReadableDatabaseInstance() {
 		if (sDatabaseHelper == null) {
-			// TODO
+            sDatabaseHelper = new DatabaseHelper(MyApplication.getAppContext());
 		}
 		return sDatabaseHelper.getReadableDatabase();
-	}
+	}*/
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -65,25 +66,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL(imageTable.getDropSql());
-		db.execSQL(regionTable.getDropSql());
-		db.execSQL(sizeTable.getDropSql());
-		db.execSQL(domainTable.getDropSql());
-		db.execSQL(dropletTable.getDropSql());
-		db.execSQL(recordTable.getDropSql());
-		db.execSQL(sshKeyTable.getDropSql());
-		db.execSQL(accountTable.getDropSql());
-		db.execSQL(networkTable.getDropSql());
-		
-		db.execSQL(imageTable.getCreateSql());
-		db.execSQL(regionTable.getCreateSql());
-		db.execSQL(sizeTable.getCreateSql());
-		db.execSQL(domainTable.getCreateSql());
-		db.execSQL(dropletTable.getCreateSql());
-		db.execSQL(recordTable.getCreateSql());
-		db.execSQL(sshKeyTable.getCreateSql());
-		db.execSQL(accountTable.getCreateSql());
-		db.execSQL(networkTable.getCreateSql());
+        if(oldVersion < 15) {
+            db.execSQL(accountTable.getDropSql());
+            db.execSQL(accountTable.getCreateSql());
+        }
+        db.execSQL(imageTable.getDropSql());
+        db.execSQL(regionTable.getDropSql());
+        db.execSQL(sizeTable.getDropSql());
+        db.execSQL(domainTable.getDropSql());
+        db.execSQL(dropletTable.getDropSql());
+        db.execSQL(recordTable.getDropSql());
+        db.execSQL(sshKeyTable.getDropSql());
+        db.execSQL(networkTable.getDropSql());
+
+        db.execSQL(imageTable.getCreateSql());
+        db.execSQL(regionTable.getCreateSql());
+        db.execSQL(sizeTable.getCreateSql());
+        db.execSQL(domainTable.getCreateSql());
+        db.execSQL(dropletTable.getCreateSql());
+        db.execSQL(recordTable.getCreateSql());
+        db.execSQL(sshKeyTable.getCreateSql());
+        db.execSQL(networkTable.getCreateSql());
 	}
 
 

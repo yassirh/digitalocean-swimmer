@@ -393,7 +393,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
         args.putLong("id", id);
 		DropletDetailsDialogFragment dropletDetailsDialogFragment = new DropletDetailsDialogFragment();
 		dropletDetailsDialogFragment.setArguments(args);
-		FragmentManager supportFragment = ((FragmentActivity)this.getActivity()).getSupportFragmentManager();
+		FragmentManager supportFragment = this.getActivity().getSupportFragmentManager();
 		dropletDetailsDialogFragment.show(supportFragment, "droplet_details_fragment");
 	}
 

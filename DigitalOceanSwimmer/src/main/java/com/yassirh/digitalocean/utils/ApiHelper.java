@@ -21,9 +21,7 @@ import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
 
 public class ApiHelper {
-	
-	public static final String API_STATUS_OK = "OK";
-	public static final String API_STATUS_ERROR = "ERROR";
+
 	public static final String API_URL = "https://api.digitalocean.com/v2";
     public static SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
 	
@@ -82,22 +80,22 @@ public class ApiHelper {
 	}
 	
 	public static int getDistributionLogo(String distribution,String status){
-		if(distribution.equals("Ubuntu")){
+		if(distribution.equalsIgnoreCase("Ubuntu")){
         	return status.equals("active") ? R.drawable.ubuntu_active : R.drawable.ubuntu;
         }
-        else if(distribution.equals("Debian")){
+        else if(distribution.equalsIgnoreCase("Debian")){
         	return status.equals("active") ? R.drawable.debian_active : R.drawable.debian;
         }
-        else if(distribution.equals("CentOS")){
+        else if(distribution.equalsIgnoreCase("CentOS")){
         	return status.equals("active") ? R.drawable.centos_active : R.drawable.centos;
         }
-        else if(distribution.equals("Fedora")){
+        else if(distribution.equalsIgnoreCase("Fedora")){
         	return status.equals("active") ? R.drawable.fedora_active : R.drawable.fedora;
         }
-        else if(distribution.equals("Arch Linux")){
+        else if(distribution.equalsIgnoreCase("Arch Linux")){
         	return status.equals("active") ? R.drawable.arch_linux_active : R.drawable.arch_linux;
         }		
-        else if(distribution.equals("CoreOS")){
+        else if(distribution.equalsIgnoreCase("CoreOS")){
         	return status.equals("active") ? R.drawable.coreos_active : R.drawable.coreos;
         }
 		return R.drawable.unknown;

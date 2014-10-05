@@ -20,13 +20,9 @@ import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.service.ImageService;
 
 public class ImagesFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener{
-		
-	private ImageAdapter mImageAdapter;
-	private List<Image> mImages;
-	private List<Image> mSnapshots;
-	private List<Image> mAllImages;
-	private ImageService mImageService;
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private ImageService imageService;
+	private SwipeRefreshLayout swipeRefreshLayout;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -37,15 +33,15 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mImageService = new ImageService(this.getActivity());
+		imageService = new ImageService(this.getActivity());
 		update(this.getActivity());
 		View layout = inflater.inflate(R.layout.fragment_images, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
-	            R.color.green_light,
-	            R.color.orange_light,
-	            R.color.red_light);
+		swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		swipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
+                R.color.green_light,
+                R.color.orange_light,
+                R.color.red_light);
 		return layout;
 	}
 	
@@ -68,7 +64,7 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 		            boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
 		            enable = firstItemVisible && topOfFirstItemVisible;
 		        }
-			    mSwipeRefreshLayout.setEnabled(enable);
+			    swipeRefreshLayout.setEnabled(enable);
 			}
 		});
 		registerForContextMenu(listView);
@@ -76,41 +72,41 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 
 	@Override
 	public void update(Context context) {
-		mImages = mImageService.getImagesOnly();
-		mSnapshots = mImageService.getSnapshotsOnly();
-		mAllImages = new ArrayList<Image>();
-		if(mSnapshots.size() > 0){
+        List<Image> images = imageService.getImagesOnly();
+        List<Image> snapshots = imageService.getSnapshotsOnly();
+        List<Image> allImages = new ArrayList<Image>();
+		if(snapshots.size() > 0){
 			// used for the listview header
 			Image snapshot = new Image();
 			snapshot.setId(0);
 			snapshot.setName("Snapshots");
-			mAllImages.add(snapshot);
-			mAllImages.addAll(mSnapshots);
+			allImages.add(snapshot);
+			allImages.addAll(snapshots);
 		}
 		// used for the listview header
 		Image image = new Image();
 		image.setId(0);
 		image.setName("Public images");		
 		
-		mAllImages.add(image);
-		mAllImages.addAll(mImages);
-		mImageAdapter = new ImageAdapter(this.getActivity(), mAllImages);
-		setListAdapter(mImageAdapter);	
+		allImages.add(image);
+		allImages.addAll(images);
+        ImageAdapter imageAdapter = new ImageAdapter(this.getActivity(), allImages);
+		setListAdapter(imageAdapter);
 	}
 	
 	@Override
 	public void onRefresh() {
-		mImageService.getAllImagesFromAPI(true);
+		imageService.getAllImagesFromAPI(true);
 		handler.post(refreshing);
 	}
 	
 	private final Runnable refreshing = new Runnable(){
 	    public void run(){
 	        try {
-	        	if(mImageService.isRefreshing()){
+	        	if(imageService.isRefreshing()){
 	        		handler.postDelayed(this, 1000);   
 	        	}else{
-	        		mSwipeRefreshLayout.setRefreshing(false);
+	        		swipeRefreshLayout.setRefreshing(false);
 	        	}
 	        }
 	        catch (Exception e) {

@@ -7,8 +7,9 @@ public class Image {
 	private String distribution;
 	private String slug;
 	private Boolean isPublic;
-	
-	public Image(){
+    private boolean notInUse;
+
+    public Image(){
 	}
 	
 	public Image(long id, String name, String distribution, String slug, Boolean isPublic) {
@@ -53,4 +54,12 @@ public class Image {
 	public void setPublic(Boolean isPublic) {
 		this.isPublic = isPublic;
 	}
+
+    public void setInUse(boolean notInUse) {
+        this.notInUse = notInUse;
+    }
+
+    public boolean isInUse() {
+        return notInUse;
+    }
 }
