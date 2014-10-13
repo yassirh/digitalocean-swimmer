@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -353,7 +354,9 @@ public class DropletService {
 		options.put("region", regionSlug);
 		options.put("size", sizeSlug);
 		options.put("image", imageId);
-		options.put("ssh_keys", selectedSSHKeysIds);
+        if(selectedSSHKeysIds.size() > 0) {
+            options.put("ssh_keys", selectedSSHKeysIds);
+        }
 		options.put("backups", enableBackups);
 		options.put("ipv6", enableIPv6);
 		options.put("private_networking", privateNetworking);
@@ -362,7 +365,6 @@ public class DropletService {
 		}
 		
 		JSONObject jsonObject = new JSONObject(options);
-		
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		ByteArrayEntity entity;
@@ -372,14 +374,20 @@ public class DropletService {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
                 }
 
                 @Override
 				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
-					}
+					} else if(statusCode == 422){
+                        try {
+                            JSONObject jsonObject = new JSONObject(new String(responseBody));
+                            Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 				}
 			    
 			});

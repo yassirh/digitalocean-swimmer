@@ -90,9 +90,6 @@ public class ActionService {
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                if(statusCode == 401){
-                                    ApiHelper.showAccessDenied();
-                                }
                             }
                         });
 						Thread.sleep(5000);
