@@ -188,7 +188,7 @@ public class DropletService {
 			
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
+                if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}

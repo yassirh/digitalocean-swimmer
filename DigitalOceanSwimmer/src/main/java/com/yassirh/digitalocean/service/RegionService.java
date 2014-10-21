@@ -26,19 +26,19 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class RegionService {
 
-	private Context mContext;
-	private boolean mIsRefreshing;
+	private Context context;
+	private boolean isRefreshing;
 		
 	public RegionService(Context context) {
-		mContext = context;
+		this.context = context;
 	}
 
 	public void getAllRegionsFromAPI(final boolean showProgress){
-		Account currentAccount = ApiHelper.getCurrentAccount(mContext);
+		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
-		mIsRefreshing = true;
+		isRefreshing = true;
 		String url = String.format("%s/regions/", ApiHelper.API_URL);//String url = "https://api.digitalocean.com/regions/?client_id=" + currentAccount.getClientId() + "&api_key=" + currentAccount.getApiKey(); 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
@@ -50,19 +50,19 @@ public class RegionService {
 			public void onStart() {
 				if(showProgress){
 					mNotifyManager =
-					        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-					mBuilder = new NotificationCompat.Builder(mContext);
-					mBuilder.setContentTitle(mContext.getResources().getString(R.string.synchronising))
-					    .setContentText(mContext.getResources().getString(R.string.synchronising_regions))
+					        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+					mBuilder = new NotificationCompat.Builder(context);
+					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
+					    .setContentText(context.getResources().getString(R.string.synchronising_regions))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(mContext,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
+					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
 				}
 			}
 			
 			@Override
 			public void onFinish() {
-				mIsRefreshing = false;
+				isRefreshing = false;
 				if(showProgress){
 					mNotifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS);
 				}
@@ -98,21 +98,21 @@ public class RegionService {
                     RegionService.this.saveAll(regions);
                     RegionService.this.setRequiresRefresh(true);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
 	}
 
-
-
 	public static Region jsonObjectToRegion(JSONObject regionJSONObject)
 			throws JSONException {
 		Region region = new Region();
 		region.setName(regionJSONObject.getString("name"));
 		region.setSlug(regionJSONObject.getString("slug"));
-		region.setAvailable(regionJSONObject.getBoolean("available"));
+        try {
+            region.setAvailable(regionJSONObject.getBoolean("available"));
+        }catch (JSONException ignored){
+        }
 		String features = "";
 		for (int i = 0; i < regionJSONObject.getJSONArray("features").length(); i++) {
 			features += ";" + regionJSONObject.getJSONArray("features").getString(i);
@@ -122,40 +122,40 @@ public class RegionService {
 	}
 	
 	public void deleteAll() {
-		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(context));
 		regionDao.deleteAll();
 	}
 
 	protected void saveAll(List<Region> regions) {
-		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(context));
 		for (Region region : regions) {
 			regionDao.create(region);
 		}
 	}
 	
 	public List<Region> getAllRegions(){
-		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(context));
         return regionDao.getAll(null);
 	}
 
 	public List<Region> getAllRegionsOrderedByName(){
-		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(mContext));
+		RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(context));
         return regionDao.getAllOrderedByName();
 	}
 	
 	public void setRequiresRefresh(Boolean requireRefresh){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("region_require_refresh", requireRefresh);
 		editor.commit();
 	}
 	
 	public Boolean requiresRefresh(){
-		SharedPreferences settings = mContext.getSharedPreferences("prefrences", 0);
+		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);
 		return settings.getBoolean("region_require_refresh", true);
 	}
 
 	public boolean isRefreshing() {
-		return mIsRefreshing;
+		return isRefreshing;
 	}
 }
