@@ -34,7 +34,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		domainService.getAllDomainsFromAPI(false);
 		
 		DropletService dropletService = new DropletService(context);
-		dropletService.getAllDropletsFromAPI(false);
+		dropletService.getAllDropletsFromAPI(false, true);
 		
 		RegionService regionService = new RegionService(context);
 		regionService.getAllRegionsFromAPI(false);		

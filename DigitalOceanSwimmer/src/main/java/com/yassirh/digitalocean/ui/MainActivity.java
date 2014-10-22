@@ -231,7 +231,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         case R.id.action_sync:
         	if(currentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
         		DropletService dropletService = new DropletService(this);
-        		dropletService.getAllDropletsFromAPI(true);
+        		dropletService.getAllDropletsFromAPI(true, true);
         	}
         	else if(currentSelected == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
         		DomainService domainService = new DomainService(this);

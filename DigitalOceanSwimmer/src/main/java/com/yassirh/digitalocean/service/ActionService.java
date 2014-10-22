@@ -77,7 +77,7 @@ public class ActionService {
                                         }
                                         else{
                                             if(shownNotifications.contains((int)action.getId())){
-                                                new DropletService(context).getAllDropletsFromAPI(false);
+                                                new DropletService(context).getAllDropletsFromAPI(false, true);
                                                 shownNotifications.remove((int)action.getId());
                                             }
                                             notifyManager.cancel((int)action.getId());

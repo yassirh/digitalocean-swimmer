@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
@@ -66,7 +68,7 @@ public class DropletService {
 		return settings.getBoolean("droplet_require_refresh", true);
 	}
 	
-	public void ExecuteAction(final long dropletId,final DropletActions dropletAction, HashMap<String,String> params){
+	public void ExecuteAction(final long dropletId, final DropletActions dropletAction, HashMap<String,String> params){
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
@@ -136,6 +138,9 @@ public class DropletService {
 		case RESTORE:
 			action = "restore";
 			break;
+        case RENAME:
+            action = "rename";
+            break;
 		case REBUILD:
 			action = "rebuild";
 			break;
@@ -151,14 +156,15 @@ public class DropletService {
 		return action;
 	}
 	
-	public void getAllDropletsFromAPI(final boolean showProgress){
+	public void getAllDropletsFromAPI(final boolean showProgress, boolean synchronous){
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
 		}
 		isRefreshing = true;
 		String url = String.format("%s/droplets", ApiHelper.API_URL);
-		AsyncHttpClient client = new AsyncHttpClient();
+		AsyncHttpClient client;
+        client  = synchronous ? new AsyncHttpClient() : new SyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
         client.get(url, new AsyncHttpResponseHandler() {
 			NotificationManager notifyManager;

@@ -160,7 +160,7 @@ public class ApiHelper {
 		
 		DropletService dropletService = new DropletService(context);
 		dropletService.deleteAll();
-		dropletService.getAllDropletsFromAPI(true);
+		dropletService.getAllDropletsFromAPI(true, true);
 		
 		RegionService regionService = new RegionService(context);
 		regionService.deleteAll();
