@@ -400,6 +400,8 @@ public class DropletService {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
+        ActionService actionService = new ActionService(context);
+        actionService.trackActions();
 	}
 
 	/*public void getDropletFromAPI(long dropletId, final boolean showProgress) {
@@ -457,7 +459,7 @@ public class DropletService {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+                requiresRefresh();
             }
 
             @Override
