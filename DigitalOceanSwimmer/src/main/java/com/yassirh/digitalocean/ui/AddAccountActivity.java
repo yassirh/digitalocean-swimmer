@@ -2,10 +2,10 @@ package com.yassirh.digitalocean.ui;
 
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +15,7 @@ import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
-public class AddAccountActivity extends Activity {
+public class AddAccountActivity extends ActionBarActivity {
 
 	EditText accountNameEditText;
 	EditText tokenEditText;

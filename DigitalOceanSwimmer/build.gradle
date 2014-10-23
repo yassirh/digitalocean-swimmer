@@ -3,13 +3,13 @@ import com.android.builder.core.DefaultManifestParser
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.0.2"
 
     defaultConfig {
         applicationId "com.yassirh.digitalocean"
         minSdkVersion 8
-        targetSdkVersion 20
+        targetSdkVersion 21
     }
 
     Properties props = new Properties()
@@ -44,6 +44,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.loopj.android:android-async-http:1.4.5'
 }

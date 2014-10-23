@@ -227,6 +227,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
             return true;
         }
         FragmentManager fm;
+        AlertDialog.Builder builder;
+        LayoutInflater inflater;
         switch(item.getItemId()) {
         case R.id.action_sync:
         	if(currentSelected == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
@@ -259,8 +261,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	startActivity(intent);
         	return true;
         case R.id.action_add_domain:
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	    LayoutInflater inflater = getLayoutInflater();
         	builder = new AlertDialog.Builder(this);
     	    inflater = getLayoutInflater();
     		View view = inflater.inflate(R.layout.dialog_domain_create, null);
