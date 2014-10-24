@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -259,7 +258,8 @@ public class DropletService {
             imageDao.create(image);
         }
 		Region region = RegionService.jsonObjectToRegion(dropletJSONObject.getJSONObject("region"));
-		Size size = SizeService.jsonObjectToSize(dropletJSONObject.getJSONObject("size"));
+		Size size = new Size();
+        size.setSlug(dropletJSONObject.getString("size_slug"));
 		droplet.setId(dropletJSONObject.getLong("id"));
 		droplet.setName(dropletJSONObject.getString("name"));
 		droplet.setMemory(dropletJSONObject.getInt("memory"));
