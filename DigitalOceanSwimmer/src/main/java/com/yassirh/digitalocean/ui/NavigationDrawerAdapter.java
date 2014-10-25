@@ -80,7 +80,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.navigation_list_row, null);
+            vi = inflater.inflate(R.layout.navigation_list_row, parent, false);
 
         final ItemImage itemImage = data.get(position);
         TextView titleTextView = (TextView)vi.findViewById(R.id.titleTextView);

@@ -13,6 +13,7 @@ import com.yassirh.digitalocean.model.Size;
 
 import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 
 public class SizeAdapter extends BaseAdapter {
@@ -39,7 +40,7 @@ public class SizeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.size_list_row, null);
+            vi = inflater.inflate(R.layout.size_list_row, parent, false);
 
         final Size size = data.get(position);
         
@@ -49,7 +50,7 @@ public class SizeAdapter extends BaseAdapter {
         TextView monthlyPriceTextView = (TextView)vi.findViewById(R.id.monthlyPriceTextView);
         TextView hourlyPriceTextView = (TextView)vi.findViewById(R.id.hourlyPriceTextView);
         
-        ramcpuTextView.setText(size.getSlug().toUpperCase() + "/" + size.getCpu() + "CPU");
+        ramcpuTextView.setText(size.getSlug().toUpperCase(Locale.US) + "/" + size.getCpu() + "CPU");
         diskTextView.setText(size.getDisk() +"GB SSD DISK");
         transferTextView.setText(size.getTransfer() + "TB TRANSFER");
         Formatter formatter = new Formatter();

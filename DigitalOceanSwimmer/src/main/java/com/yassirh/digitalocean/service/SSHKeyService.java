@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -151,7 +152,7 @@ public class SSHKeyService {
 		if(currentAccount == null){
 			return;
 		}
-		String url = String.format("%s/account/keys/%d", ApiHelper.API_URL, id);
+		String url = String.format(Locale.US, "%s/account/keys/%d", ApiHelper.API_URL, id);
 		AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		client.delete(url, new AsyncHttpResponseHandler() {
@@ -229,7 +230,7 @@ public class SSHKeyService {
         if(currentAccount == null){
             return;
         }
-        String url = String.format("%s/account/keys/%d", ApiHelper.API_URL, sshKey.getId());
+        String url = String.format(Locale.US, "%s/account/keys/%d", ApiHelper.API_URL, sshKey.getId());
         HashMap<String,Object> options = new HashMap<String, Object>();
         options.put("name", sshKey.getName());
         JSONObject jsonObject = new JSONObject(options);

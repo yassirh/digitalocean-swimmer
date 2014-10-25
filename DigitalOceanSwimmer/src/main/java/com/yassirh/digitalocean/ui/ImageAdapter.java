@@ -41,18 +41,18 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.image_list_row, null);
+            vi = inflater.inflate(R.layout.image_list_row, parent, false);
         
         final Image image = data.get(position);
         
         if(image.getId() == 0){
-        	vi = inflater.inflate(R.layout.image_list_header, null);
+        	vi = inflater.inflate(R.layout.image_list_header, parent, false);
         	TextView listHeaderTextView = (TextView)vi.findViewById(R.id.listHeaderTextView);
         	listHeaderTextView.setText(image.getName());
         	vi.setOnClickListener(null);
         }else{
         	if(vi.findViewById(R.id.nameTextView) == null){
-	        	vi = inflater.inflate(R.layout.image_list_row, null);
+	        	vi = inflater.inflate(R.layout.image_list_row, parent, false);
 	        }
 	        TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
 	        ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);

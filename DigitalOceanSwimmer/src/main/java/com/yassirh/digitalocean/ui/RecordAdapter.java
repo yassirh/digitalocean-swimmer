@@ -40,7 +40,7 @@ public class RecordAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.record_list_row, null);
+            vi = inflater.inflate(R.layout.record_list_row, parent, false);
 
         final Record record = data.get(position);
         

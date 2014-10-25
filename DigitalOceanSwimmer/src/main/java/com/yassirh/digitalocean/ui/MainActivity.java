@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			}
 		}
 	});
-    	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -41,7 +41,7 @@ public class RegionAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.region_list_row, null);
+            vi = inflater.inflate(R.layout.region_list_row, parent, false);
 
         final Region region = data.get(position);
         

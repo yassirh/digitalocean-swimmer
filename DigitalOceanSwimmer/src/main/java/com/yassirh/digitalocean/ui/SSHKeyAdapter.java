@@ -38,7 +38,7 @@ public class SSHKeyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.ssh_key_list_row, null);
+            vi = inflater.inflate(R.layout.ssh_key_list_row, parent, false);
 
         final SSHKey sshKey = data.get(position);
         

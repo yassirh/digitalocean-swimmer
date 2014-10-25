@@ -54,7 +54,7 @@ public class RecordTypeAdapter extends BaseAdapter {
     public View getView(int pos, View convertView, ViewGroup parent) {
     	 View vi=convertView;
          if(convertView==null)
-             vi = mInflater.inflate(R.layout.record_type_list_row, null);
+             vi = mInflater.inflate(R.layout.record_type_list_row, parent, false);
          
         ImageView recordTypeImageView = (ImageView) vi.findViewById(R.id.recordTypeImageView);
         recordTypeImageView.setImageResource((Integer)getItem(pos));

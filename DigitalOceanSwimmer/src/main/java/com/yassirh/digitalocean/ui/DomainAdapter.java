@@ -38,7 +38,7 @@ public class DomainAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.domain_list_row, null);
+            vi = inflater.inflate(R.layout.domain_list_row, parent, false);
 
         final Domain domain = data.get(position);
         TextView domainTextView = (TextView)vi.findViewById(R.id.domainTextView);

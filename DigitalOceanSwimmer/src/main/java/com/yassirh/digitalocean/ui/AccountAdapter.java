@@ -38,7 +38,7 @@ public class AccountAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.account_list_row, null);
+            vi = inflater.inflate(R.layout.account_list_row, parent, false);
 
         Account account = data.get(position);
         
