@@ -49,6 +49,9 @@
                     android:host="com.yassirh.digitalocean"
                     android:scheme="callback" />
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
         </activity>
     </application>
 

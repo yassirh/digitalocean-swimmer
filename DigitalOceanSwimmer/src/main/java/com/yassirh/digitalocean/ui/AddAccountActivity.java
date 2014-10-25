@@ -3,7 +3,9 @@ package com.yassirh.digitalocean.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +28,11 @@ public class AddAccountActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_account);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 		accountNameEditText = (EditText)findViewById(R.id.accountNameEditText);
 		tokenEditText = (EditText)findViewById(R.id.tokenEditText);
 		try {
@@ -77,6 +84,10 @@ public class AddAccountActivity extends ActionBarActivity {
     		finish();
     		return true;
     	}
-    	return false;
+        else if(item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return false;
     }
 }
