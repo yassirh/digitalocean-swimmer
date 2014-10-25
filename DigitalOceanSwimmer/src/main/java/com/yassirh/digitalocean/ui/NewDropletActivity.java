@@ -18,6 +18,7 @@ import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,8 +54,11 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_droplet);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 		dropletService = new DropletService(this);
 		imageService = new ImageService(this);
 		sizeService = new SizeService(this);

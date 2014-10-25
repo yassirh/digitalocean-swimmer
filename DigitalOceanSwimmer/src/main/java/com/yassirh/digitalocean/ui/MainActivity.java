@@ -1,6 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -13,13 +12,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,20 +52,15 @@ public class MainActivity extends ActionBarActivity implements Updatable {
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
 
-    private CharSequence drawerTitle;
-    private CharSequence title;
     private String[] navigationTitles;
-    
-    private DropletService dropletService;
-    private DomainService domainService;
-    private Intent intent;
 
-	private long lastBackPressed;
+    private DomainService domainService;
+
+    private long lastBackPressed;
 	Fragment fragment = new Fragment();
     Integer currentSelected = 0;
 	
-    @SuppressLint("HandlerLeak")
-	Handler uiHandler = new Handler(){
+    Handler uiHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){
             update(MainActivity.this);
@@ -112,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 					if(update)
 						uiHandler.sendMessage(new Message());
 					
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignored) {
 				}
 			}
 		}
@@ -122,8 +117,12 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		title = drawerTitle = getTitle();
-		navigationTitles = getResources().getStringArray(R.array.main_navigation_array);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        navigationTitles = getResources().getStringArray(R.array.main_navigation_array);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerList = (ListView) findViewById(R.id.left_drawer);
 		
@@ -131,26 +130,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         drawerList.setAdapter(new NavigationDrawerAdapter(this, navigationTitles));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        
-        drawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                R.drawable.ic_drawer,
-                R.string.drawer_open,
-                R.string.drawer_close
-                ) {
-            public void onDrawerClosed(View view) {
-            	getSupportActionBar().setTitle(title);
-            	supportInvalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-            	getSupportActionBar().setTitle(drawerTitle);
-            	supportInvalidateOptionsMenu();
-            }
-        };
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(drawerToggle);
 
 		AccountService accountService = new AccountService(this);
@@ -257,20 +237,20 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	}
         	return true;
         case R.id.action_add_droplet:
-        	intent = new Intent(MainActivity.this, NewDropletActivity.class);
+            Intent intent = new Intent(MainActivity.this, NewDropletActivity.class);
         	startActivity(intent);
         	return true;
         case R.id.action_add_domain:
         	builder = new AlertDialog.Builder(this);
     	    inflater = getLayoutInflater();
     		View view = inflater.inflate(R.layout.dialog_domain_create, null);
-    		dropletService = new DropletService(this);
+            DropletService dropletService1 = new DropletService(this);
     		getResources().getString(R.string.create_domain);
     		builder.setView(view);
     		
     		final EditText domainNameEditText = (EditText)view.findViewById(R.id.domainNameEditText);
     		final Spinner dropletSpinner = (Spinner)view.findViewById(R.id.dropletSpinner);
-    		dropletSpinner.setAdapter(new DropletAdapter(this, dropletService.getAllDroplets()));
+    		dropletSpinner.setAdapter(new DropletAdapter(this, dropletService1.getAllDroplets()));
     		builder.setPositiveButton(R.string.ok, new OnClickListener() {
 				
 				@Override
@@ -361,7 +341,6 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 
     @Override
     public void setTitle(CharSequence title) {
-        this.title = title;
         getSupportActionBar().setTitle(title);
     }
 

@@ -1,7 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.Calendar;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +12,8 @@ import android.widget.EditText;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import java.util.Calendar;
 
 public class AddAccountActivity extends ActionBarActivity {
 
@@ -36,7 +36,7 @@ public class AddAccountActivity extends ActionBarActivity {
 				refreshToken = uri.getQueryParameter("refresh_token");
 				expiresIn.add(Calendar.SECOND, Integer.parseInt(uri.getQueryParameter("expires_in")));
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 	}
 	

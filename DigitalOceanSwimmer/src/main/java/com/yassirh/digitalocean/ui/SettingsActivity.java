@@ -10,7 +10,6 @@ public class SettingsActivity extends ActionBarActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PrefsFragment prefsFragment = new PrefsFragment();
         prefsFragment.setActivity(this);
 		getSupportFragmentManager().beginTransaction()
@@ -35,7 +34,5 @@ public class SettingsActivity extends ActionBarActivity{
 		startActivity(new Intent(this,MainActivity.class));
 		finish();
 	}
-
-
 
 }
