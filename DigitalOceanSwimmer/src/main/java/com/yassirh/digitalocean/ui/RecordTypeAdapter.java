@@ -27,12 +27,12 @@ public class RecordTypeAdapter extends BaseAdapter {
         sData.put("aaaa",R.drawable.aaaa);
     }
     
-    private String[] mKeys;
-    private static LayoutInflater mInflater=null;
+    private String[] keys;
+    private static LayoutInflater inflater = null;
     
     public RecordTypeAdapter(Activity activity){
-        mKeys = sData.keySet().toArray(new String[sData.size()]);
-        mInflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        keys = sData.keySet().toArray(new String[sData.size()]);
+        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RecordTypeAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return sData.get(mKeys[position]);
+        return sData.get(keys[position]);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class RecordTypeAdapter extends BaseAdapter {
     public View getView(int pos, View convertView, ViewGroup parent) {
     	 View vi=convertView;
          if(convertView==null)
-             vi = mInflater.inflate(R.layout.record_type_list_row, parent, false);
+             vi = inflater.inflate(R.layout.record_type_list_row, parent, false);
          
         ImageView recordTypeImageView = (ImageView) vi.findViewById(R.id.recordTypeImageView);
         recordTypeImageView.setImageResource((Integer)getItem(pos));

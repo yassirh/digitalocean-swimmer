@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.view.LayoutInflater;
@@ -29,10 +30,9 @@ public class RecordCreateDialogFragment extends DialogFragment {
 	private long recordId = 0L;
 	private String domainName = "";
 	private RecordService recordService;
-	private DomainService domainService;
-	AlertDialog.Builder builder;
-	
-	@Override
+    private AlertDialog.Builder builder;
+
+    @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Bundle args = getArguments();
 		if(args != null){
@@ -40,7 +40,7 @@ public class RecordCreateDialogFragment extends DialogFragment {
 			domainName = args.getString("domain_name");
 		}
 		recordService = new RecordService(getActivity());
-		domainService = new DomainService(getActivity());
+        DomainService domainService = new DomainService(getActivity());
 		List<Domain> domains = domainService.getAllDomains();
 		LayoutInflater inflater;
 		builder = new AlertDialog.Builder(getActivity());
@@ -50,15 +50,6 @@ public class RecordCreateDialogFragment extends DialogFragment {
 		domainSpinner.setAdapter(new DomainAdapter(getActivity(), domains));
 		final Record record = recordService.findById(recordId);
 		final Domain domain = domainService.findByDomainName(domainName);
-		if(record != null){
-			domainSpinner.setSelection(domains.indexOf(record.getDomain()));
-			builder.setTitle(getString(R.string.edit_record));
-		}
-		else{
-			if(domain != null)
-				domainSpinner.setSelection(domains.indexOf(domain));
-			builder.setTitle(getString(R.string.add_record));
-		}
 		final Spinner recordTypeSpinner = (Spinner) view.findViewById(R.id.recordTypeSpinner);
 		final RecordTypeAdapter recordTypeAdapter = new RecordTypeAdapter(getActivity());
 		recordTypeSpinner.setAdapter(recordTypeAdapter);
@@ -111,7 +102,15 @@ public class RecordCreateDialogFragment extends DialogFragment {
 			public void onNothingSelected(AdapterView<?> parentView) {
 			}
 		});
-		
+        if(record != null){
+            domainSpinner.setSelection(domains.indexOf(record.getDomain()));
+            builder.setTitle(getString(R.string.edit_record));
+        }
+        else if(domain != null){
+            domainSpinner.setSelection(domains.indexOf(domain));
+            builder.setTitle(getString(R.string.add_record));
+        }
+
 		final EditText aHostnameEditText = (EditText) view.findViewById(R.id.aHostnameEditText);
 		final EditText aIpAddressEditText = (EditText) view.findViewById(R.id.aIpAddressEditText);
 		final EditText aaaaHostnameEditText = (EditText) view.findViewById(R.id.aaaaHostnameEditText);
@@ -153,7 +152,7 @@ public class RecordCreateDialogFragment extends DialogFragment {
 				txtNameEditText.setText(record.getName());
 				txtTextEditText.setText(record.getData());
 			}else if(record.getRecordType().equals("A")){
-				recordTypeSpinner.setSelection(5);
+				recordTypeSpinner.setSelection(6);
 				aHostnameEditText.setText(record.getName());
 				aIpAddressEditText.setText(record.getData());
 			}else if(record.getRecordType().equals("AAAA")){
@@ -215,7 +214,7 @@ public class RecordCreateDialogFragment extends DialogFragment {
 				default:
 					break;
 				}
-				long recordId = 0L;
+				long recordId;
 				if(record != null){
 					recordId = record.getId();
 					recordService.updateRecord(((Domain)domainSpinner.getSelectedItem()).getName(), params, recordId, true);

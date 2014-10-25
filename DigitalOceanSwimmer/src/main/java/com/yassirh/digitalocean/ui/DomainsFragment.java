@@ -130,8 +130,7 @@ public class DomainsFragment extends ListFragment implements OnItemClickListener
 				return true;
 			case R.id.action_add_record:
 				Bundle args = new Bundle();
-				// FIXME
-		        //args.putLong("domain_id", mDomain.getId());
+				args.putString("domain_name", domain.getName());
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				RecordCreateDialogFragment recordCreateDialogFragment = new RecordCreateDialogFragment();
 				recordCreateDialogFragment.setArguments(args);
