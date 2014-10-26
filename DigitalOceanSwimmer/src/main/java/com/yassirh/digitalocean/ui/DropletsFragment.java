@@ -183,7 +183,16 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			alertDialog.show();
 			break;
 		case R.id.action_password_reset:
-			dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
+            alertDialog.setTitle(getString(R.string.password_reset) + " : " + droplet.getName());
+            alertDialog.setMessage(R.string.reset_password_alert);
+            alertDialog.setPositiveButton(R.string.yes, new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
+                }
+            });
+            alertDialog.show();
 			break;
 		case R.id.action_destroy:
 			view = inflater.inflate(R.layout.dialog_droplet_destroy, null);

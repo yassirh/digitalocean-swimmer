@@ -184,7 +184,7 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			super.onBackPressed();
 		}
         else {
-        	Toast.makeText(getBaseContext(), R.string.message_press_again_to_exit, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), R.string.message_press_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         lastBackPressed = System.currentTimeMillis();
 	}

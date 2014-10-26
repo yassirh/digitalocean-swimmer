@@ -182,11 +182,8 @@
     <string name="rate_app">Rate %1$s</string>
     <string name="message_feature_disabled_api">Operation aborted : this feature is disabled in the API</string>
     <string name="message_press_again_to_exit">Press back button again to exit!</string>
-    <!-- Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>
-
-    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
     <string name="skip_button_label">Skip</string>
     <string name="public_ssh_key_label">Public SSH key:</string>
     <string name="title_activity_add_account">Add Account</string>
@@ -194,5 +191,5 @@
     <string name="ipv6_label">IPv6</string>
     <string name="enable_user_data_label">Enable user data</string>
     <string name="title_droplet_rename">Rename droplet</string>
-
+    <string name="reset_password_alert">Are you sure?</string>
 </resources>
