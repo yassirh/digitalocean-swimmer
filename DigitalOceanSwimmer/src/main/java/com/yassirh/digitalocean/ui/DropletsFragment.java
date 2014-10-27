@@ -1,6 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ActivityNotFoundException;
@@ -129,7 +128,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.POWER_CYCLE, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -141,7 +140,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.REBOOT, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -153,7 +152,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.SHUTDOWN, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -165,7 +164,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.POWER_OFF, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -177,7 +176,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.POWER_ON, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -189,7 +188,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
+                    dropletService.executeAction(droplet.getId(), DropletService.DropletActions.PASSWORD_RESET, new HashMap<String, String>());
                 }
             });
             alertDialog.show();
@@ -221,7 +220,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.ENABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -233,7 +232,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.DISABLE_BACKUPS, new HashMap<String, String>());
 				}
 			});
 			alertDialog.show();
@@ -251,7 +250,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("size", ((Size)sizeSpinner.getSelectedItem()).getSlug());
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RESIZE, params);
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.RESIZE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -274,7 +273,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
                 public void onClick(DialogInterface dialog, int which) {
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("name", nameEditText.getText().toString());
-                    dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RENAME, params);
+                    dropletService.executeAction(droplet.getId(), DropletService.DropletActions.RENAME, params);
                 }
             });
             builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -297,7 +296,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("name", snapShotNameEditText.getText().toString());
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.SNAPSHOT, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -321,7 +320,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image_id", restoreImageSpinner.getSelectedItemId()+"");
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.RESTORE, params);
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.RESTORE, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {
@@ -345,7 +344,7 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 				public void onClick(DialogInterface dialog, int which) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("image", ((Image)rebuildImageSpinner.getSelectedItem()).getSlug());
-					dropletService.ExecuteAction(droplet.getId(), DropletService.DropletActions.REBUILD, params);
+					dropletService.executeAction(droplet.getId(), DropletService.DropletActions.REBUILD, params);
 				}
 			});
 			builder.setNegativeButton(R.string.cancel, new OnClickListener() {

@@ -192,4 +192,6 @@
     <string name="enable_user_data_label">Nutzerdaten ermöglichen</string>
     <string name="title_droplet_rename">Droplet Umbenennen</string>
     <string name="reset_password_alert">Sind Sie sicher?</string>
+    <string name="summary_auto_start_droplets">Automatically start turned off droplets</string>
+    <string name="pref_auto_start_droplets">Auto start</string>
 </resources>

@@ -23,6 +23,10 @@
             android:key="pref_locale"
             android:summary="@string/summary_locale"
             android:title="@string/pref_locale_key_label" />
+        <CheckBoxPreference
+            android:key="pref_auto_start_droplets"
+            android:summary="@string/summary_auto_start_droplets"
+            android:title="@string/pref_auto_start_droplets" />
     </PreferenceCategory>
 
 </PreferenceScreen>

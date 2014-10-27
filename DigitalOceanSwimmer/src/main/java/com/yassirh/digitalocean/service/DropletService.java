@@ -14,6 +14,7 @@ import com.loopj.android.http.SyncHttpClient;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.DropletTable;
 import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.data.NetworkDao;
 import com.yassirh.digitalocean.model.Account;
@@ -24,6 +25,7 @@ import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyApplication;
+import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -42,9 +44,9 @@ import java.util.Map.Entry;
 public class DropletService {
 
 	private Context context;
-	
 	private boolean isRefreshing;
-	public enum DropletActions{
+
+    public enum DropletActions{
 		REBOOT, POWER_CYCLE, SHUTDOWN, POWER_OFF, POWER_ON,
 		PASSWORD_RESET, RESIZE, SNAPSHOT, RESTORE, REBUILD,
 		ENABLE_BACKUPS, DISABLE_BACKUPS, RENAME 
@@ -67,7 +69,7 @@ public class DropletService {
 		return settings.getBoolean("droplet_require_refresh", true);
 	}
 	
-	public void ExecuteAction(final long dropletId, final DropletActions dropletAction, HashMap<String,String> params){
+	public void executeAction(final long dropletId, final DropletActions dropletAction, HashMap<String, String> params){
 		Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null){
 			return;
@@ -189,6 +191,9 @@ public class DropletService {
 				if(showProgress){
 					notifyManager.cancel(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS);
 				}
+                if(PreferencesHelper.isAutoRestartingDropetsEnabled(context)){
+                    startTurnedOffDroplets();
+                }
 			}
 			
 			@Override
@@ -470,5 +475,13 @@ public class DropletService {
 			}
 		    
 		});	
-	}	
+	}
+
+    public void startTurnedOffDroplets() {
+        DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
+        List<Droplet> droplets = dropletDao.getAllByProperty(DropletTable.STATUS, "off");
+        for (Droplet droplet : droplets) {
+            executeAction(droplet.getId(), DropletActions.POWER_ON, new HashMap<String, String>());
+        }
+    }
 }

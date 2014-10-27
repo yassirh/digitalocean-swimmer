@@ -32,4 +32,9 @@ public class PreferencesHelper {
 		}
 		return Locale.getDefault();
 	}
+
+    public static boolean isAutoRestartingDropetsEnabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean("pref_auto_start_droplets",false);
+    }
 }

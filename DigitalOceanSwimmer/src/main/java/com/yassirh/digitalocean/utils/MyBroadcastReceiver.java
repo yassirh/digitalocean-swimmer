@@ -44,7 +44,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		
 		SizeService sizeService = new SizeService(context);
 		sizeService.getAllSizesFromAPI(false);
-		
+
 		// 3 days until access token expires 
 		if(currentAccount.getExpiresIn().getTime() - new Date().getTime() < 259200000){
 			AccountService accountService = new AccountService(context);
