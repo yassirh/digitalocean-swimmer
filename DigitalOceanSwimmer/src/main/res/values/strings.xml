@@ -194,4 +194,7 @@
     <string name="reset_password_alert">Are you sure?</string>
     <string name="summary_auto_start_droplets">Automatically start turned off droplets</string>
     <string name="pref_auto_start_droplets">Auto start</string>
+    <string name="summary_clear_data">Clear all the accounts and data saved on this device</string>
+    <string name="pref_clear_data">Clear data</string>
+    <string name="application_title">Application</string>
 </resources>

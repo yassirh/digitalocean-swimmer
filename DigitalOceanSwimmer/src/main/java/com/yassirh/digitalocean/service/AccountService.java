@@ -14,8 +14,15 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.data.AccountDao;
 import com.yassirh.digitalocean.data.DatabaseHelper;
+import com.yassirh.digitalocean.data.DomainDao;
+import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.ImageDao;
+import com.yassirh.digitalocean.data.RegionDao;
+import com.yassirh.digitalocean.data.SSHKeyDao;
+import com.yassirh.digitalocean.data.SizeDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.utils.ApiHelper;
+import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 public class AccountService {
 	
@@ -66,4 +73,16 @@ public class AccountService {
 		List<Account> accounts = accountDao.getAll(null);
 		return accounts.size() > 0;
 	}
+
+    public void clearData() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(context);
+        new AccountDao(databaseHelper).deleteAll();
+        new DropletDao(databaseHelper).deleteAll();
+        new DomainDao(databaseHelper).deleteAll();
+        new ImageDao(databaseHelper).deleteAll();
+        new SSHKeyDao(databaseHelper).deleteAll();
+        new RegionDao(databaseHelper).deleteAll();
+        new SizeDao(databaseHelper).deleteAll();
+        PreferencesHelper.clearAll(context);
+    }
 }

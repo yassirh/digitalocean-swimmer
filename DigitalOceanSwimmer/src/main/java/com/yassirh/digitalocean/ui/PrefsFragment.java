@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.v4.preference.PreferenceFragment;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
+import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyApplication;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
@@ -64,14 +66,23 @@ public class PrefsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
+        Preference clearDataPref = findPreference("pref_clear_data");
+        clearDataPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                new AccountService(activity).clearData();
+                Intent i = activity.getPackageManager()
+                        .getLaunchIntentForPackage(activity.getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                return true;
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-
     }
 
     @Override

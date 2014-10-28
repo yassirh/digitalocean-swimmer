@@ -1,12 +1,12 @@
 package com.yassirh.digitalocean.utils;
 
-import java.util.Locale;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 public class MyApplication extends Application{
 
