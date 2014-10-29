@@ -8,7 +8,7 @@ import com.yassirh.digitalocean.utils.MyApplication;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 15;
+	private static final int DATABASE_VERSION = 16;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();

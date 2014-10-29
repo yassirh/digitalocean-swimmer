@@ -8,33 +8,40 @@ public class Image {
 	private String slug;
 	private Boolean isPublic;
     private boolean notInUse;
+    private String regions;
 
     public Image(){
 	}
 	
-	public Image(long id, String name, String distribution, String slug, Boolean isPublic) {
+	public Image(long id, String name, String distribution, String slug, Boolean isPublic, String regions) {
 		this.id = id;
 		this.name = name;
 		this.distribution = distribution;
         this.slug = slug;
 		this.isPublic = isPublic;
+        this.regions = regions;
 	}
 	
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getDistribution() {
 		return distribution;
 	}
+
 	public void setDistribution(String distribution) {
 		this.distribution = distribution;
 	}
@@ -61,5 +68,13 @@ public class Image {
 
     public boolean isInUse() {
         return notInUse;
+    }
+
+    public String getRegions() {
+        return regions;
+    }
+
+    public void setRegions(String regions) {
+        this.regions = regions;
     }
 }

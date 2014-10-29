@@ -26,6 +26,7 @@ public class ImageDao extends SqlDao<Image> {
 		values.put(ImageTable.SLUG, image.getSlug());
         values.put(ImageTable.IS_IN_USE, image.isInUse());
 		values.put(ImageTable.PUBLIC, image.isPublic() ? 1 : 0);
+        values.put(ImageTable.REGIONS, image.getRegions());
         return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
@@ -36,6 +37,7 @@ public class ImageDao extends SqlDao<Image> {
 		image.setDistribution(c.getString(c.getColumnIndex(ImageTable.DISTRIBUTION)));
 		image.setSlug(c.getString(c.getColumnIndex(ImageTable.SLUG)));
 		image.setPublic(c.getInt(c.getColumnIndex(ImageTable.PUBLIC)) > 0);
+        image.setRegions(c.getString(c.getColumnIndex(ImageTable.REGIONS)));
 		return image;
 	}
 

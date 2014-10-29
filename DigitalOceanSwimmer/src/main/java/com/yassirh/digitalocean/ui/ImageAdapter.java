@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
 import android.app.Activity;
@@ -57,9 +58,7 @@ public class ImageAdapter extends BaseAdapter {
 	        TextView nameTextView = (TextView)vi.findViewById(R.id.nameTextView);
 	        ImageView distroImageView = (ImageView)vi.findViewById(R.id.distroImageView);
 	        TextView visibilityTextView = (TextView)vi.findViewById(R.id.visibilityTextView);
-
-	        distroImageView.setImageResource(ApiHelper.getImageLogo(image.getName(), image.getDistribution(), "active"));
-	        
+            distroImageView.setImageResource(ApiHelper.getImageLogo(image.getName(), image.getDistribution(), "active"));
 	        nameTextView.setText(image.getName());
 	        String visibility = vi.getResources().getString(R.string.public_visibility);
 	        if(!image.isPublic())

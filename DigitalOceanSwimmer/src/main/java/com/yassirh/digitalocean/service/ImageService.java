@@ -119,6 +119,11 @@ public class ImageService {
 			image.setSlug(imageJSONObject.getString("slug"));
         image.setInUse(true);
 		image.setPublic(imageJSONObject.getBoolean("public"));
+        String regions = "";
+        for (int i = 0; i < imageJSONObject.getJSONArray("regions").length(); i++) {
+            regions += ";" + imageJSONObject.getJSONArray("regions").getString(i);
+        }
+        image.setRegions(regions.replaceFirst(";", ""));
 		return image;
 	}
 	
