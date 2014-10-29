@@ -78,8 +78,40 @@ public class ApiHelper {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPreferences.getString("token_preference", "");
 	}
-	
-	public static int getDistributionLogo(String distribution,String status){
+
+    public static int getImageLogo(String image, String distribution, String status){
+        if(image.contains("WordPress")){
+            return status.equals("active") ? R.drawable.wordpress_active : R.drawable.wordpress;
+        }
+        else if(image.contains("node")){
+            return status.equals("active") ? R.drawable.nodejs_active : R.drawable.nodejs;
+        }
+        else if(image.contains("Dokku")){
+            return status.equals("active") ? R.drawable.dokku_active : R.drawable.dokku;
+        }
+        else if(image.contains("Docker")){
+            return status.equals("active") ? R.drawable.docker_active : R.drawable.docker;
+        }
+        else if(image.contains("Drupal")){
+            return status.equals("active") ? R.drawable.drupal_active : R.drawable.drupal;
+        }
+        else if(image.contains("Django")){
+            return status.equals("active") ? R.drawable.django_active : R.drawable.django;
+        }
+        else if(image.contains("Ghost")){
+            return status.equals("active") ? R.drawable.ghost_active : R.drawable.ghost;
+        }
+        else if(image.contains("Ruby on Rails")){
+            return status.equals("active") ? R.drawable.ruby_on_rails_active : R.drawable.ruby_on_rails;
+        }
+        else if(image.contains("LAMP")){
+            return status.equals("active") ? R.drawable.lamp_stack_active : R.drawable.lamp_stack;
+        }
+
+        return getDistributionLogo(distribution, status);
+    }
+
+	public static int getDistributionLogo(String distribution, String status){
 		if(distribution.equalsIgnoreCase("Ubuntu")){
         	return status.equals("active") ? R.drawable.ubuntu_active : R.drawable.ubuntu;
         }
