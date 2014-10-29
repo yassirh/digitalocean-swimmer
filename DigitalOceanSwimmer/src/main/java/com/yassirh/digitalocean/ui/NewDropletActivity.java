@@ -1,24 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.data.SizeTable;
-import com.yassirh.digitalocean.model.Image;
-import com.yassirh.digitalocean.model.Region;
-import com.yassirh.digitalocean.model.SSHKey;
-import com.yassirh.digitalocean.model.Size;
-import com.yassirh.digitalocean.service.DropletService;
-import com.yassirh.digitalocean.service.ImageService;
-import com.yassirh.digitalocean.service.RegionService;
-import com.yassirh.digitalocean.service.SSHKeyService;
-import com.yassirh.digitalocean.service.SizeService;
-import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +15,26 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.data.SizeTable;
+import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Region;
+import com.yassirh.digitalocean.model.SSHKey;
+import com.yassirh.digitalocean.model.Size;
+import com.yassirh.digitalocean.service.DropletService;
+import com.yassirh.digitalocean.service.ImageService;
+import com.yassirh.digitalocean.service.RegionService;
+import com.yassirh.digitalocean.service.SSHKeyService;
+import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.ui.widget.MultiSelectSpinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class NewDropletActivity extends ActionBarActivity implements OnItemSelectedListener, OnCheckedChangeListener {
 	
@@ -148,13 +149,12 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 		}
         else if(parentView.getId() == R.id.imageSpinner){
             Image image = (Image)imageSpinner.getItemAtPosition(position);
-            String[] imageRegions = image.getRegions().split(";");
-            Set<Region> newRegions = new HashSet<Region>();
+            SortedSet<String> imageRegions = new TreeSet<String>(Arrays.asList(image.getRegions().split(";")));
+            List<Region> newRegions = new ArrayList<Region>();
             for (String imageRegion : imageRegions) {
                 newRegions.add(regions.get(imageRegion));
             }
-            regionAdapter.setData(new ArrayList<Region>(newRegions));
-            regionAdapter.notifyDataSetChanged();
+            regionAdapter.setData(newRegions);
         }
 	}
 

@@ -1,8 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +12,8 @@ import android.widget.TextView;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import java.util.List;
 
 
 public class RegionAdapter extends BaseAdapter {
@@ -60,5 +59,6 @@ public class RegionAdapter extends BaseAdapter {
 
     public void setData(List<Region> data) {
         this.data = data;
+        notifyDataSetChanged();
     }
 }
