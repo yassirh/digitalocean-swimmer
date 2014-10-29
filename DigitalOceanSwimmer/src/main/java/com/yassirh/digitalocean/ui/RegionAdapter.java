@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -55,5 +56,9 @@ public class RegionAdapter extends BaseAdapter {
     	featuresTextView.setText(region.getFeatures().replace(";", ", "));        
         
         return vi;
+    }
+
+    public void setData(List<Region> data) {
+        this.data = data;
     }
 }

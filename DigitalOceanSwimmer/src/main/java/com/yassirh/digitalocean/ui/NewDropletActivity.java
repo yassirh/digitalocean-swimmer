@@ -1,7 +1,10 @@
 package com.yassirh.digitalocean.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.SizeTable;
@@ -34,21 +37,19 @@ import android.widget.TextView;
 
 public class NewDropletActivity extends ActionBarActivity implements OnItemSelectedListener, OnCheckedChangeListener {
 	
-	DropletService dropletService;
-	SizeService sizeService;
-	ImageService imageService;
-	RegionService regionService;
-	CheckBox privateNetworkingCheckBox;
-	CheckBox enableBackupsCheckBox;
-	CheckBox userDataCheckBox;
-	EditText userDataEditText;
-	CheckBox ipv6CheckBox;
-	Spinner regionSpinner;
-	Spinner sizeSpinner;
-	Spinner imageSpinner;
-	EditText hostnameEditText;
-	MultiSelectSpinner sshKeysMultiSelectSpinner;
-	TextView sshKeysTextView;
+	private DropletService dropletService;
+    private CheckBox privateNetworkingCheckBox;
+    private CheckBox enableBackupsCheckBox;
+    private CheckBox userDataCheckBox;
+    private EditText userDataEditText;
+    private CheckBox ipv6CheckBox;
+    private Spinner regionSpinner;
+    private Spinner sizeSpinner;
+    private Spinner imageSpinner;
+    private EditText hostnameEditText;
+    private MultiSelectSpinner sshKeysMultiSelectSpinner;
+    private RegionAdapter regionAdapter;
+    private HashMap<String, Region> regions;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,16 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 		dropletService = new DropletService(this);
-		imageService = new ImageService(this);
-		sizeService = new SizeService(this);
-		regionService = new RegionService(this);		
+        ImageService imageService = new ImageService(this);
+        SizeService sizeService = new SizeService(this);
+        RegionService regionService = new RegionService(this);
 		
 		imageSpinner = (Spinner)findViewById(R.id.imageSpinner);
 		regionSpinner = (Spinner)findViewById(R.id.regionSpinner);
 		sizeSpinner = (Spinner)findViewById(R.id.sizeSpinner);
 		hostnameEditText = (EditText)findViewById(R.id.hostnameEditText);
 		sshKeysMultiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.sshKeysMultiSelectSpinner);
-		sshKeysTextView = (TextView) findViewById(R.id.sshKeysTextView);
+        TextView sshKeysTextView = (TextView) findViewById(R.id.sshKeysTextView);
 		
 		privateNetworkingCheckBox = (CheckBox)findViewById(R.id.privateNetworkingCheckBox);
 		enableBackupsCheckBox = (CheckBox)findViewById(R.id.enableBackupsCheckBox);
@@ -82,8 +83,8 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 		imageSpinner.setAdapter(new ImageAdapter(this, images));
 		List<String> sshKeysNames = new ArrayList<String>();
 		List<Long> sshKeysIds = new ArrayList<Long>();
-		SSHKeyService mSSHKeyService = new SSHKeyService(this);
-		List<SSHKey> sshKeys = mSSHKeyService.getAllSSHKeys();
+		SSHKeyService sshKeyService = new SSHKeyService(this);
+		List<SSHKey> sshKeys = sshKeyService.getAllSSHKeys();
 		for (SSHKey sshKey : sshKeys) {
 			sshKeysIds.add(sshKey.getId());
 			sshKeysNames.add(sshKey.getName());
@@ -94,9 +95,16 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 			sshKeysMultiSelectSpinner.setVisibility(View.GONE);
 			sshKeysTextView.setVisibility(View.GONE);
 		}
-		regionSpinner.setAdapter(new RegionAdapter(this, regionService.getAllRegionsOrderedByName()));
+        List<Region> allRegions = regionService.getAllRegionsOrderedByName();
+        regions = new HashMap<String, Region>();
+        regionAdapter = new RegionAdapter(this, allRegions);
+        for(Region region : allRegions){
+            regions.put(region.getSlug(), region);
+        }
+        regionSpinner.setAdapter(regionAdapter);
 		sizeSpinner.setAdapter(new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY)));
 		regionSpinner.setOnItemSelectedListener(this);
+        imageSpinner.setOnItemSelectedListener(this);
 		userDataCheckBox.setOnCheckedChangeListener(this);
 	}
 
@@ -137,8 +145,17 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 			userDataCheckBox.setVisibility(features.contains("metadata") ? View.VISIBLE : View.GONE);
 			privateNetworkingCheckBox.setVisibility(features.contains("private_networking") ? View.VISIBLE : View.GONE);
 			ipv6CheckBox.setVisibility(features.contains("ipv6") ? View.VISIBLE : View.GONE);
-			
 		}
+        else if(parentView.getId() == R.id.imageSpinner){
+            Image image = (Image)imageSpinner.getItemAtPosition(position);
+            String[] imageRegions = image.getRegions().split(";");
+            Set<Region> newRegions = new HashSet<Region>();
+            for (String imageRegion : imageRegions) {
+                newRegions.add(regions.get(imageRegion));
+            }
+            regionAdapter.setData(new ArrayList<Region>(newRegions));
+            regionAdapter.notifyDataSetChanged();
+        }
 	}
 
 	@Override
