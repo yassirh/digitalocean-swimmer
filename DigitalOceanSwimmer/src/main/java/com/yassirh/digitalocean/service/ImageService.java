@@ -219,4 +219,34 @@ public class ImageService {
 	public boolean isRefreshing() {
 		return isRefreshing;
 	}
+
+    public void destroySnapshot(long imageId) {
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+        String url = String.format(Locale.US,"%s/images/%d", ApiHelper.API_URL, imageId);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        try {
+            client.delete(context, url, new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if(statusCode == 401){
+                        ApiHelper.showAccessDenied();
+                    }
+                }
+            });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        ActionService.trackActions(context);
+    }
 }

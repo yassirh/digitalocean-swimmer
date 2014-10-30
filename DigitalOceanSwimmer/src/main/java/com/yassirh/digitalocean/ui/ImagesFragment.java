@@ -156,6 +156,26 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
                 });
                 builder.show();
                 break;
+            case R.id.action_destroy:
+                view = inflater.inflate(R.layout.dialog_image_destroy, null);
+                builder.setTitle(getString(R.string.destroy) + " : " + image.getName());
+                builder.setView(view);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageService.destroySnapshot(image.getId());
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
         }
         return true;
     }
