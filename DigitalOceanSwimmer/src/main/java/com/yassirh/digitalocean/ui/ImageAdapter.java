@@ -9,6 +9,7 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,18 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
     
     private List<Image> data;
+    private boolean showRegion;
     private static LayoutInflater inflater=null;
     
     public ImageAdapter(Activity activity, List<Image> data) {
-        this.data=data;
+        this.data = data;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public ImageAdapter(Activity activity, List<Image> data, boolean showRegions) {
+        this.data = data;
+        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.showRegion = showRegions;
     }
 
     public int getCount() {
@@ -60,11 +68,17 @@ public class ImageAdapter extends BaseAdapter {
 	        TextView visibilityTextView = (TextView)vi.findViewById(R.id.visibilityTextView);
             distroImageView.setImageResource(ApiHelper.getImageLogo(image.getName(), image.getDistribution(), "active"));
 	        nameTextView.setText(image.getName());
-	        String visibility = vi.getResources().getString(R.string.public_visibility);
-	        if(!image.isPublic())
-	        	visibility = vi.getResources().getString(R.string.private_visibility);
-	        
-	        visibilityTextView.setText(visibility);
+	        String visibility;
+	        if(!image.isPublic()) {
+                visibility = vi.getResources().getString(R.string.private_visibility);
+            } else{
+                visibility = vi.getResources().getString(R.string.public_visibility);
+            }
+            visibilityTextView.setText(visibility);
+            if(showRegion) {
+                TextView regionsTextView = (TextView) vi.findViewById(R.id.regionsTextView);
+                regionsTextView.setText(image.getRegions());
+            }
         }
         return vi;
     }
