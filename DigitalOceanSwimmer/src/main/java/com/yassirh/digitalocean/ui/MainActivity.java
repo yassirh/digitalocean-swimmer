@@ -139,9 +139,8 @@ public class MainActivity extends ActionBarActivity implements Updatable {
 			SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
 			switchAccountDialogFragment.show(fm, "switch_account");
 		}
-		
-		ActionService actionService = new ActionService(this);
-		actionService.trackActions();
+
+        ActionService.trackActions(this);
         
         if (savedInstanceState == null) {
             selectItem(0);

@@ -11,6 +11,9 @@ import com.loopj.android.http.SyncHttpClient;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.DropletDao;
+import com.yassirh.digitalocean.data.ImageDao;
+import com.yassirh.digitalocean.data.RegionDao;
+import com.yassirh.digitalocean.data.RegionTable;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Action;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -26,14 +29,9 @@ import java.util.Set;
 
 public class ActionService {
 
-	private Context context;
-	private Thread t;
+	private static Thread t;
 
-	public ActionService(Context context) {
-		this.context = context;
-	}
-
-	public void trackActions(){
+	public static void trackActions(final Context context){
 		final Account currentAccount = ApiHelper.getCurrentAccount(context);
 		if(currentAccount == null || t != null){
 			return;
@@ -45,42 +43,54 @@ public class ActionService {
 			Set<Integer> shownNotifications = new HashSet<Integer>();
 			@Override
 			public void run() {
-				for (;;) {
-					try {
+                while (!t.isInterrupted()) {
+                    try {
                         SyncHttpClient client = new SyncHttpClient();
-						client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-						client.get(url, new AsyncHttpResponseHandler() {
+                        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+                        client.get(url, new AsyncHttpResponseHandler() {
 
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 try {
                                     DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
+                                    ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
+                                    RegionDao regionDao = new RegionDao(DatabaseHelper.getInstance(context));
                                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                                     JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
-                                    for(int i = 0; i < actionsJSONArray.length(); i++){
+                                    for (int i = 0; i < actionsJSONArray.length(); i++) {
                                         JSONObject actionJSONObject = actionsJSONArray.getJSONObject(i);
                                         Action action = jsonObjectToAction(actionJSONObject);
-                                        if(action.getStatus().equals("in-progress")){
-                                            if(!shownNotifications.contains((int)action.getId())){
+                                        if (action.getStatus().equals("in-progress")) {
+                                            if (!shownNotifications.contains((int) action.getId())) {
                                                 builder = new NotificationCompat.Builder(context);
-                                                if(action.getResourceType().equals("droplet")){
+                                                if (action.getResourceType().equals("droplet")) {
                                                     builder.setContentTitle(dropletDao.findById(action.getResourceId()).getName())
                                                             .setContentText(action.getType() + " - in progress")
                                                             .setSmallIcon(R.drawable.ic_launcher);
                                                     builder.setProgress(0, 0, true);
                                                 }
+                                                else if (action.getResourceType().equals("image")) {
+                                                    String message = "";
+                                                    if(action.getType().equals("transfer")){
+                                                        message = String.format("Transferring image \"%s\" to %s", imageDao.findById(action.getResourceId()).getName(),
+                                                                regionDao.findByProperty(RegionTable.REGION_SLUG, action.getRegion()).getName());
+                                                    }
+                                                    builder.setContentTitle(imageDao.findById(action.getResourceId()).getName())
+                                                            .setContentText(message)
+                                                            .setSmallIcon(R.drawable.ic_launcher);
+                                                    builder.setProgress(0, 0, true);
+                                                }
 
-                                                builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-                                                notifyManager.notify((int)action.getId(), builder.build());
-                                                shownNotifications.add((int)action.getId());
+                                                builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+                                                notifyManager.notify((int) action.getId(), builder.build());
+                                                shownNotifications.add((int) action.getId());
                                             }
-                                        }
-                                        else{
-                                            if(shownNotifications.contains((int)action.getId())){
+                                        } else {
+                                            if (shownNotifications.contains((int) action.getId())) {
                                                 new DropletService(context).getAllDropletsFromAPI(false, false);
-                                                shownNotifications.remove((int)action.getId());
+                                                shownNotifications.remove((int) action.getId());
                                             }
-                                            notifyManager.cancel((int)action.getId());
+                                            notifyManager.cancel((int) action.getId());
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -92,11 +102,12 @@ public class ActionService {
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                             }
                         });
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        t.interrupt();
+                        e.printStackTrace();
+                    }
+                }
 			}
 		});
 		t.start();
@@ -104,7 +115,7 @@ public class ActionService {
 	
 	
 
-	private Action jsonObjectToAction(JSONObject actionJSONObject) {
+	private static Action jsonObjectToAction(JSONObject actionJSONObject) {
 		Action action = new Action();
 		try {
 			action.setId(actionJSONObject.getLong("id"));

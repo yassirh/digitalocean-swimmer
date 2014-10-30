@@ -1,20 +1,28 @@
 package com.yassirh.digitalocean.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -106,7 +114,6 @@ public class ImageService {
         });
 	}
 
-
 	public static Image jsonObjectToImage(JSONObject imageJSONObject)
 			throws JSONException {
 		Image image = new Image();
@@ -133,6 +140,11 @@ public class ImageService {
 			imageDao.create(image);
 		}
 	}
+
+    public Image findImageById(Long id){
+        ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
+        return imageDao.findById(id);
+    }
 	
 	/*public List<Image> getAllImages(){
 		ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
@@ -150,6 +162,44 @@ public class ImageService {
 		editor.putBoolean("image_require_refresh", requireRefresh);
 		editor.commit();
 	}
+
+    public void transferImage(long imageId, String regionSlug){
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+        String url = String.format(Locale.US,"%s/images/%d/actions", ApiHelper.API_URL, imageId);
+
+        HashMap<String,Object> options = new HashMap<String, Object>();
+        options.put("type", "transfer");
+        options.put("region", regionSlug);
+
+        JSONObject jsonObject = new JSONObject(options);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        ByteArrayEntity entity;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if(statusCode == 401){
+                        ApiHelper.showAccessDenied();
+                    }
+                }
+            });
+        }catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ActionService.trackActions(context);
+    }
 	
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);

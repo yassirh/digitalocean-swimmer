@@ -405,8 +405,7 @@ public class DropletService {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-        ActionService actionService = new ActionService(context);
-        actionService.trackActions();
+        ActionService.trackActions(context);
 	}
 
 	/*public void getDropletFromAPI(long dropletId, final boolean showProgress) {

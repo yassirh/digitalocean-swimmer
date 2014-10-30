@@ -1,28 +1,43 @@
 package com.yassirh.digitalocean.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Region;
+import com.yassirh.digitalocean.model.Size;
+import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
+import com.yassirh.digitalocean.service.RegionService;
+import com.yassirh.digitalocean.service.SizeService;
 
 public class ImagesFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener{
 
     private ImageService imageService;
 	private SwipeRefreshLayout swipeRefreshLayout;
+    private Image image;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -90,7 +105,7 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 		
 		allImages.add(image);
 		allImages.addAll(images);
-        ImageAdapter imageAdapter = new ImageAdapter(this.getActivity(), allImages);
+        ImageAdapter imageAdapter = new ImageAdapter(this.getActivity(), allImages, true);
 		setListAdapter(imageAdapter);
 	}
 	
@@ -99,6 +114,51 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
 		imageService.getAllImagesFromAPI(true);
 		handler.post(refreshing);
 	}
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        image = imageService.findImageById(info.id);
+        if(!image.isPublic()) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.image_context, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        View view;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        switch (item.getItemId()) {
+            case R.id.action_transfer:
+                view = inflater.inflate(R.layout.dialog_transfer_image,null);
+                RegionService sizeService = new RegionService(getActivity());
+                builder.setTitle(R.string.title_tranfer_image);
+                final Spinner regionSpinner = (Spinner)view.findViewById(R.id.regionSpinner);
+                regionSpinner.setAdapter(new RegionAdapter(getActivity(), sizeService.getAllRegions()));
+                builder.setView(view);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageService.transferImage(image.getId(),((Region)regionSpinner.getSelectedItem()).getSlug());
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
+        }
+        return true;
+    }
 	
 	private final Runnable refreshing = new Runnable(){
 	    public void run(){
