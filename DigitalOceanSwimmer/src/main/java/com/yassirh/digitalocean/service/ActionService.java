@@ -74,6 +74,8 @@ public class ActionService {
                                                     if(action.getType().equals("transfer")){
                                                         message = String.format("Transferring image \"%s\" to %s", imageDao.findById(action.getResourceId()).getName(),
                                                                 regionDao.findByProperty(RegionTable.REGION_SLUG, action.getRegion()).getName());
+                                                    } else if(action.getType().equals("image_destroy")){
+                                                        message = String.format("Deleting snapshot \"%s\"", imageDao.findById(action.getResourceId()).getName());
                                                     }
                                                     builder.setContentTitle(imageDao.findById(action.getResourceId()).getName())
                                                             .setContentText(message)
