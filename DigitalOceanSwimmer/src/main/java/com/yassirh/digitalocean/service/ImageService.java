@@ -200,6 +200,43 @@ public class ImageService {
         }
         ActionService.trackActions(context);
     }
+
+    public void updateImage(long imageId, String name){
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+        String url = String.format(Locale.US,"%s/images/%d", ApiHelper.API_URL, imageId);
+
+        HashMap<String,Object> options = new HashMap<String, Object>();
+        options.put("name", name);
+
+        JSONObject jsonObject = new JSONObject(options);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        ByteArrayEntity entity;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            client.put(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if(statusCode == 401){
+                        ApiHelper.showAccessDenied();
+                    }
+                }
+            });
+        }catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ActionService.trackActions(context);
+    }
 	
 	public Boolean requiresRefresh(){
 		SharedPreferences settings = context.getSharedPreferences("prefrences", 0);

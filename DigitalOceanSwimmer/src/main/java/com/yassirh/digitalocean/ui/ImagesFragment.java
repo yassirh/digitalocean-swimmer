@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -145,6 +146,27 @@ public class ImagesFragment extends ListFragment implements Updatable, SwipeRefr
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         imageService.transferImage(image.getId(),((Region)regionSpinner.getSelectedItem()).getSlug());
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
+            case R.id.action_rename:
+                view = inflater.inflate(R.layout.dialog_image_rename, null);
+                builder.setTitle(R.string.title_image_rename);
+                final EditText nameEditText = (EditText)view.findViewById(R.id.nameEditText);
+                builder.setView(view);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageService.updateImage(image.getId(), nameEditText.getText().toString());
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
