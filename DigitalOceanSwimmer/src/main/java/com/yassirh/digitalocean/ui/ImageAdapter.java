@@ -1,21 +1,20 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.List;
-
-import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.model.Image;
-import com.yassirh.digitalocean.model.Region;
-import com.yassirh.digitalocean.utils.ApiHelper;
-
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.utils.ApiHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ImageAdapter extends BaseAdapter {
@@ -77,7 +76,16 @@ public class ImageAdapter extends BaseAdapter {
             visibilityTextView.setText(visibility);
             if(showRegion) {
                 TextView regionsTextView = (TextView) vi.findViewById(R.id.regionsTextView);
-                regionsTextView.setText(image.getRegions());
+                String[] regions = image.getRegions().split(";");
+                StringBuilder regionsStringBuilder = new StringBuilder();
+                List<String> distinctRegions = new ArrayList<String>();
+                for(String region : regions){
+                    if(!distinctRegions.contains(region)) {
+                        distinctRegions.add(region);
+                        regionsStringBuilder.append(region).append(",");
+                    }
+                }
+                regionsTextView.setText(regionsStringBuilder.substring(0,regionsStringBuilder.length()-1));
             }
         }
         return vi;
