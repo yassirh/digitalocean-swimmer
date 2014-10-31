@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.yassirh.digitalocean.model.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SizeDao extends SqlDao<Size> {
 
 	private DatabaseHelper mDatabaseHelper;
@@ -49,4 +52,19 @@ public class SizeDao extends SqlDao<Size> {
 		return new SizeTable();
 	}
 
+    public List<Size> getByMinMemory(int minMemory) {
+        List<Size> sizes = new ArrayList<Size>();
+        Cursor cursor = db.query(getTableHelper().TABLE_NAME,
+                getTableHelper().getAllColumns(), String.format("%s >= %d", SizeTable.MEMORY, minMemory), null, null, null, SizeTable.MEMORY);
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()) {
+                Size size = newInstance(cursor);
+                sizes.add(size);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return sizes;
+    }
 }

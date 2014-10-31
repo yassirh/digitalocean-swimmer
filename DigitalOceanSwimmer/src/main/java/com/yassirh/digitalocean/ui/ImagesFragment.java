@@ -1,9 +1,5 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,14 +21,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.yassirh.digitalocean.R;
-import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.model.Region;
-import com.yassirh.digitalocean.model.Size;
-import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
-import com.yassirh.digitalocean.service.SizeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImagesFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener{
 

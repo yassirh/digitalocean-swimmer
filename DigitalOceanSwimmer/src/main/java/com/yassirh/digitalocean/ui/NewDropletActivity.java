@@ -39,6 +39,7 @@ import java.util.TreeSet;
 public class NewDropletActivity extends ActionBarActivity implements OnItemSelectedListener, OnCheckedChangeListener {
 	
 	private DropletService dropletService;
+	private SizeService sizeService;
     private CheckBox privateNetworkingCheckBox;
     private CheckBox enableBackupsCheckBox;
     private CheckBox userDataCheckBox;
@@ -50,6 +51,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
     private EditText hostnameEditText;
     private MultiSelectSpinner sshKeysMultiSelectSpinner;
     private RegionAdapter regionAdapter;
+    private SizeAdapter sizeAdapter;
     private HashMap<String, Region> regions;
 	
 	@Override
@@ -63,7 +65,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
         }
 		dropletService = new DropletService(this);
         ImageService imageService = new ImageService(this);
-        SizeService sizeService = new SizeService(this);
+        sizeService = new SizeService(this);
         RegionService regionService = new RegionService(this);
 		
 		imageSpinner = (Spinner)findViewById(R.id.imageSpinner);
@@ -96,6 +98,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 			sshKeysMultiSelectSpinner.setVisibility(View.GONE);
 			sshKeysTextView.setVisibility(View.GONE);
 		}
+        sizeAdapter = new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY));
         List<Region> allRegions = regionService.getAllRegionsOrderedByName();
         regions = new HashMap<String, Region>();
         regionAdapter = new RegionAdapter(this, allRegions);
@@ -103,7 +106,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
             regions.put(region.getSlug(), region);
         }
         regionSpinner.setAdapter(regionAdapter);
-		sizeSpinner.setAdapter(new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY)));
+		sizeSpinner.setAdapter(sizeAdapter);
 		regionSpinner.setOnItemSelectedListener(this);
         imageSpinner.setOnItemSelectedListener(this);
 		userDataCheckBox.setOnCheckedChangeListener(this);
@@ -155,6 +158,9 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
                 newRegions.add(regions.get(imageRegion));
             }
             regionAdapter.setData(newRegions);
+
+            List<Size> availableSizes = sizeService.getAllAvailableSizesFromMinSize(image.getMinSize());
+            sizeAdapter.setData(availableSizes);
         }
 	}
 

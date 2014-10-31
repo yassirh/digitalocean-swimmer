@@ -8,6 +8,7 @@ public class ImageTable extends TableHelper {
     public static final String IS_IN_USE = "is_in_use";
 	public static final String PUBLIC = "public";
     public static final String REGIONS = "regions";
+    public static final String MINSIZE = "min_size";
 
     public ImageTable(){		
 		columns.put(ID, "integer primary key");
@@ -17,6 +18,7 @@ public class ImageTable extends TableHelper {
         columns.put(IS_IN_USE, "integer");
 		columns.put(PUBLIC, "integer");
 		columns.put(REGIONS, "text");
+		columns.put(MINSIZE, "text");
 		TABLE_NAME = "images";
 	}	
 	

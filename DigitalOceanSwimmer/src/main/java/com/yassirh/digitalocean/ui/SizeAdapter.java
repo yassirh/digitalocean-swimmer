@@ -60,4 +60,10 @@ public class SizeAdapter extends BaseAdapter {
         
         return vi;
     }
+
+
+    public void setData(List<Size> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
 }

@@ -1,28 +1,11 @@
 package com.yassirh.digitalocean.service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -32,6 +15,18 @@ import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class ImageService {
 
@@ -126,6 +121,9 @@ public class ImageService {
 			image.setSlug(imageJSONObject.getString("slug"));
         image.setInUse(true);
 		image.setPublic(imageJSONObject.getBoolean("public"));
+        if(imageJSONObject.has("min_size")) {
+            image.setMinSize(imageJSONObject.getString("min_size"));
+        }
         String regions = "";
         for (int i = 0; i < imageJSONObject.getJSONArray("regions").length(); i++) {
             regions += ";" + imageJSONObject.getJSONArray("regions").getString(i);

@@ -20,6 +20,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.SizeDao;
+import com.yassirh.digitalocean.data.SizeTable;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.utils.ApiHelper;
@@ -155,4 +156,10 @@ public class SizeService {
 	public boolean isRefreshing() {
 		return isRefreshing;
 	}
+
+    public List<Size> getAllAvailableSizesFromMinSize(String minSize) {
+        SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(context));
+        int minMemory = sizeDao.findByProperty(SizeTable.SIZE_SLUG, minSize).getMemory();
+        return sizeDao.getByMinMemory(minMemory);
+    }
 }
