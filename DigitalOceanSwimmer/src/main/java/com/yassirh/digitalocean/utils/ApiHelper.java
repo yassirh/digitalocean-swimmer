@@ -107,6 +107,21 @@ public class ApiHelper {
         else if(image.contains("LAMP")){
             return status.equals("active") ? R.drawable.lamp_stack_active : R.drawable.lamp_stack;
         }
+        else if(image.contains("GitLab")){
+            return status.equals("active") ? R.drawable.gitlab_active : R.drawable.gitlab;
+        }
+        else if(image.contains("Redmine")){
+            return status.equals("active") ? R.drawable.redmine_active : R.drawable.redmine;
+        }
+        else if(image.contains("Magento")){
+            return status.equals("active") ? R.drawable.magento_active : R.drawable.magento;
+        }
+        else if(image.contains("MEAN")){
+            return status.equals("active") ? R.drawable.mean_active : R.drawable.mean;
+        }
+        else if(image.contains("LEMP")){
+            return status.equals("active") ? R.drawable.lemp_active : R.drawable.lemp;
+        }
 
         return getDistributionLogo(distribution, status);
     }
