@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.service.DropletService;
@@ -71,9 +72,14 @@ public class DropletDetailsDialogFragment extends DialogFragment {
 	    	distroImageView.setImageResource(ApiHelper.getDistributionLogo(image.getDistribution(), droplet.getStatus()));
     		imageTextView.setText(image.getName());
     	}
-    	if(droplet.getNetworks().size() > 0){
-    		ipAddressTextView.setText(droplet.getNetworks().get(0).getIpAddress());
-    	}
+        if(droplet.getNetworks().size() > 0){
+            for(Network network : droplet.getNetworks()) {
+                if(network.getType().equals("public")) {
+                    ipAddressTextView.setText(network.getIpAddress());
+                    break;
+                }
+            }
+        }
         backupsActiveTextView.setText(droplet.isBackupsEnabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         ipv6ActiveTextView.setText(droplet.isIpv6Enabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
         privateNetworkingActiveTextView.setText(droplet.isPrivateNetworkingEnabled() ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));

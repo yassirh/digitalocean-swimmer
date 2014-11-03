@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
@@ -66,7 +67,12 @@ public class DropletAdapter extends BaseAdapter {
         
         nameTextView.setText(droplet.getName());
         if(droplet.getNetworks().size() > 0){
-        	ipAddressTextView.setText(droplet.getNetworks().get(0).getIpAddress());
+            for(Network network : droplet.getNetworks()) {
+                if(network.getType().equals("public")) {
+                    ipAddressTextView.setText(network.getIpAddress());
+                    break;
+                }
+            }
         }
         statusTextView.setText(droplet.getStatus());
         
