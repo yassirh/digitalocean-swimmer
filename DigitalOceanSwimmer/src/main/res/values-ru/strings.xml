@@ -4,15 +4,15 @@
     <string name="app_name">DO Swimmer</string>
 
     <string-array name="main_navigation_array">
-        <item>Дроплеты</item>
+        <item>Сервера</item>
         <item>Домены</item>
-        <item>ОС</item>
+        <item>Операционные системы</item>
         <item>SSH ключи</item>
         <item>Регионы</item>
         <item>Тарифы</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
-        <item name="0">Никогда (Обновление вручную)</item>
+        <item name="0">Вручную</item>
         <item name="1">Каждую минуту</item>
         <item name="30">Каждые 30 минут</item>
         <item name="60">Каждый час</item>
@@ -170,7 +170,7 @@
     <string name="priority_label">Приоритет:</string>
     <string name="text_label">Текст:</string>
     <string name="port_label">Порт:</string>
-    <string name="weight_label">Ширина:</string>
+    <string name="weight_label">Вес:</string>
     <string name="create_record">Создать запись</string>
     <string name="edit_record">Изменить запись</string>
     <string name="edit_ssh_key">Изменить SSH ключ</string>
@@ -194,7 +194,7 @@
     <string name="enable_user_data_label">Включить пользовательские данные</string>
     <string name="title_droplet_rename">Переименовать сервер</string>
     <string name="reset_password_alert">Вы уверены?</string>
-    <string name="summary_auto_start_droplets">Автостарт выключен для сервера</string>
+    <string name="summary_auto_start_droplets">Автостарт для выключеных серверов</string>
     <string name="pref_auto_start_droplets">Автостарт</string>
     <string name="summary_clear_data">Очистить все аккаунты и данные на данном устройстве</string>
     <string name="pref_clear_data">Очистка данных</string>
