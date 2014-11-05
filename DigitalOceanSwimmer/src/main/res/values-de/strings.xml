@@ -32,12 +32,14 @@
         <item name="1">Deutsch</item>
         <item name="2">繁體中文</item>
         <item name="3">簡體中文</item>
+        <item name="4">Русский</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en_US</item>
         <item name="1">de_DE</item>
         <item name="2">zh_TW</item>
         <item name="3">zh_CN</item>
+        <item name="0">ru_RU</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Synchronisierungs-Interval</string>
     <string name="summary_sync_frequency">Synchronisierungs-Häufigkeit</string>
