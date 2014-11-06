@@ -39,7 +39,7 @@
         <item name="1">de_DE</item>
         <item name="2">zh_TW</item>
         <item name="3">zh_CN</item>
-        <item name="0">ru_RU</item>
+        <item name="4">ru_RU</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Интервал синхронизации</string>
     <string name="summary_sync_frequency">Частота синхронизации</string>
@@ -59,7 +59,7 @@
     <string name="public_visibility">Публичный</string>
     <string name="private_visibility">Приватный</string>
     <string name="monthly">Ежемесячный</string>
-    <string name="hourly">Ежечасный</string>
+    <string name="hourly">Почасовой</string>
     <string name="action_settings">Настройки</string>
     <string name="action_about">О программе</string>
     <string name="action_switch_account">Сменить аккаунт</string>
@@ -90,8 +90,8 @@
     <string name="power_on">Включить питание</string>
     <string name="shut_down">Выключить</string>
     <string name="password_reset">Сбросить пароль</string>
-    <string name="resize">Ресайз</string>
-    <string name="snapshot">Снапшот</string>
+    <string name="resize">Сменить тариф</string>
+    <string name="snapshot">Снимок</string>
     <string name="restore">Восстановить</string>
     <string name="rebuild">Пересоздать</string>
     <string name="enable_backups">Включить бекапы</string>
@@ -112,7 +112,7 @@
     <string name="synchronising_sizes">Синхронизация тарифов</string>
     <string name="synchronising_sizes_completed">Синхронизация тарифов завершена</string>
     <string name="synchronising_regions">Синхронизация регионов</string>
-    <string name="synchronising_regions_completed">Синхронизауия регионов завершена</string>
+    <string name="synchronising_regions_completed">Синхронизация регионов завершена</string>
     <string name="access_denied_message">Доступ запрещен! Проверьте, пожалуйста Ваш Клиент ID и API ключ.</string>
     <string name="action_add_droplet">Добавить сервер</string>
     <string name="action_add_domain">Добавить домен</string>
@@ -125,7 +125,7 @@
     <string name="select_droplet_label">Выбор сервера:</string>
     <string name="ssh_keys_label">SSH ключи:</string>
     <string name="private_networking_label">Приватные сети</string>
-    <string name="domain_name_label">Имя домена</string>
+    <string name="domain_name_label">Доменное имя</string>
     <string name="create_droplet">Создать сервер</string>
     <string name="create_domain">Создать домен</string>
     <string name="create_account">Создать аккаунт</string>
@@ -136,24 +136,24 @@
     <string name="destroying_domain">Удалине домена</string>
     <string name="destroying_record">Удаление записи</string>
     <string name="destroying_ssh_key">Удаление SSH ключа</string>
-    <string name="power_cycle_alert">Это выполнит перезагрузка вашего сервера.\n\nМы рекомендуем перезагружать ваш сервер из командной строки, так как данное дествие равнозначно нажатию кнопки Reset на сервере и может привести к потере данных.\n\nВы хотите продолжить?</string>
+    <string name="power_cycle_alert">Это выполнит перезагрузку вашего сервера.\n\nМы рекомендуем перезагружать ваш сервер из командной строки, так как данное действие равнозначно нажатию кнопки Reset на сервере и может привести к потере данных.\n\nВы хотите продолжить?</string>
     <string name="reboot_alert">Это перезапустит ваш сервер.\n\nВы хотите продолжить?</string>
     <string name="shut_down_alert">Это выключит ваш сервер.\n\nВы хотите продолжить?</string>
     <string name="power_off_alert">Это выключит ваш сервер.\n\nМы рекомендуем выклчать сервер из командной строки, так как данное действие равнозначно нажатию кнопки Reset на сервере и может привести к потере данных.\n\nВы хотите продолжить?</string>
-    <string name="power_on_alert">Это загрузит ваш сервер.\n\nВы хотите продолжить?</string>
+    <string name="power_on_alert">Это включит ваш сервер.\n\nВы хотите продолжить?</string>
     <string name="destroy_droplet_alert">Это необратимо. Мы удалим ваш сервер и все связанные с ним бекапы.\n\nВы хотите продолжить?</string>
     <string name="destroy_ssh_key_alert">Вы уверены?</string>
-    <string name="restore_alert">Этот метод позволяет восстановить сервер из предыдущей версии операционной системы или снапшота. Это будет отдельной копией сервера или снапшота. Удостоверьтесь, что вы сделали необходимый бекап перед этим.</string>
-    <string name="rebuild_alert">Этот переустановит ваш сервер с использованием стандартного образа операционной системы. Это очень полезно в том случае, если вам нужно сохранить старый айпи адрес.</string>
-    <string name="enable_backups_alert">Это включает автоматические бекапы, которые запускаются каждый день для создания резервных копий вших серверов.</string>
-    <string name="disable_backups_alert">Этот выключает автоматические бекапы для создания резервных копий ваших серверов.</string>
+    <string name="restore_alert">Этот метод позволяет восстановить сервер из предыдущей версии операционной системы или снимка. Это будет отдельной копией сервера или снимка. Удостоверьтесь, что вы сделали необходимый бекап перед этим.</string>
+    <string name="rebuild_alert">Этот пересоздаст ваш сервер с использованием стандартного образа операционной системы. Это очень полезно в том случае, если вам нужно сохранить старый IP адрес.</string>
+    <string name="enable_backups_alert">Это включит автоматические бекапы, которые запускаются каждый день для создания резервных копий ваших серверов.</string>
+    <string name="disable_backups_alert">Этот выключит автоматические бекапы для создания резервных копий ваших серверов.</string>
     <string name="destroy_domain_alert">Это удалит ваш домен. Вы уверены?</string>
-    <string name="name">Name</string>
+    <string name="name">Имя</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_resize_droplet">Ресайз сервера</string>
-    <string name="title_snapshot_droplet">Сделать снапшот сервера</string>
+    <string name="title_resize_droplet">Смена тарифа для сервера</string>
+    <string name="title_snapshot_droplet">Сделать снимок сервера</string>
     <string name="title_restore_droplet">Восстановить сервер</string>
-    <string name="title_rebuild_droplet">Переустановить сервер</string>
+    <string name="title_rebuild_droplet">Пересоздать сервер</string>
     <string name="summary_client_id">Клиентский ID</string>
     <string name="client_id_label">Клиентский ID</string>
     <string name="summary_api_key">Ключ API</string>
@@ -164,7 +164,7 @@
     <string name="api_settings_title">Настройки API</string>
     <string name="preferences_title">Свойства</string>
     <string name="records">Записи</string>
-    <string name="scrub_data">Scrub data</string>
+    <string name="scrub_data">Очистить данные</string>
     <string name="ip_address_label">IP Адрес:</string>
     <string name="name_label">Имя:</string>
     <string name="priority_label">Приоритет:</string>
@@ -200,7 +200,7 @@
     <string name="pref_clear_data">Очистка данных</string>
     <string name="application_title">Приложение</string>
     <string name="transfer">Перенос</string>
-    <string name="title_tranfer_image">Перенос image</string>
-    <string name="destroy_image_alert">Это необратимо. Мы удалим вам снапшот</string>
-    <string name="title_image_rename">Переименовать снапшот</string>
+    <string name="title_tranfer_image">Перенос образа</string>
+    <string name="destroy_image_alert">Это необратимо. Мы удалим этот снимок</string>
+    <string name="title_image_rename">Переименовать снимок</string>
 </resources>
