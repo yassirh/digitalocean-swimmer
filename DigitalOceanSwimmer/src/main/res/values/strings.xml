@@ -39,7 +39,7 @@
         <item name="1">de_DE</item>
         <item name="2">zh_TW</item>
         <item name="3">zh_CN</item>
-        <item name="0">ru_RU</item>
+        <item name="4">ru_RU</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Synchronisation interval</string>
     <string name="summary_sync_frequency">Frequency of synchronisation</string>
