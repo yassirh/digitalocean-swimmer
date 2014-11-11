@@ -163,7 +163,7 @@ public class DropletService {
 			return;
 		}
 		isRefreshing = true;
-		String url = String.format("%s/droplets", ApiHelper.API_URL);
+		String url = String.format("%s/droplets?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
 		AsyncHttpClient client;
         client  = synchronous ? new AsyncHttpClient() : new SyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
