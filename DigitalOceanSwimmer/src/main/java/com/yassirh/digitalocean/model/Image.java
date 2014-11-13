@@ -8,20 +8,20 @@ public class Image {
 	private String slug;
 	private Boolean isPublic;
     private boolean notInUse;
-    private String minSize;
+    private int minDiskSize;
     private String regions;
 
     public Image(){
 	}
 	
-	public Image(long id, String name, String distribution, String slug, Boolean isPublic, String regions, String minSize) {
+	public Image(long id, String name, String distribution, String slug, Boolean isPublic, String regions, int minDiskSize) {
 		this.id = id;
 		this.name = name;
 		this.distribution = distribution;
         this.slug = slug;
 		this.isPublic = isPublic;
         this.regions = regions;
-        this.minSize = minSize;
+        this.minDiskSize = minDiskSize;
 	}
 	
 	public long getId() {
@@ -80,11 +80,11 @@ public class Image {
         this.regions = regions;
     }
 
-    public String getMinSize() {
-        return minSize;
+    public int getMinDiskSize() {
+        return minDiskSize;
     }
 
-    public void setMinSize(String minSize) {
-        this.minSize = minSize;
+    public void setMinDiskSize(int minDiskSize) {
+        this.minDiskSize = minDiskSize;
     }
 }

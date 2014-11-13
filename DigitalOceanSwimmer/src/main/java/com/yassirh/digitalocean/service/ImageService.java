@@ -121,8 +121,8 @@ public class ImageService {
 			image.setSlug(imageJSONObject.getString("slug"));
         image.setInUse(true);
 		image.setPublic(imageJSONObject.getBoolean("public"));
-        if(imageJSONObject.has("min_size")) {
-            image.setMinSize(imageJSONObject.getString("min_size"));
+        if(imageJSONObject.has("min_disk_size")) {
+            image.setMinDiskSize(imageJSONObject.getInt("min_disk_size"));
         }
         String regions = "";
         for (int i = 0; i < imageJSONObject.getJSONArray("regions").length(); i++) {

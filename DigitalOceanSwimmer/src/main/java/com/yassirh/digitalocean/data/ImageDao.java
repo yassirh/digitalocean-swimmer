@@ -27,7 +27,7 @@ public class ImageDao extends SqlDao<Image> {
         values.put(ImageTable.IS_IN_USE, image.isInUse());
 		values.put(ImageTable.PUBLIC, image.isPublic() ? 1 : 0);
         values.put(ImageTable.REGIONS, image.getRegions());
-        values.put(ImageTable.MINSIZE, image.getMinSize());
+        values.put(ImageTable.MINDISKSIZE, image.getMinDiskSize());
         return db.insertWithOnConflict(getTableHelper().TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
 	}	
 
@@ -39,7 +39,7 @@ public class ImageDao extends SqlDao<Image> {
 		image.setSlug(c.getString(c.getColumnIndex(ImageTable.SLUG)));
 		image.setPublic(c.getInt(c.getColumnIndex(ImageTable.PUBLIC)) > 0);
         image.setRegions(c.getString(c.getColumnIndex(ImageTable.REGIONS)));
-        image.setMinSize(c.getString(c.getColumnIndex(ImageTable.MINSIZE)));
+        image.setMinDiskSize(c.getInt(c.getColumnIndex(ImageTable.MINDISKSIZE)));
 		return image;
 	}
 

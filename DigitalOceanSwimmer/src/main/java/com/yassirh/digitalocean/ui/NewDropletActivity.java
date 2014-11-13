@@ -159,7 +159,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
             }
             regionAdapter.setData(newRegions);
 
-            List<Size> availableSizes = sizeService.getAllAvailableSizesFromMinSize(image.getMinSize());
+            List<Size> availableSizes = sizeService.getAllAvailableSizesFromMinDiskSize(image.getMinDiskSize());
             sizeAdapter.setData(availableSizes);
         }
 	}

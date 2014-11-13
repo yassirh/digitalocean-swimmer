@@ -157,9 +157,9 @@ public class SizeService {
 		return isRefreshing;
 	}
 
-    public List<Size> getAllAvailableSizesFromMinSize(String minSize) {
+    public List<Size> getAllAvailableSizesFromMinDiskSize(int minDiskSize) {
         SizeDao sizeDao = new SizeDao(DatabaseHelper.getInstance(context));
-        int minMemory = sizeDao.findByProperty(SizeTable.SIZE_SLUG, minSize).getMemory();
+        int minMemory = sizeDao.findByProperty(SizeTable.DISK, minDiskSize+"").getMemory();
         return sizeDao.getByMinMemory(minMemory);
     }
 }
