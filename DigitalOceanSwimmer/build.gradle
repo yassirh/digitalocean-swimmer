@@ -1,10 +1,17 @@
-import com.android.builder.core.DefaultManifestParser
+import groovy.xml.Namespace
 
 apply plugin: 'com.android.application'
 
+def manifestVersionName() {
+    def manifestFile = file(project.projectDir.absolutePath + '/src/main/AndroidManifest.xml')
+    def ns = new Namespace("http://schemas.android.com/apk/res/android", "android")
+    def xml = new XmlParser().parse(manifestFile)
+    return xml.attributes()[ns.versionName].toString()
+}
+
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.2"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         applicationId "com.yassirh.digitalocean"
@@ -26,14 +33,18 @@ android {
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
-            zipAlign true
+            zipAlignEnabled true
             applicationVariants.all { variant ->
-                def file = variant.outputFile
-                def manifestParser = new DefaultManifestParser()
-                variant.outputFile = new File(props['apkOutputDir'], file.name.replace(".apk", "-" + manifestParser.getVersionName(android.sourceSets.main.manifest.srcFile) + ".apk"))
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    def versionName = manifestVersionName()
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        output.outputFile = new File(props['apkOutputDir'], outputFile.name.replace('.apk', "-"+ versionName+".apk"))
+                    }
+                }
             }
         }
     }
@@ -44,6 +55,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.loopj.android:android-async-http:1.4.5'
 }
