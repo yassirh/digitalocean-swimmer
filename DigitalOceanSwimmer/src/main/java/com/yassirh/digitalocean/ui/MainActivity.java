@@ -41,6 +41,7 @@ import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.AppRater;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
@@ -158,7 +159,9 @@ public class MainActivity extends ActionBarActivity implements Updatable {
         	alarmManager.cancel(pendingIntent);
         else
         	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), interval * 60 * 1000, pendingIntent);
-	}
+
+        AppRater.app_launched(this);
+    }
 	
 	@Override
 	protected void onResume() {
