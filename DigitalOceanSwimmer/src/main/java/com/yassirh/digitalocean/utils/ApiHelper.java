@@ -122,7 +122,9 @@ public class ApiHelper {
         else if(image.contains("LEMP")){
             return status.equals("active") ? R.drawable.lemp_active : R.drawable.lemp;
         }
-
+        else if(image.contains("ownCloud")){
+            return status.equals("active") ? R.drawable.owncloud_active : R.drawable.owncloud;
+        }
         return getDistributionLogo(distribution, status);
     }
 
