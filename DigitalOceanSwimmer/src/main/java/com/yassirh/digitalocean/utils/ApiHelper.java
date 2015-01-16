@@ -147,6 +147,9 @@ public class ApiHelper {
         else if(distribution.equalsIgnoreCase("CoreOS")){
         	return status.equals("active") ? R.drawable.coreos_active : R.drawable.coreos;
         }
+        else if(distribution.equalsIgnoreCase("FreeBSD")){
+            return status.equals("active") ? R.drawable.freebsd_active : R.drawable.freebsd;
+        }
 		return R.drawable.unknown;
 	}
 	
@@ -223,13 +226,14 @@ public class ApiHelper {
 		sizeService.deleteAll();
 		sizeService.getAllSizesFromAPI(true);
 	}
-	static Toast sToast;
+
+	static Toast toast;
 	public static void showAccessDenied() {
-		if(sToast == null){
-			sToast = Toast.makeText(MyApplication.getAppContext(), R.string.access_denied_message, Toast.LENGTH_SHORT);
+		if(toast == null){
+			toast = Toast.makeText(MyApplication.getAppContext(), R.string.access_denied_message, Toast.LENGTH_SHORT);
 		}
-		if(sToast.getView().getWindowToken() == null){
-			sToast.show();	
+		if(toast.getView().getWindowToken() == null){
+			toast.show();
 		}
 	}
 }
