@@ -1,7 +1,9 @@
 package com.yassirh.digitalocean.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -69,11 +71,21 @@ public class PrefsFragment extends PreferenceFragment {
         Preference clearDataPref = findPreference("pref_clear_data");
         clearDataPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                new AccountService(activity).clearData();
-                Intent i = activity.getPackageManager()
-                        .getLaunchIntentForPackage(activity.getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.are_you_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new AccountService(activity).clearData();
+                                Intent i = activity.getPackageManager()
+                                        .getLaunchIntentForPackage(activity.getPackageName());
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                            }
+                        })
+                        .setNegativeButton(R.string.no, null)
+                .show();
+
                 return true;
             }
         });

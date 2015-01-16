@@ -207,4 +207,5 @@
     <string name="title_tranfer_image">Перенос образа</string>
     <string name="destroy_image_alert">Это необратимо. Мы удалим этот снимок</string>
     <string name="title_image_rename">Переименовать снимок</string>
+    <string name="are_you_sure">Вы уверены?</string>
 </resources>

@@ -205,4 +205,5 @@
     <string name="title_tranfer_image">Transferir imagem</string>
     <string name="destroy_image_alert">Isso é irreversível. Vamos destruir seu snapshot</string>
     <string name="title_image_rename">Renomear snapshot</string>
+    <string name="are_you_sure">Você tem certeza?</string>
 </resources>

@@ -207,4 +207,5 @@
     <string name="title_tranfer_image">Transfer image</string>
     <string name="destroy_image_alert">This is irreversible. We will destroy your snapshot</string>
     <string name="title_image_rename">Rename snapshot</string>
+    <string name="are_you_sure">您确定要销毁?</string>
 </resources>
