@@ -1,4 +1,5 @@
 [![Build Status](https://jenkins.yassirh.com/buildStatus/icon?job=DigitalOcean-Swimmer)](https://jenkins.yassirh.com/job/DigitalOcean-Swimmer/)
+[![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/yassirh/digital-ocean-swimmer/master/LICENSE.md)
 
 # DigitalOcean Swimmer App
 
