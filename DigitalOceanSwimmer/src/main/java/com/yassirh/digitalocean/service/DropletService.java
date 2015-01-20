@@ -77,7 +77,7 @@ public class DropletService {
 		String action = getAction(dropletAction);
 		String url = String.format(Locale.US,"%s/droplets/%d/actions", ApiHelper.API_URL, dropletId);
 		
-		HashMap<String,Object> options = new HashMap<String, Object>();
+		HashMap<String,Object> options = new HashMap<>();
 		options.put("type", action);
 		for (Entry<String, String> param : params.entrySet()) {
 			options.put(param.getKey(), param.getValue());
@@ -215,7 +215,7 @@ public class DropletService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<Droplet> droplets = new ArrayList<Droplet>();
+                    List<Droplet> droplets = new ArrayList<>();
                     JSONArray dropletsJSONArray = jsonObject.getJSONArray("droplets");
                     for(int i = 0; i < dropletsJSONArray.length(); i++){
                         JSONObject dropletJSONObject = dropletsJSONArray.getJSONObject(i);
@@ -276,7 +276,7 @@ public class DropletService {
 		droplet.setLocked(dropletJSONObject.getBoolean("locked"));
 		droplet.setStatus(dropletJSONObject.getString("status"));
 		
-		List<Network> networks = new ArrayList<Network>();
+		List<Network> networks = new ArrayList<>();
 		JSONObject networksJSONObject = dropletJSONObject.getJSONObject("networks");
 		
 		JSONArray v4JSONArray = networksJSONObject.getJSONArray("v4");
@@ -360,7 +360,7 @@ public class DropletService {
 		
 		String url = String.format("%s/droplets", ApiHelper.API_URL);
 				
-		HashMap<String,Object> options = new HashMap<String, Object>();
+		HashMap<String,Object> options = new HashMap<>();
 		options.put("name", hostname);
 		options.put("region", regionSlug);
 		options.put("size", sizeSlug);

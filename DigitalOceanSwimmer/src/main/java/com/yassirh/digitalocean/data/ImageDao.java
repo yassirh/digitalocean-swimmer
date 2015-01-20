@@ -54,7 +54,7 @@ public class ImageDao extends SqlDao<Image> {
 	}
 
 	public List<Image> getSnapshotsOnly() {
-		List<Image> snapshots = new ArrayList<Image>();
+		List<Image> snapshots = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = ? AND " + ImageTable.IS_IN_USE + " = ?", new String[]{"0","1"}, null, null, ImageTable.NAME);
 		
@@ -70,7 +70,7 @@ public class ImageDao extends SqlDao<Image> {
 	}
 	
 	public List<Image> getImagesOnly() {
-		List<Image> images = new ArrayList<Image>();
+		List<Image> images = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), ImageTable.PUBLIC + " = ? AND " + ImageTable.IS_IN_USE + " = ?", new String[]{"1","1"}, null, null, ImageTable.NAME);
 

@@ -167,26 +167,21 @@ public class ApiHelper {
 	}
 	
 	public static int getRecordLabel(String recordType){
-		if(recordType.equals("A")){
-        	return R.drawable.a;
-        }
-		else if(recordType.equals("AAAA")){
-        	return R.drawable.aaaa;
-        }
-		else if(recordType.equals("CNAME")){
-        	return R.drawable.cname;
-        }
-		else if(recordType.equals("MX")){
-        	return R.drawable.mx;
-        }
-		else if(recordType.equals("TXT")){
-        	return R.drawable.txt;
-        }
-		else if(recordType.equals("SRV")){
-        	return R.drawable.srv;
-        }
-		else if(recordType.equals("NS")){
-        	return R.drawable.ns;
+        switch (recordType) {
+            case "A":
+                return R.drawable.a;
+            case "AAAA":
+                return R.drawable.aaaa;
+            case "CNAME":
+                return R.drawable.cname;
+            case "MX":
+                return R.drawable.mx;
+            case "TXT":
+                return R.drawable.txt;
+            case "SRV":
+                return R.drawable.srv;
+            case "NS":
+                return R.drawable.ns;
         }
 		return 0;
 	}

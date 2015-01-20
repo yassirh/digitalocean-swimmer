@@ -88,7 +88,7 @@ public class SizeService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<Size> sizes = new ArrayList<Size>();
+                    List<Size> sizes = new ArrayList<>();
                     JSONArray sizeJSONArray = jsonObject.getJSONArray("sizes");
                     for(int i = 0; i < sizeJSONArray.length(); i++){
                         JSONObject sizeJSONObject = sizeJSONArray.getJSONObject(i);

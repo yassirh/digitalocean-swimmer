@@ -40,7 +40,7 @@ public class ActionService {
 		t = new Thread(new Runnable() {
 			NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			NotificationCompat.Builder builder;
-			Set<Integer> shownNotifications = new HashSet<Integer>();
+			Set<Integer> shownNotifications = new HashSet<>();
 			@Override
 			public void run() {
                 while (!t.isInterrupted()) {

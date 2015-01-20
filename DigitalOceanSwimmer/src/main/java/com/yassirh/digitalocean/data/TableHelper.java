@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TableHelper{
 	
-	protected HashMap<String, String> columns = new HashMap<String, String>();
+	protected HashMap<String, String> columns = new HashMap<>();
 	public String TABLE_NAME = "";
 	public static final String ID = "id";
 	

@@ -80,12 +80,12 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 		userDataCheckBox = (CheckBox)findViewById(R.id.userDataCheckBox);
 		userDataEditText = (EditText)findViewById(R.id.userDataEditText);
 		ipv6CheckBox = (CheckBox)findViewById(R.id.ipv6CheckBox);
-		List<Image> images = new ArrayList<Image>();
+		List<Image> images = new ArrayList<>();
 		images.addAll(imageService.getSnapshotsOnly());
 		images.addAll(imageService.getImagesOnly());
 		imageSpinner.setAdapter(new ImageAdapter(this, images));
-		List<String> sshKeysNames = new ArrayList<String>();
-		List<Long> sshKeysIds = new ArrayList<Long>();
+		List<String> sshKeysNames = new ArrayList<>();
+		List<Long> sshKeysIds = new ArrayList<>();
 		SSHKeyService sshKeyService = new SSHKeyService(this);
 		List<SSHKey> sshKeys = sshKeyService.getAllSSHKeys();
 		for (SSHKey sshKey : sshKeys) {
@@ -100,7 +100,7 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 		}
         sizeAdapter = new SizeAdapter(this, sizeService.getAllSizes(SizeTable.MEMORY));
         List<Region> allRegions = regionService.getAllRegionsOrderedByName();
-        regions = new HashMap<String, Region>();
+        regions = new HashMap<>();
         regionAdapter = new RegionAdapter(this, allRegions);
         for(Region region : allRegions){
             regions.put(region.getSlug(), region);
@@ -152,8 +152,8 @@ public class NewDropletActivity extends ActionBarActivity implements OnItemSelec
 		}
         else if(parentView.getId() == R.id.imageSpinner){
             Image image = (Image)imageSpinner.getItemAtPosition(position);
-            SortedSet<String> imageRegions = new TreeSet<String>(Arrays.asList(image.getRegions().split(";")));
-            List<Region> newRegions = new ArrayList<Region>();
+            SortedSet<String> imageRegions = new TreeSet<>(Arrays.asList(image.getRegions().split(";")));
+            List<Region> newRegions = new ArrayList<>();
             for (String imageRegion : imageRegions) {
                 newRegions.add(regions.get(imageRegion));
             }

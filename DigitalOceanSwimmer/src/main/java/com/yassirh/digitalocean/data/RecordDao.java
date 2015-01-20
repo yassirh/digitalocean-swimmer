@@ -64,7 +64,7 @@ public class RecordDao extends SqlDao<Record> {
 	}
 
 	public List<Record> getAllByDomain(String domainName) {
-		List<Record> records = new ArrayList<Record>();
+		List<Record> records = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), RecordTable.DOMAIN_NAME + " = '" + domainName + "'", null, null, null, null);
 		

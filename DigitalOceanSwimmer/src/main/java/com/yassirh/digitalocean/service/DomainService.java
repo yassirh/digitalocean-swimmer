@@ -95,7 +95,7 @@ public class DomainService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<Domain> domains = new ArrayList<Domain>();
+                    List<Domain> domains = new ArrayList<>();
                     JSONArray domainJSONArray = jsonObject.getJSONArray("domains");
                     for(int i = 0; i < domainJSONArray.length(); i++){
                         JSONObject domainJSONObject = domainJSONArray.getJSONObject(i);
@@ -159,7 +159,7 @@ public class DomainService {
 		}
 		String url = String.format(Locale.US,"%s/domains", ApiHelper.API_URL);
 		
-		HashMap<String,Object> options = new HashMap<String, Object>();
+		HashMap<String,Object> options = new HashMap<>();
 		options.put("name", domainName);
 		options.put("ip_address", ipAddress);
 		

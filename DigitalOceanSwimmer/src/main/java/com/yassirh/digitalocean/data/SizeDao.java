@@ -53,7 +53,7 @@ public class SizeDao extends SqlDao<Size> {
 	}
 
     public List<Size> getByMinMemory(int minMemory) {
-        List<Size> sizes = new ArrayList<Size>();
+        List<Size> sizes = new ArrayList<>();
         Cursor cursor = db.query(getTableHelper().TABLE_NAME,
                 getTableHelper().getAllColumns(), String.format("%s >= %d", SizeTable.MEMORY, minMemory), null, null, null, SizeTable.MEMORY);
 

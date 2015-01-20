@@ -91,7 +91,7 @@ public class SSHKeyService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<SSHKey> sshKeys = new ArrayList<SSHKey>();
+                    List<SSHKey> sshKeys = new ArrayList<>();
                     JSONArray sshKeysJSONArray = jsonObject.getJSONArray("ssh_keys");
                     for(int i = 0; i < sshKeysJSONArray.length(); i++){
                         JSONObject sshKeysJSONObject = sshKeysJSONArray.getJSONObject(i);
@@ -184,7 +184,7 @@ public class SSHKeyService {
             return;
         }
         String url = String.format("%s/account/keys", ApiHelper.API_URL);
-        HashMap<String,Object> options = new HashMap<String, Object>();
+        HashMap<String,Object> options = new HashMap<>();
         options.put("name", sshKey.getName());
         options.put("public_key", sshKey.getPublicKey());
         JSONObject jsonObject = new JSONObject(options);
@@ -231,7 +231,7 @@ public class SSHKeyService {
             return;
         }
         String url = String.format(Locale.US, "%s/account/keys/%d", ApiHelper.API_URL, sshKey.getId());
-        HashMap<String,Object> options = new HashMap<String, Object>();
+        HashMap<String,Object> options = new HashMap<>();
         options.put("name", sshKey.getName());
         JSONObject jsonObject = new JSONObject(options);
         AsyncHttpClient client = new AsyncHttpClient();

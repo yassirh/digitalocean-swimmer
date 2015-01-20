@@ -87,7 +87,7 @@ public class RegionService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<Region> regions = new ArrayList<Region>();
+                    List<Region> regions = new ArrayList<>();
                     JSONArray regionJSONArray = jsonObject.getJSONArray("regions");
                     for(int i = 0; i < regionJSONArray.length(); i++){
                         JSONObject regionJSONObject = regionJSONArray.getJSONObject(i);

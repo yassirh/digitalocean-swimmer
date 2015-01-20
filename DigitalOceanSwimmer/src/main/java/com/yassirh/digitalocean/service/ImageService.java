@@ -91,7 +91,7 @@ public class ImageService {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    List<Image> images = new ArrayList<Image>();
+                    List<Image> images = new ArrayList<>();
                     JSONArray imageJSONArray = jsonObject.getJSONArray("images");
                     for(int i = 0; i < imageJSONArray.length(); i++){
                         JSONObject imageJSONObject = imageJSONArray.getJSONObject(i);
@@ -168,7 +168,7 @@ public class ImageService {
         }
         String url = String.format(Locale.US,"%s/images/%d/actions", ApiHelper.API_URL, imageId);
 
-        HashMap<String,Object> options = new HashMap<String, Object>();
+        HashMap<String,Object> options = new HashMap<>();
         options.put("type", "transfer");
         options.put("region", regionSlug);
 
@@ -206,7 +206,7 @@ public class ImageService {
         }
         String url = String.format(Locale.US,"%s/images/%d", ApiHelper.API_URL, imageId);
 
-        HashMap<String,Object> options = new HashMap<String, Object>();
+        HashMap<String,Object> options = new HashMap<>();
         options.put("name", name);
 
         JSONObject jsonObject = new JSONObject(options);

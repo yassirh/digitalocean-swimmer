@@ -3,8 +3,7 @@ package com.yassirh.digitalocean.data;
 public class AccountTable extends TableHelper {
 	
 	public static final String NAME = "name";
-	public static final String CLIENT_ID = "client_id";
-	public static final String TOKEN = "token";
+    public static final String TOKEN = "token";
 	public static final String REFRESH_TOKEN = "refresh_token";
 	public static final String EXPIRES_IN = "expires_in";
 	public static final String SELECTED = "selected";

@@ -18,7 +18,7 @@ public abstract class SqlDao<T> {
 	}
 	
 	public List<T> getAll(String orderBy) {
-		List<T> collection = new ArrayList<T>();
+		List<T> collection = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), null, null, orderBy, null, null);
 		
@@ -34,7 +34,7 @@ public abstract class SqlDao<T> {
 	}
 	
 	public List<T> getAllByProperty(String property, String value) {
-		List<T> collection = new ArrayList<T>();
+		List<T> collection = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), String.format("%s = '%s'", property, value), null, null, null, null);
 		
