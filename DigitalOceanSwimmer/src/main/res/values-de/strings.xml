@@ -198,14 +198,14 @@
     <string name="enable_user_data_label">Nutzerdaten ermöglichen</string>
     <string name="title_droplet_rename">Droplet Umbenennen</string>
     <string name="reset_password_alert">Sind Sie sicher?</string>
-    <string name="summary_auto_start_droplets">Automatically start turned off droplets</string>
-    <string name="pref_auto_start_droplets">Auto start</string>
-    <string name="summary_clear_data">Clear all the accounts and data saved on this device</string>
-    <string name="pref_clear_data">Clear data</string>
-    <string name="application_title">Application</string>
-    <string name="transfer">Transfer</string>
-    <string name="title_tranfer_image">Transfer image</string>
-    <string name="destroy_image_alert">This is irreversible. We will destroy your snapshot</string>
-    <string name="title_image_rename">Rename snapshot</string>
+    <string name="summary_auto_start_droplets">Ausgeschaltete Droplets automatisch starten</string>
+    <string name="pref_auto_start_droplets">Autostart</string>
+    <string name="summary_clear_data">Alle Accounts und Daten auf diesem Gerät löschen</string>
+    <string name="pref_clear_data">Daten löschen</string>
+    <string name="application_title">Applikation</string>
+    <string name="transfer">Übertragen</string>
+    <string name="title_tranfer_image">Abbild übertragen</string>
+    <string name="destroy_image_alert">Das Abbild wird unwiderruflich gelöscht</string>
+    <string name="title_image_rename">Abbild umbenennen</string>
     <string name="are_you_sure">Sind Sie sicher?</string>
 </resources>
