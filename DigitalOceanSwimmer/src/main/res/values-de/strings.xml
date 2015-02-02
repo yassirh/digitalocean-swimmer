@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">DO Swimmer</string>
-
     <string-array name="main_navigation_array">
         <item>Droplets</item>
         <item>Domänen</item>
@@ -158,8 +156,6 @@
     <string name="title_snapshot_droplet">Droplet-Snapshot erstellen</string>
     <string name="title_restore_droplet">Droplet wiederherstellen</string>
     <string name="title_rebuild_droplet">Droplet neubauen</string>
-    <string name="summary_client_id">Client ID</string>
-    <string name="client_id_label">Client ID</string>
     <string name="summary_api_key">API-Schlüssel</string>
     <string name="api_key_label">API-Schlüssel</string>
     <string name="summary_token">Token zur Authentifizierung von API-Requests</string>

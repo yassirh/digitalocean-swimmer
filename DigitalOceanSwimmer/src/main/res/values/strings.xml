@@ -158,8 +158,6 @@
     <string name="title_snapshot_droplet">Take droplet snapshot</string>
     <string name="title_restore_droplet">Restore droplet</string>
     <string name="title_rebuild_droplet">Rebuild droplet</string>
-    <string name="summary_client_id">Client ID</string>
-    <string name="client_id_label">Client ID</string>
     <string name="summary_api_key">API key</string>
     <string name="api_key_label">API key</string>
     <string name="summary_token">Token used to authenticate the API requests</string>

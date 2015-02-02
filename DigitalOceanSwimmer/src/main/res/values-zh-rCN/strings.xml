@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">DO Swimmer</string>
-
     <string-array name="main_navigation_array">
         <item>DO水滴</item>
         <item>网域名称</item>
@@ -158,8 +156,6 @@
     <string name="title_snapshot_droplet">快照DO水滴</string>
     <string name="title_restore_droplet">复原DO水滴</string>
     <string name="title_rebuild_droplet">重建DO水滴</string>
-    <string name="summary_client_id">客户帐号</string>
-    <string name="client_id_label">客户帐号</string>
     <string name="summary_api_key">API金钥</string>
     <string name="api_key_label">API金钥</string>
     <string name="summary_token">认证API金钥的号码产生器</string>
@@ -198,14 +194,14 @@
     <string name="enable_user_data_label">启用用户数据</string>
     <string name="title_droplet_rename">更换名称</string>
     <string name="reset_password_alert">您确定要销毁?</string>
-    <string name="summary_auto_start_droplets">Automatically start turned off droplets</string>
-    <string name="pref_auto_start_droplets">Auto start</string>
-    <string name="summary_clear_data">Clear all the accounts and data saved on this device</string>
-    <string name="pref_clear_data">Clear data</string>
-    <string name="application_title">Application</string>
-    <string name="transfer">Transfer</string>
-    <string name="title_tranfer_image">Transfer image</string>
-    <string name="destroy_image_alert">This is irreversible. We will destroy your snapshot</string>
-    <string name="title_image_rename">Rename snapshot</string>
-    <string name="are_you_sure">您确定要销毁?</string>
+    <string name="summary_auto_start_droplets">开始自动关闭水滴</string>
+    <string name="pref_auto_start_droplets">自动启动</string>
+    <string name="summary_clear_data">清除所有的帐户和保存在此设备上的数据</string>
+    <string name="pref_clear_data">清除数据</string>
+    <string name="application_title">应用</string>
+    <string name="transfer">转移</string>
+    <string name="title_tranfer_image">转移映像</string>
+    <string name="destroy_image_alert">这是不可逆转的。我们将销毁你的快照</string>
+    <string name="title_image_rename">重命名快照</string>
+    <string name="are_you_sure">你确定么？</string>
 </resources>

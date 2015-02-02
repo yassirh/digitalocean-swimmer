@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">DO Swimmer</string>
-
     <string-array name="main_navigation_array">
         <item>Сервера</item>
         <item>Домены</item>
@@ -158,8 +156,6 @@
     <string name="title_snapshot_droplet">Сделать снимок сервера</string>
     <string name="title_restore_droplet">Восстановить сервер</string>
     <string name="title_rebuild_droplet">Пересоздать сервер</string>
-    <string name="summary_client_id">Клиентский ID</string>
-    <string name="client_id_label">Клиентский ID</string>
     <string name="summary_api_key">Ключ API</string>
     <string name="api_key_label">Ключ API</string>
     <string name="summary_token">Токен для авторизации API запросов</string>

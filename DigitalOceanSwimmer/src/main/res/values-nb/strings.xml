@@ -145,8 +145,8 @@
     <string name="power_on_alert">Dette vil starte dropleten.\n\nØnsker du å fortsette?</string>
     <string name="destroy_droplet_alert">Ingen vei tilbake! Vi vil ødelegge din droplet og alle tilknyttede sikkerhetskopier.\n\nØnsker du å fortsette?</string>
     <string name="destroy_ssh_key_alert">Er du sikker?</string>
-    <string name="restore_alert">This method allows you to restore a droplet with a previous image or snapshot. This will be a mirror copy of the image or snapshot to your droplet. Be sure you have backed up any necessary information prior to restore.</string>
-    <string name="rebuild_alert">This method allows you to reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet.</string>
+    <string name="restore_alert">Denne metoden kan du gjenopprette en droplet med forrige bilde eller øyeblikksbilde. Dette vil være en speilet kopi av bildet eller øyeblikksbilde til din slippverktøy. Pass på at du har sikkerhetskopiert alle nødvendig informasjon før du gjenoppretter.</string>
+    <string name="rebuild_alert">Denne metoden kan du installere en droplet med et standardbilde. Dette er nyttig hvis du vil starte på nytt, men beholde samme IP-adressen for din slippverktøy.</string>
     <string name="enable_backups_alert">Denne metoden skrur på automatiske sikkerhetskopieringer som kjører i bakgrunnen daglig for å sikkerhetskopiere droplet data.</string>
     <string name="disable_backups_alert">Denne metoden deaktiverer automatisk sikkerhetskopiering fra å sikkerhetskopiere droplet data.</string>
     <string name="destroy_domain_alert">Dette vil slette ditt domene. Er du sikker?</string>
@@ -156,8 +156,6 @@
     <string name="title_snapshot_droplet">Opprett droplet øyeblikksbilde</string>
     <string name="title_restore_droplet">Gjenopprett droplet</string>
     <string name="title_rebuild_droplet">Gjenoppbygge droplet</string>
-    <string name="summary_client_id">Klient-ID</string>
-    <string name="client_id_label">Klient-ID</string>
     <string name="summary_api_key">API-nøkkel</string>
     <string name="api_key_label">API-nøkkel</string>
     <string name="summary_token">Token brukt til å godkjenne API forespørsler</string>

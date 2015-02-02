@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">DO Swimmer</string>
-
     <string-array name="main_navigation_array">
         <item>DO水滴</item>
         <item>網域名稱</item>
@@ -158,8 +156,6 @@
     <string name="title_snapshot_droplet">快照DO水滴</string>
     <string name="title_restore_droplet">復原DO水滴</string>
     <string name="title_rebuild_droplet">重建DO水滴</string>
-    <string name="summary_client_id">客戶帳號</string>
-    <string name="client_id_label">客戶帳號</string>
     <string name="summary_api_key">API金鑰</string>
     <string name="api_key_label">API金鑰</string>
     <string name="summary_token">認證API金鑰的號碼產生器</string>
