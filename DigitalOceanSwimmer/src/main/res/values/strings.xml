@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">DO Swimmer</string>
-
     <string-array name="main_navigation_array">
         <item>Droplets</item>
         <item>Domains</item>
@@ -35,6 +33,7 @@
         <item name="4">Русский</item>
         <item name="5">Norsk</item>
         <item name="6">Português</item>
+        <item name="7">Türk</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -44,6 +43,7 @@
         <item name="4">ru</item>
         <item name="5">nb</item>
         <item name="6">pt</item>
+        <item name="7">tr</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Synchronisation interval</string>
     <string name="summary_sync_frequency">Frequency of synchronisation</string>

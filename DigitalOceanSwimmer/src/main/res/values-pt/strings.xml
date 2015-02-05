@@ -33,6 +33,7 @@
         <item name="4">Русский</item>
         <item name="5">Norsk</item>
         <item name="6">Português</item>
+        <item name="7">Türk</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -42,6 +43,7 @@
         <item name="4">ru</item>
         <item name="5">nb</item>
         <item name="6">pt</item>
+        <item name="7">tr</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Intervalo de Sincronização</string>
     <string name="summary_sync_frequency">Freqüência de sincronização</string>
