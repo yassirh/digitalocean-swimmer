@@ -34,6 +34,7 @@
         <item name="5">Norsk</item>
         <item name="6">Português</item>
         <item name="7">Türk</item>
+        <item name="8">Nederlands</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -44,6 +45,7 @@
         <item name="5">nb</item>
         <item name="6">pt</item>
         <item name="7">tr</item>
+        <item name="8">nl</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Synk. intervall</string>
     <string name="summary_sync_frequency">Frekvens for synk.</string>
