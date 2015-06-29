@@ -21,8 +21,11 @@ import android.widget.Spinner;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Domain;
+import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.Network;
 import com.yassirh.digitalocean.model.Record;
 import com.yassirh.digitalocean.service.DomainService;
+import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.RecordService;
 
 public class RecordCreateDialogFragment extends DialogFragment {
@@ -51,6 +54,10 @@ public class RecordCreateDialogFragment extends DialogFragment {
 		final Record record = recordService.findById(recordId);
 		final Domain domain = domainService.findByDomainName(domainName);
 		final Spinner recordTypeSpinner = (Spinner) view.findViewById(R.id.recordTypeSpinner);
+		final Spinner dropletSpinner = (Spinner) view.findViewById(R.id.aIpAddressSpinner);
+		final DropletService dropletService = new DropletService(getActivity());
+		final DropletAdapter dropletAdapter = new DropletAdapter(getActivity(), dropletService.getAllDroplets());
+		dropletSpinner.setAdapter(dropletAdapter);
 		final RecordTypeAdapter recordTypeAdapter = new RecordTypeAdapter(getActivity());
 		recordTypeSpinner.setAdapter(recordTypeAdapter);
 		recordTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -128,6 +135,24 @@ public class RecordCreateDialogFragment extends DialogFragment {
 		final EditText srvWeightEditText = (EditText) view.findViewById(R.id.srvWeightEditText);
 		final EditText nsHostnameEditText = (EditText) view.findViewById(R.id.nsHostnameEditText);
 		
+		dropletSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				Droplet droplet = (Droplet)dropletAdapter.getItem(position);
+				for(Network network : droplet.getNetworks()) {
+				    if(network.getType().equals("public")) {
+					aIpAddressEditText.setText(network.getIpAddress());
+					break;
+				    }
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+		});
+
 		if(record != null){
 			if(record.getRecordType().equals("SRV")){
 				recordTypeSpinner.setSelection(1);
