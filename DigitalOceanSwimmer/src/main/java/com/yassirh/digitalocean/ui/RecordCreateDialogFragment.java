@@ -130,33 +130,33 @@ public class RecordCreateDialogFragment extends DialogFragment {
 		
 		if(record != null){
 			if(record.getRecordType().equals("SRV")){
-				recordTypeSpinner.setSelection(0);
+				recordTypeSpinner.setSelection(1);
 				srvNameEditText.setText(record.getName());
 				srvHostnameEditText.setText(record.getData());
 				srvPriorityEditText.setText(record.getPriority() + "");
 				srvPortEditText.setText(record.getPort() + "");
 				srvWeightEditText.setText(record.getWeight() + "");
 			}else if(record.getRecordType().equals("MX")){
-				recordTypeSpinner.setSelection(1);
+				recordTypeSpinner.setSelection(3);
 				mxHostnameEditText.setText(record.getData());
 				mxPriorityEditText.setText(record.getPriority() + "");
 			}else if(record.getRecordType().equals("NS")){
-				recordTypeSpinner.setSelection(2);
+				recordTypeSpinner.setSelection(0);
 				nsHostnameEditText.setText(record.getData());
 			}else if(record.getRecordType().equals("CNAME")){
-				recordTypeSpinner.setSelection(3);
+				recordTypeSpinner.setSelection(4);
 				cnameNameEditText.setText(record.getName());
 				cnameHostnameEditText.setText(record.getData());				
 			}else if(record.getRecordType().equals("TXT")){
-				recordTypeSpinner.setSelection(4);
+				recordTypeSpinner.setSelection(2);
 				txtNameEditText.setText(record.getName());
 				txtTextEditText.setText(record.getData());
 			}else if(record.getRecordType().equals("A")){
-				recordTypeSpinner.setSelection(6);
+				recordTypeSpinner.setSelection(5);
 				aHostnameEditText.setText(record.getName());
 				aIpAddressEditText.setText(record.getData());
 			}else if(record.getRecordType().equals("AAAA")){
-				recordTypeSpinner.setSelection(5);
+				recordTypeSpinner.setSelection(6);
 				aaaaHostnameEditText.setText(record.getName());
 				aaaaIpAddressEditText.setText(record.getData());
 			}
