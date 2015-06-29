@@ -1,6 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.yassirh.digitalocean.R;
 
@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 public class RecordTypeAdapter extends BaseAdapter {
 
-    public static HashMap<String, Integer> sData = new HashMap<String, Integer>();
+    public static LinkedHashMap<String, Integer> sData = new LinkedHashMap<String, Integer>();
     
     static{
     	sData.put("ns", R.drawable.ns);
