@@ -10,13 +10,13 @@ def manifestVersionName() {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 22
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.yassirh.digitalocean"
         minSdkVersion 8
-        targetSdkVersion 21
+        targetSdkVersion 22
     }
 
     Properties props = new Properties()
@@ -55,6 +55,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.loopj.android:android-async-http:1.4.5'
 }
