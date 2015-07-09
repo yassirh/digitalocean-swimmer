@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -63,8 +64,10 @@ public class DomainService {
 					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
 					    .setContentText(context.getResources().getString(R.string.synchronising_domains))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, builder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					Notification note = builder.build();
+					note.flags |= Notification.FLAG_ONGOING_EVENT;
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, note);
 				}
 			}
 			

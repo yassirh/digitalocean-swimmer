@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -60,7 +61,9 @@ public class SSHKeyService {
 					    .setContentText(context.getResources().getString(R.string.synchronising_keys))
 					    .setSmallIcon(R.drawable.ic_launcher);
 					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, builder.build());
+                    Notification note = builder.build();
+                    note.flags |= Notification.FLAG_ONGOING_EVENT;
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, note);
 				}
 			}
 			

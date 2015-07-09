@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -55,8 +56,10 @@ public class RegionService {
 					mBuilder.setContentTitle(context.getResources().getString(R.string.synchronising))
 					    .setContentText(context.getResources().getString(R.string.synchronising_regions))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					mBuilder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
+					mBuilder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					Notification note = mBuilder.build();
+					note.flags |= Notification.FLAG_ONGOING_EVENT;
+					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, note);
 				}
 			}
 			
