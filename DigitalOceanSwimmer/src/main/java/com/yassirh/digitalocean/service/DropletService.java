@@ -1,10 +1,12 @@
 package com.yassirh.digitalocean.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -184,8 +186,10 @@ public class DropletService {
 					builder.setContentTitle(context.getResources().getString(R.string.synchronising))
 					    .setContentText(context.getResources().getString(R.string.synchronising_droplets))
 					    .setSmallIcon(R.drawable.ic_launcher);
-					builder.setContentIntent(PendingIntent.getActivity(context,0,new Intent(),PendingIntent.FLAG_UPDATE_CURRENT));
-					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, builder.build());
+					builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT));
+					Notification note = builder.build();
+					note.flags |= Notification.FLAG_ONGOING_EVENT;
+					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DROPLETS, note);
 				}
 			}
 			
