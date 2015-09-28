@@ -164,6 +164,8 @@ public class ApiHelper {
         	return isAvailable ? R.drawable.uk_flag : R.drawable.uk_flag_unavailable;
 		else if(region.contains("Frankfurt"))
 			return isAvailable ? R.drawable.de_flag : R.drawable.de_flag_unavailable;
+		else if(region.contains("Toronto"))
+			return isAvailable ? R.drawable.ca_flag : R.drawable.ca_flag_unavailable;
 		else
 			return isAvailable ? R.drawable.unknown : R.drawable.unknown_unavailable;
 	}
