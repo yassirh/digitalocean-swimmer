@@ -209,6 +209,7 @@ public class DropletService {
                 if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
+				Toast.makeText(context, "An error occurred - check your internet connection?", Toast.LENGTH_LONG).show();
 			}
 			
 			@Override
