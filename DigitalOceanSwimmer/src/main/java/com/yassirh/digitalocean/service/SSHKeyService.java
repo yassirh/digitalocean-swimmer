@@ -28,6 +28,8 @@ import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
+import cz.msebera.android.httpclient.HttpEntity;
+
 public class SSHKeyService {
 
 	private Context context;
@@ -73,22 +75,22 @@ public class SSHKeyService {
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
+            public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					builder.setProgress(100, 100 * bytesWritten / totalSize, false);
+					builder.setProgress(100, (int) (100 * bytesWritten / totalSize), false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_KEYS, builder.build());
 				}
 			}
 			
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     List<SSHKey> sshKeys = new ArrayList<>();
@@ -158,12 +160,12 @@ public class SSHKeyService {
 		client.delete(url, new AsyncHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
             }
 
             @Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
@@ -191,18 +193,18 @@ public class SSHKeyService {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
         try {
-            ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
             client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                     if (statusCode == 401) {
                         ApiHelper.showAccessDenied();
                     }
                 }
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                     try {
                         JSONObject jsonObject = new JSONObject(new String(responseBody));
                         JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");
@@ -237,18 +239,18 @@ public class SSHKeyService {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
         try {
-            ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
             client.put(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                     if (statusCode == 401) {
                         ApiHelper.showAccessDenied();
                     }
                 }
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                     try {
                         JSONObject jsonObject = new JSONObject(new String(responseBody));
                         JSONObject sshKeysJSONObject = jsonObject.getJSONObject("ssh_key");

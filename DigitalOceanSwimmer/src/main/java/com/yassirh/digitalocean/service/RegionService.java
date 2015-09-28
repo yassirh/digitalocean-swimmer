@@ -69,22 +69,22 @@ public class RegionService {
 			}
 			
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
+			public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					mBuilder.setProgress(100, 100*bytesWritten/totalSize, false);
+					mBuilder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 					mNotifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_REGIONS, mBuilder.build());
 				}
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     List<Region> regions = new ArrayList<>();

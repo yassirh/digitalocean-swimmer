@@ -43,7 +43,7 @@ public class AccountService {
 		client.get(String.format(Locale.US, "https://yassirh.com/digitalocean_swimmer/generate_refresh_token.php?refresh_token=%s", currentAccount.getRefreshToken()), new AsyncHttpResponseHandler(){
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     Calendar expiresIn = Calendar.getInstance();
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
@@ -57,9 +57,9 @@ public class AccountService {
                     e.printStackTrace();
                 }
             }
-			
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}

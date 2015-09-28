@@ -32,6 +32,8 @@ import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
+import cz.msebera.android.httpclient.HttpEntity;
+
 public class DomainService {
 
 	private Context context;
@@ -77,22 +79,22 @@ public class DomainService {
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
+			public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					builder.setProgress(100, 100*bytesWritten/totalSize, false);
+					builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_DOMAINS, builder.build());
 				}
 			}
-			
+
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     List<Domain> domains = new ArrayList<>();
@@ -167,7 +169,7 @@ public class DomainService {
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		try {
-			ByteArrayEntity entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 				NotificationManager notifyManager;
 				NotificationCompat.Builder builder;
@@ -187,12 +189,12 @@ public class DomainService {
 				}
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
                 }
 
                 @Override
-				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 			    	Log.v("test",new String(responseBody));
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
@@ -200,9 +202,9 @@ public class DomainService {
 				}
 			    
 			    @Override
-				public void onProgress(int bytesWritten, int totalSize) {	
+				public void onProgress(long bytesWritten, long totalSize) {
 					if(showProgress){
-						builder.setProgress(100, 100*bytesWritten/totalSize, false);
+						builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN, builder.build());
 					}
 				}
@@ -255,21 +257,21 @@ public class DomainService {
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
             }
 
             @Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 		    
 		    @Override
-			public void onProgress(int bytesWritten, int totalSize) {	
+			public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					builder.setProgress(100, 100*bytesWritten/totalSize, false);
+					builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_DOMAIN, builder.build());
 				}
 			}

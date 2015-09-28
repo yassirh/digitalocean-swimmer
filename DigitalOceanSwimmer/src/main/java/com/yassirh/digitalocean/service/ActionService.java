@@ -49,8 +49,9 @@ public class ActionService {
                         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
                         client.get(url, new AsyncHttpResponseHandler() {
 
+
                             @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                                 try {
                                     DropletDao dropletDao = new DropletDao(DatabaseHelper.getInstance(context));
                                     ImageDao imageDao = new ImageDao(DatabaseHelper.getInstance(context));
@@ -101,8 +102,9 @@ public class ActionService {
                             }
 
                             @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                             }
+
                         });
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

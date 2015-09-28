@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.HttpEntity;
+
 public class ImageService {
 
 	private Context context;
@@ -73,22 +75,22 @@ public class ImageService {
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
+            public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					builder.setProgress(100, 100 * bytesWritten / totalSize, false);
+					builder.setProgress(100, (int) (100 * bytesWritten / totalSize), false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_GET_ALL_IMAGES, builder.build());
 				}
 			}
 			
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     List<Image> images = new ArrayList<>();
@@ -176,18 +178,17 @@ public class ImageService {
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-        ByteArrayEntity entity;
         try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
             client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                     if(statusCode == 401){
                         ApiHelper.showAccessDenied();
                     }
@@ -213,18 +214,17 @@ public class ImageService {
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-        ByteArrayEntity entity;
         try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
             client.put(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                     if(statusCode == 401){
                         ApiHelper.showAccessDenied();
                     }
@@ -268,12 +268,12 @@ public class ImageService {
             client.delete(context, url, new AsyncHttpResponseHandler() {
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                     if(statusCode == 401){
                         ApiHelper.showAccessDenied();
                     }

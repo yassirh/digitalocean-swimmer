@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.HttpEntity;
+
 public class RecordService {
 
 	private Context context;
@@ -98,18 +100,18 @@ public class RecordService {
 		client.get(url, new AsyncHttpResponseHandler() {
 						
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 			
 			@Override
-			public void onProgress(int bytesWritten, int totalSize) {
+			public void onProgress(long bytesWritten, long totalSize) {
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     RecordService.this.deleteAllRecordsByDomain(domainName);
@@ -145,10 +147,9 @@ public class RecordService {
 		String url = String.format(Locale.US, "%s/domains/%s/records", ApiHelper.API_URL, domainName);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-		ByteArrayEntity entity;
 		JSONObject jsonObject = new JSONObject(params);
 		try {
-			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.post(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 				NotificationManager notifyManager;
 				NotificationCompat.Builder builder;
@@ -168,21 +169,21 @@ public class RecordService {
 				}
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                     RecordService.this.getRecordsByDomainFromAPI(domainName);
                 }
 
                 @Override
-				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
 					}
 				}
 			    
 			    @Override
-				public void onProgress(int bytesWritten, int totalSize) {	
+				public void onProgress(long bytesWritten, long totalSize) {
 					if(showProgress){
-						builder.setProgress(100, 100*bytesWritten/totalSize, false);
+						builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
@@ -207,10 +208,9 @@ public class RecordService {
 		String url = String.format(Locale.US, "%s/domains/%s/records/%d", ApiHelper.API_URL, domainName, recordId);
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
-		ByteArrayEntity entity;
 		JSONObject jsonObject = new JSONObject(params);
 		try {
-			entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+			HttpEntity entity = new cz.msebera.android.httpclient.entity.ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
 			client.put(context, url, entity, "application/json", new AsyncHttpResponseHandler() {
 				NotificationManager notifyManager;
 				NotificationCompat.Builder builder;
@@ -230,21 +230,21 @@ public class RecordService {
 				}
 
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                     RecordService.this.getRecordsByDomainFromAPI(domainName);
                 }
 
                 @Override
-				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 					if(statusCode == 401){
 						ApiHelper.showAccessDenied();
 					}
 				}
 			    
 			    @Override
-				public void onProgress(int bytesWritten, int totalSize) {	
+				public void onProgress(long bytesWritten, long totalSize) {
 					if(showProgress){
-						builder.setProgress(100, 100*bytesWritten/totalSize, false);
+						builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 						notifyManager.notify(NotificationsIndexes.NOTIFICATION_CREATE_DOMAIN_RECORD, builder.build());
 					}
 				}
@@ -288,21 +288,21 @@ public class RecordService {
 			}
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
             }
 
             @Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 				if(statusCode == 401){
 					ApiHelper.showAccessDenied();
 				}
 			}
 		    
 		    @Override
-			public void onProgress(int bytesWritten, int totalSize) {	
+			public void onProgress(long bytesWritten, long totalSize) {
 				if(showProgress){
-					builder.setProgress(100, 100*bytesWritten/totalSize, false);
+					builder.setProgress(100, (int) (100*bytesWritten/totalSize), false);
 					notifyManager.notify(NotificationsIndexes.NOTIFICATION_DESTROY_RECORD, builder.build());
 				}
 			}

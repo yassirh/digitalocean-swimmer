@@ -10,8 +10,9 @@ def manifestVersionName() {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "22.0.0"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.yassirh.digitalocean"
@@ -55,6 +56,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.loopj.android:android-async-http:1.4.5'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile "org.apache.httpcomponents:httpcore:4.3.2"
 }
