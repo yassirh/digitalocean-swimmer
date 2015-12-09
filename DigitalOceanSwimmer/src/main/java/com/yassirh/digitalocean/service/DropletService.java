@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,6 +40,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -375,7 +377,11 @@ public class DropletService {
 		options.put("size", sizeSlug);
 		options.put("image", imageId);
         if(selectedSSHKeysIds.size() > 0) {
-            options.put("ssh_keys", selectedSSHKeysIds);
+            List<String> keys = new ArrayList<>();
+            for (Long key: selectedSSHKeysIds) {
+                keys.add(key.toString());
+            }
+            options.put("ssh_keys", keys);
         }
 		options.put("backups", enableBackups);
 		options.put("ipv6", enableIPv6);
@@ -383,8 +389,8 @@ public class DropletService {
 		if(!userData.equals("")){
 			options.put("user_data", userData);
 		}
-		
 		JSONObject jsonObject = new JSONObject(options);
+
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
 		try {
