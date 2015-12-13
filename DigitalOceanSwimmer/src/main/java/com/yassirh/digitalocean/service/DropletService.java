@@ -6,9 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -30,8 +28,6 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.MyApplication;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -171,7 +166,7 @@ public class DropletService {
 			return;
 		}
 		isRefreshing = true;
-		String url = String.format("%s/droplets?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
+		String url = String.format(Locale.US,"%s/droplets?per_page=%d", ApiHelper.API_URL, Integer.MAX_VALUE);
 		AsyncHttpClient client;
         client  = synchronous ? new AsyncHttpClient() : new SyncHttpClient();
 		client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
