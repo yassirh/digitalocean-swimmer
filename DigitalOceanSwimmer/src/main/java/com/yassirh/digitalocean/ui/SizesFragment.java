@@ -40,10 +40,10 @@ public class SizesFragment extends ListFragment implements Updatable, SwipeRefre
 		View layout = inflater.inflate(R.layout.fragment_sizes, container, false);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mSwipeRefreshLayout.setColorScheme(R.color.blue_bright,
-	            R.color.green_light,
-	            R.color.orange_light,
-	            R.color.red_light);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
+				R.color.green_light,
+				R.color.orange_light,
+				R.color.red_light);
 		return layout;
 	}
 	
