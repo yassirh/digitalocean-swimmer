@@ -1,6 +1,7 @@
 local.properties
 .idea
 .gradle
+*.iml
 build/
 bin/
 gen/
