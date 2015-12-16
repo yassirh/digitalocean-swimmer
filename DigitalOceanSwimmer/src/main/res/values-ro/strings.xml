@@ -38,6 +38,7 @@
         <item name="9">Svenska</item>
         <item name="10">Română</item>
         <item name="11">Polski</item>
+        <item name="12">Español</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -52,6 +53,7 @@
         <item name="9">sv</item>
         <item name="10">ro</item>
         <item name="11">pl</item>
+        <item name="12">es</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Intervalul de sincronizare</string>
     <string name="summary_sync_frequency">Frecventa de sincronizare</string>
