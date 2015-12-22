@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +17,7 @@ import com.yassirh.digitalocean.utils.ApiHelper;
 
 import java.util.Calendar;
 
-public class AddAccountActivity extends ActionBarActivity {
+public class AddAccountActivity extends AppCompatActivity {
 
 	EditText accountNameEditText;
 	EditText tokenEditText;

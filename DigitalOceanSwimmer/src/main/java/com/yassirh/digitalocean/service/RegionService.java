@@ -1,13 +1,5 @@
 package com.yassirh.digitalocean.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,6 +16,13 @@ import com.yassirh.digitalocean.data.RegionDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegionService {
 

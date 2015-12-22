@@ -17,8 +17,6 @@ import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Image;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,7 +1,7 @@
 package com.yassirh.digitalocean.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class NewDropletActivity extends ActionBarActivity implements OnItemSelectedListener, OnCheckedChangeListener {
+public class NewDropletActivity extends AppCompatActivity implements OnItemSelectedListener, OnCheckedChangeListener {
 	
 	private DropletService dropletService;
 	private SizeService sizeService;

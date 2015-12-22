@@ -1,13 +1,5 @@
 package com.yassirh.digitalocean.service;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -23,6 +15,13 @@ import com.yassirh.digitalocean.data.SizeDao;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class AccountService {
 	

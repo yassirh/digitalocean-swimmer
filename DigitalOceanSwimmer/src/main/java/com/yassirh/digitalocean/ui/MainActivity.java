@@ -17,8 +17,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar.LayoutParams;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,7 +47,7 @@ import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 import java.util.Calendar;
 
-public class MainActivity extends ActionBarActivity implements Updatable {
+public class MainActivity extends AppCompatActivity implements Updatable {
 
 	private DrawerLayout drawerLayout;
     private ListView drawerList;

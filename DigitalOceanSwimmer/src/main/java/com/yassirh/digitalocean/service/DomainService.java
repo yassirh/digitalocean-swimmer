@@ -1,17 +1,5 @@
 package com.yassirh.digitalocean.service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -32,6 +20,16 @@ import com.yassirh.digitalocean.data.RecordTable;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Domain;
 import com.yassirh.digitalocean.utils.ApiHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.HttpEntity;
 
