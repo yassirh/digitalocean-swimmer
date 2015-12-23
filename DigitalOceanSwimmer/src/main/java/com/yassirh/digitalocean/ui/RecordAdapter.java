@@ -1,6 +1,7 @@
 package com.yassirh.digitalocean.ui;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -67,17 +68,17 @@ public class RecordAdapter extends BaseAdapter {
         if(record.getPort() == 0)
         	portTextView.setVisibility(View.GONE);
         else
-        	portTextView.setText(record.getPort().toString());
+        	portTextView.setText(String.format(Locale.US, "%d", record.getPort()));
         
         if(record.getPriority() == 0)
         	priorityTextView.setVisibility(View.GONE);
         else
-        	priorityTextView.setText(record.getPriority().toString());
+        	priorityTextView.setText(String.format(Locale.US, "%d", record.getPriority()));
         
         if(record.getWeight() == 0)
         	weightTextView.setVisibility(View.GONE);
         else
-        	weightTextView.setText(record.getWeight().toString());
+        	weightTextView.setText(String.format(Locale.US, "%d", record.getWeight()));
         recordTypeImageView.setImageResource(ApiHelper.getRecordLabel(record.getRecordType()));
         
         return vi;
