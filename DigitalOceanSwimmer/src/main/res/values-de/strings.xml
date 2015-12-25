@@ -62,7 +62,7 @@
     <string name="not_yet_implemented">Noch nicht implementiert</string>
     <string name="no_ssh_client">Kein SSH-Klient gefunden! Bitte installieren einen SSH-Klienten um dieses Feature zu nutzen.</string>
     <string name="drawer_open">Navigation öffnen</string>
-    <string name="drawer_close">Navigation schliessen</string>
+    <string name="drawer_close">Navigation schließen</string>
     <string name="no_images">Keine Abbilder!</string>
     <string name="no_regions">Keine Regionen!</string>
     <string name="no_sizes">Keine Größen!</string>

@@ -27,19 +27,19 @@
 		        android:id="@+id/nameTextView"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="hostname"
+		        android:text=""
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
 			<TextView
 		        android:id="@+id/ipAddressTextView"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="123.123.123.123"
+		        android:text=""
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
 			<TextView
 			    android:id="@+id/statusTextView"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="status"
+			    android:text=""
 			    android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
