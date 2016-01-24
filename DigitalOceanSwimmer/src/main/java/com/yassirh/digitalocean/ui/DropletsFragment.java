@@ -357,18 +357,29 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 			builder.show();
 			break;
 		case R.id.action_ssh:
-			try {
-				String ipAddress = "";
-				for (Network network : droplet.getNetworks()) {
-					if(network.getType().equals("public")){
-						ipAddress = network.getIpAddress();
-						break;
+			view = inflater.inflate(R.layout.dialog_droplet_ssh_port,null);
+			final EditText portEditText = (EditText) view.findViewById(R.id.portEditText);
+			portEditText.setText("22");
+			builder.setView(view);
+			builder.setPositiveButton(R.string.ok, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    try {
+                        String ipAddress = "";
+                        for (Network network : droplet.getNetworks()) {
+                            if (network.getType().equals("public")) {
+                                ipAddress = network.getIpAddress();
+                                break;
+                            }
+                        }
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + ipAddress + ":" + portEditText.getText().toString() + "/#" + droplet.getName())));
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
 					}
 				}
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("ssh://" + ipAddress + "/#" + droplet.getName())));
-			} catch (ActivityNotFoundException e) {
-				Toast.makeText(getActivity(), R.string.no_ssh_client, Toast.LENGTH_SHORT).show();
-			}
+			});
+			builder.show();
 			break;
 		default:
 			break;
