@@ -40,6 +40,7 @@
         <item name="11">Polski</item>
         <item name="12">Español</item>
         <item name="13">日本語</item>
+        <item name="14">Italiano</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -56,6 +57,7 @@
         <item name="11">pl</item>
         <item name="12">es</item>
         <item name="13">ja</item>
+        <item name="14">it</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">同步间隔时间</string>
     <string name="summary_sync_frequency">设定与系统同步的间隔时间</string>

@@ -40,6 +40,7 @@
         <item name="11">Polski</item>
         <item name="12">Español</item>
         <item name="13">日本語</item>
+        <item name="14">Italiano</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -56,6 +57,7 @@
         <item name="11">pl</item>
         <item name="12">es</item>
         <item name="13">ja</item>
+        <item name="14">it</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Intervallo di sincronizzazione</string>
     <string name="summary_sync_frequency">Frequenza della sincronizzazione</string>
@@ -160,7 +162,7 @@
     <string name="destroy_droplet_alert">Questo è irreversibile. Distruggeremo il tuo droplet e tutti i backups associati.\n\nVuoi continuare?</string>
     <string name="destroy_ssh_key_alert">Sei sicuro?</string>
     <string name="restore_alert">Questo metodo ti permette di ripristinare un droplet con uno snapshot o immagine precedente. This will be a mirror copy of the image or snapshot to your droplet. Be sure you have backed up any necessary information prior to restore.</string>
-    <string name="rebuild_alert">Questo metodo ti permette di reinstallare un droplet con una immagine di default. E' utile se vuoi ripartire da capo ma vuoi conservare il vecchio indirizzo IP del tuo droplet.</string>
+    <string name="rebuild_alert">Questo metodo ti permette di reinstallare un droplet con una immagine di default. E\' utile se vuoi ripartire da capo ma vuoi conservare il vecchio indirizzo IP del tuo droplet.</string>
     <string name="enable_backups_alert">Questo metodo abilita i backup automatici che giornalmente effettuano il backup dei dati del tuo droplet.</string>
     <string name="disable_backups_alert">Questo metodo disabilita i backup automatici che effettuano i backup del tuo droplet.</string>
     <string name="destroy_domain_alert">Questo distruggerà il tuo dominio. Sei sicuro?</string>
