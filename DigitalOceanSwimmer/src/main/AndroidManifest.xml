@@ -3,7 +3,7 @@
     package="com.yassirh.digitalocean"
     android:installLocation="auto"
     android:versionCode="28"
-    android:versionName="2.2-SNAPSHOT" >
+    android:versionName="2.2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
