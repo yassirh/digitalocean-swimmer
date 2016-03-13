@@ -56,7 +56,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile "org.apache.httpcomponents:httpcore:4.3.2"
 }

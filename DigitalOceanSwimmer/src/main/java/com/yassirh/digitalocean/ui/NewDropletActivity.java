@@ -155,7 +155,9 @@ public class NewDropletActivity extends AppCompatActivity implements OnItemSelec
             SortedSet<String> imageRegions = new TreeSet<>(Arrays.asList(image.getRegions().split(";")));
             List<Region> newRegions = new ArrayList<>();
             for (String imageRegion : imageRegions) {
-                newRegions.add(regions.get(imageRegion));
+				if(regions.get(imageRegion) != null) {
+					newRegions.add(regions.get(imageRegion));
+				}
             }
             regionAdapter.setData(newRegions);
 

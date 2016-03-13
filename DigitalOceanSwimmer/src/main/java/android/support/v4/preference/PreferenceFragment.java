@@ -50,17 +50,17 @@ public abstract class PreferenceFragment extends Fragment implements
     private static final int FIRST_REQUEST_CODE = 100;
 
     private static final int MSG_BIND_PREFERENCES = 1;
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
-
                 case MSG_BIND_PREFERENCES:
                     bindPreferences();
-                    break;
+                    return true;
             }
+            return false;
         }
-    };
+    });
 
     final private Runnable mRequestFocus = new Runnable() {
         public void run() {
