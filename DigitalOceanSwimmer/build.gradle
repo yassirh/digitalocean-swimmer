@@ -19,31 +19,39 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
     }
-
-    Properties props = new Properties()
-    props.load(new FileInputStream(file(project.property("DigitalOceanSwimmer.properties"))))
-
-    signingConfigs {
-        release {
-            storeFile file(props['keystore'])
-            storePassword props['keystore.password']
-            keyAlias props['keyAlias']
-            keyPassword props['keyPassword']
+    if (System.getenv("TRAVIS")) {
+        buildTypes {
+            release {
+                minifyEnabled false
+                zipAlignEnabled true
+            }
         }
-    }
+    } else {
+        Properties props = new Properties()
+        props.load(new FileInputStream(file(project.property("DigitalOceanSwimmer.properties"))))
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
-            zipAlignEnabled true
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    def versionName = manifestVersionName()
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        output.outputFile = new File(props['apkOutputDir'], outputFile.name.replace('.apk', "-"+ versionName+".apk"))
+        signingConfigs {
+            release {
+                storeFile file(props['keystore'])
+                storePassword props['keystore.password']
+                keyAlias props['keyAlias']
+                keyPassword props['keyPassword']
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+                signingConfig signingConfigs.release
+                zipAlignEnabled true
+                applicationVariants.all { variant ->
+                    variant.outputs.each { output ->
+                        def outputFile = output.outputFile
+                        def versionName = manifestVersionName()
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            output.outputFile = new File(props['apkOutputDir'], outputFile.name.replace('.apk', "-" + versionName + ".apk"))
+                        }
                     }
                 }
             }
