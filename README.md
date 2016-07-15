@@ -1,4 +1,4 @@
-[![Build Status](https://jenkins.loorea.com/buildStatus/icon?job=Digitalocean Swimmer)](https://jenkins.loorea.com/buildStatus/icon?job=Digitalocean Swimmer/)
+[![Build Status](https://travis-ci.org/yassirh/digitalocean-swimmer.svg?branch=master)](https://travis-ci.org/yassirh/digitalocean-swimmer)
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/yassirh/digital-ocean-swimmer/master/LICENSE.md)
 
 # DigitalOcean Swimmer App
