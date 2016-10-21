@@ -41,6 +41,7 @@
         <item name="12">Español</item>
         <item name="13">日本語</item>
         <item name="14">Italiano</item>
+        <item name="15">Français</item>
     </string-array>
     <string-array name="pref_locale_values">
         <item name="0">en</item>
@@ -58,6 +59,7 @@
         <item name="12">es</item>
         <item name="13">ja</item>
         <item name="14">it</item>
+        <item name="15">fr</item>
     </string-array>
     <string name="pref_sync_frequency_key_label">Интервал синхронизации</string>
     <string name="summary_sync_frequency">Частота синхронизации</string>
