@@ -9,7 +9,7 @@ android:
 jdk:
 - oraclejdk8
 before_install:
-- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in release.keystore.enc -out release.keystore -d
+- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in DigitalOceanSwimmer/release.keystore.enc -out DigitalOceanSwimmer/release.keystore -d
 - chmod +x gradlew
 script:
 - "./gradlew build"
