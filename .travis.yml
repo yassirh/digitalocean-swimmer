@@ -1,17 +1,26 @@
 language: android
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-25.0.0
-    - android-25
-    - extra-android-m2repository
-
+  - tools
+  - platform-tools
+  - build-tools-25.0.0
+  - android-25
+  - extra-android-m2repository
 jdk:
-    - oraclejdk8
-
+- oraclejdk8
 before_install:
-    - chmod +x gradlew
-
+- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in release.keystore.enc -out release.keystore -d
+- chmod +x gradlew
 script:
-    - ./gradlew build
+- "./gradlew build"
+before_deploy:
+- mv DigitalOceanSwimmer/build/outputs/apk/DigitalOceanSwimmer-release.apk DigitalOceanSwimmer/build/outputs/apk/digitalocean-swimmer-${TRAVIS_TAG}.apk
+deploy:
+  provider: releases
+  api_key:
+    secure: BLuTT+d7IwDXaNLquYgLB8eCV+vUYgQTSaQ9g8FP5r1hAey8DNbn/abGvpH0wr7eEH6hj3O28DYweVTzIFgskctQ8bb7fMh1PYtfDBMQOoJdkue7n3rOaYHUaPb2bYkKK1sZbajsor8mKOFS6sByH7qWw6GdW6vUaUjVdRdUp8Y=
+  file: DigitalOceanSwimmer/build/outputs/apk/digitalocean-swimmer-${TRAVIS_TAG}.apk
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: yassirh/digitalocean-swimmer

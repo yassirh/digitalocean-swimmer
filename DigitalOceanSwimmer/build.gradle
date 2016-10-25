@@ -20,10 +20,19 @@ android {
         targetSdkVersion 25
     }
     if (System.getenv("TRAVIS")) {
+        signingConfigs {
+            release {
+                keyAlias System.getenv("KEY_STORE_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+                storeFile file("release.key")
+                storePassword System.getenv("KEY_STORE_PASSWORD")
+            }
+        }
         buildTypes {
             release {
                 minifyEnabled false
                 zipAlignEnabled true
+                signingConfig signingConfigs.release
             }
         }
     } else {
