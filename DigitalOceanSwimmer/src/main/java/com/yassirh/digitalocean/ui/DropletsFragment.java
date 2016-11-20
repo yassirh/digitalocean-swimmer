@@ -3,6 +3,8 @@ package com.yassirh.digitalocean.ui;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -121,6 +123,25 @@ public class DropletsFragment extends ListFragment implements OnItemClickListene
 		});
 
 		switch (item.getItemId()) {
+		case R.id.action_copy_ip:
+			String ipAddress = "";
+			for (Network network : droplet.getNetworks()) {
+				if (network.getType().equals("public")) {
+					ipAddress = network.getIpAddress();
+					break;
+				}
+			}
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+				ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData clip = ClipData.newPlainText("Copied", ipAddress);
+				clipboard.setPrimaryClip(clip);
+			} else {
+				// ClipboardManager is deprecated but works on android sdk < 11
+				android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+				clipboard.setText(ipAddress);
+			}
+			Toast.makeText(getActivity(),R.string.ip_copied, Toast.LENGTH_SHORT).show();
+			break;
 		case R.id.action_power_cycle:
 			alertDialog.setTitle(getString(R.string.power_cycle) + " : " + droplet.getName());
 			alertDialog.setMessage(R.string.power_cycle_alert);
