@@ -68,12 +68,16 @@ android {
     }
 
     lintOptions {
+        htmlReport true
+        htmlOutput file("lint-report.html")
         abortOnError false
+        warningsAsErrors true
     }
+
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile "org.apache.httpcomponents:httpcore:4.3.2"
 }
