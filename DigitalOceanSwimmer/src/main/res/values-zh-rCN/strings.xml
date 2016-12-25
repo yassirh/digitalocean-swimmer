@@ -8,6 +8,7 @@
         <item>SSH金钥</item>
         <item>主机地区</item>
         <item>主机规格</item>
+        <item>Floating IPs</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">从不 (手动同步)</item>

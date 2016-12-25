@@ -309,30 +309,27 @@ public class MainActivity extends AppCompatActivity implements Updatable {
     
     
     private void selectItem(int position) {
-    	
-    	if(position == DrawerPositions.DROPLETS_FRAGMENT_POSITION){
-    		fragment = new DropletsFragment();
-    	}
-    	else if(position == DrawerPositions.DOMAINS_FRAGMENT_POSITION){
-    		fragment = new DomainsFragment();
-    	}
-    	else if(position == DrawerPositions.IMAGES_FRAGMENT_POSITION){
-    		fragment = new ImagesFragment();
-    	}
-    	else if(position == DrawerPositions.REGIONS_FRAGMENT_POSITION){
-    		fragment = new RegionsFragment();
-    	}
-    	else if(position == DrawerPositions.SIZES_FRAGMENT_POSITION){
-    		fragment = new SizesFragment();
-    	}
-    	else if(position == DrawerPositions.SSHKEYS_FRAGMENT_POSITION){
-    		fragment = new SSHKeyFragment();
-    	}
-    	else if(position == DrawerPositions.SETTINGS_POSITION){
-    		Intent intent = new Intent(this, SettingsActivity.class);
-        	startActivity(intent);
-        	finish();
-    	}
+
+		switch (position) {
+			case DrawerPositions.DROPLETS_FRAGMENT_POSITION:
+				fragment = new DropletsFragment();
+				break;
+			case DrawerPositions.DOMAINS_FRAGMENT_POSITION:
+				fragment = new DomainsFragment();
+				break;
+			case DrawerPositions.IMAGES_FRAGMENT_POSITION:
+				fragment = new ImagesFragment();
+				break;
+			case DrawerPositions.REGIONS_FRAGMENT_POSITION:
+				fragment = new RegionsFragment();
+				break;
+			case DrawerPositions.SIZES_FRAGMENT_POSITION:
+				fragment = new SizesFragment();
+				break;
+			case DrawerPositions.SSHKEYS_FRAGMENT_POSITION:
+				fragment = new SSHKeyFragment();
+				break;
+		}
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 

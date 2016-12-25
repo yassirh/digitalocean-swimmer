@@ -8,6 +8,7 @@
         <item>Claves SSH</item>
         <item>Zonas</item>
         <item>Tamaños</item>
+        <item>Floating IPs</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">Nunca (manualente)</item>

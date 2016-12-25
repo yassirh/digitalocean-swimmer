@@ -8,6 +8,7 @@
         <item>chaves SSH</item>
         <item>Regiões</item>
         <item>Tamanhos</item>
+        <item>Floating IPs</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">Nunca (atualizar manualmente)</item>

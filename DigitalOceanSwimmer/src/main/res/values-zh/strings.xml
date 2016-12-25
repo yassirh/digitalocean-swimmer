@@ -8,6 +8,7 @@
         <item>SSH金鑰</item>
         <item>主機地區</item>
         <item>主機規格</item>
+        <item>Floating IPs</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">從不 (手動同步)</item>

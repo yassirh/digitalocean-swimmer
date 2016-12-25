@@ -8,6 +8,7 @@
         <item>SSH 鍵</item>
         <item>リージョン</item>
         <item>サイズ</item>
+        <item>Floating IPs</item>
     </string-array>
     <string-array name="pref_sync_frequency_entries">
         <item name="0">しない (手動で更新)</item>
