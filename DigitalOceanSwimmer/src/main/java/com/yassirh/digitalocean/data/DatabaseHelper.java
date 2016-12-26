@@ -8,7 +8,7 @@ import com.yassirh.digitalocean.utils.MyApplication;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
 	private static final String DATABASE_NAME = "digital_ocean";
 	
 	private TableHelper imageTable = new ImageTable();
@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper sshKeyTable = new SSHKeyTable();
 	private TableHelper accountTable = new AccountTable();
 	private TableHelper networkTable = new NetworkTable();
+	private TableHelper floatingIPTable = new FloatingIPTable();
 	
 	static DatabaseHelper sDatabaseHelper;
     private Context context;
@@ -62,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(sshKeyTable.getCreateSql());
 		db.execSQL(accountTable.getCreateSql());
 		db.execSQL(networkTable.getCreateSql());
+		db.execSQL(floatingIPTable.getCreateSql());
 	}
 
 	@Override
@@ -78,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(recordTable.getDropSql());
         db.execSQL(sshKeyTable.getDropSql());
         db.execSQL(networkTable.getDropSql());
+		db.execSQL(floatingIPTable.getDropSql());
 
         db.execSQL(imageTable.getCreateSql());
         db.execSQL(regionTable.getCreateSql());
@@ -87,6 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(recordTable.getCreateSql());
         db.execSQL(sshKeyTable.getCreateSql());
         db.execSQL(networkTable.getCreateSql());
+		db.execSQL(floatingIPTable.getCreateSql());
 	}
 
 

@@ -10,6 +10,7 @@ import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
+import com.yassirh.digitalocean.service.FloatingIPService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
@@ -44,6 +45,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		
 		SizeService sizeService = new SizeService(context);
 		sizeService.getAllSizesFromAPI(false);
+
+		FloatingIPService floatingIPService = new FloatingIPService(context);
+		floatingIPService.getAllFromAPI(false);
 
 		// 3 days until access token expires 
 		if(currentAccount.getExpiresIn().getTime() - new Date().getTime() < 259200000){

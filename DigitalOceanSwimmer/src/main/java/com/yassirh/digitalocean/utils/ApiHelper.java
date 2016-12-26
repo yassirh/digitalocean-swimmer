@@ -15,6 +15,7 @@ import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.service.DomainService;
 import com.yassirh.digitalocean.service.DropletService;
+import com.yassirh.digitalocean.service.FloatingIPService;
 import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
@@ -226,9 +227,13 @@ public class ApiHelper {
 		SizeService sizeService = new SizeService(context);
 		sizeService.deleteAll();
 		sizeService.getAllSizesFromAPI(true);
+
+		FloatingIPService floatingIPService = new FloatingIPService(context);
+		floatingIPService.deleteAll();
+		floatingIPService.getAllFromAPI(true);
 	}
 
-	static Toast toast;
+	private static Toast toast;
 	public static void showAccessDenied() {
 		if(toast == null){
 			toast = Toast.makeText(MyApplication.getAppContext(), R.string.access_denied_message, Toast.LENGTH_SHORT);
