@@ -10,8 +10,10 @@ import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.FloatingIPDao;
 import com.yassirh.digitalocean.data.ImageDao;
 import com.yassirh.digitalocean.model.Account;
+import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.model.FloatingIP;
 import com.yassirh.digitalocean.model.Image;
+import com.yassirh.digitalocean.model.Region;
 import com.yassirh.digitalocean.model.Size;
 import com.yassirh.digitalocean.utils.ApiHelper;
 
@@ -90,6 +92,8 @@ public class FloatingIPService {
             throws JSONException {
         FloatingIP floatingIP = new FloatingIP();
         floatingIP.setIp(ipJSONObject.getString("ip"));
+        Region region = RegionService.jsonObjectToRegion(ipJSONObject.getJSONObject("region"));
+        floatingIP.setRegion(region);
         return floatingIP;
     }
 
