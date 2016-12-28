@@ -47,8 +47,13 @@ public class FloatingIPAdapter extends BaseAdapter {
         final FloatingIP floatingIP = data.get(position);
 
         TextView ipTextView = (TextView) vi.findViewById(R.id.ipTextView);
-
-        ipTextView.setText(floatingIP.getIp());
+        TextView regionTextView = (TextView) vi.findViewById(R.id.regionTextView);
+        String droplet = "";
+        if(floatingIP.getDroplet() != null){
+            droplet = String.format("(%s)", floatingIP.getDroplet().getName());
+        }
+        ipTextView.setText(String.format("%s %s", floatingIP.getIp(), droplet));
+        regionTextView.setText(floatingIP.getRegion().getName());
 
         return vi;
     }

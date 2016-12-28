@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 import com.yassirh.digitalocean.data.DatabaseHelper;
 import com.yassirh.digitalocean.data.FloatingIPDao;
 import com.yassirh.digitalocean.data.ImageDao;
@@ -94,6 +95,10 @@ public class FloatingIPService {
         floatingIP.setIp(ipJSONObject.getString("ip"));
         Region region = RegionService.jsonObjectToRegion(ipJSONObject.getJSONObject("region"));
         floatingIP.setRegion(region);
+        if(!ipJSONObject.isNull("droplet")) {
+            Droplet droplet = DropletService.jsonObjectToDroplet(ipJSONObject.getJSONObject("droplet"));
+            floatingIP.setDroplet(droplet);
+        }
         return floatingIP;
     }
 
