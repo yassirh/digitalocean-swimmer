@@ -33,6 +33,7 @@ public class FloatingIPDao extends SqlDao<FloatingIP> {
 
 	public FloatingIP newInstance(Cursor c) {
 		FloatingIP floatingIP = new FloatingIP();
+		floatingIP.setId(c.getLong(c.getColumnIndex((FloatingIPTable.ID))));
 		floatingIP.setIp(c.getString(c.getColumnIndex(FloatingIPTable.IP_ADDRESS)));
 		Region region = new RegionDao(databaseHelper).findByProperty(RegionTable.REGION_SLUG, c.getString(c.getColumnIndex(FloatingIPTable.REGION_SLUG)));
 		floatingIP.setRegion(region);

@@ -226,4 +226,5 @@
     <string name="delete">Delete</string>
     <string name="deassign">Deassign</string>
     <string name="assign">Assign</string>
+    <string name="no_floating_ips">No floating ips</string>
 </resources>

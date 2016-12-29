@@ -1,9 +1,18 @@
 package com.yassirh.digitalocean.model;
 
 public class FloatingIP {
+    private long id;
     private String ip;
     private Region region;
     private Droplet droplet;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getIp() {
         return ip;

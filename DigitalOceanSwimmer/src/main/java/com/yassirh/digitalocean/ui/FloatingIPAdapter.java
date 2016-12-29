@@ -36,7 +36,7 @@ public class FloatingIPAdapter extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-        return (long) position;
+        return data.get(position).getId();
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {

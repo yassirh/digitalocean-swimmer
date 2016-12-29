@@ -1,6 +1,8 @@
 package com.yassirh.digitalocean.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -17,12 +19,11 @@ import android.widget.ListView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.FloatingIP;
-import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.FloatingIPService;
 
 import java.util.List;
 
-public class FloatingIPFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
+public class FloatingIPFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener {
 
     private FloatingIPService floatingIPService;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -40,7 +41,7 @@ public class FloatingIPFragment extends ListFragment implements Updatable, Swipe
                              Bundle savedInstanceState) {
         floatingIPService = new FloatingIPService(this.getActivity());
         update(this.getActivity());
-        View layout = inflater.inflate(R.layout.fragment_sizes, container, false);
+        View layout = inflater.inflate(R.layout.fragment_ips, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_bright,
@@ -63,7 +64,6 @@ public class FloatingIPFragment extends ListFragment implements Updatable, Swipe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final ListView listView = getListView();
-        listView.setOnItemClickListener(this);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -83,6 +83,34 @@ public class FloatingIPFragment extends ListFragment implements Updatable, Swipe
             }
         });
         registerForContextMenu(listView);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                alertDialog.setTitle("Delete Floating IP");
+                alertDialog.setMessage(R.string.are_you_sure);
+                alertDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        floatingIPService.delete(floatingIP.getIp());
+                    }
+                });
+                alertDialog.show();
+                break;
+        }
+        return true;
     }
 
     @Override

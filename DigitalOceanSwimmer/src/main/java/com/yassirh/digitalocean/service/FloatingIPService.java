@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -122,6 +123,33 @@ public class FloatingIPService {
     public List<FloatingIP> getAll() {
         FloatingIPDao floatingIPDao = new FloatingIPDao(DatabaseHelper.getInstance(context));
         return floatingIPDao.getAll(null);
+    }
+
+    public void delete(String ip) {
+        Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if(currentAccount == null){
+            return;
+        }
+
+        String url = String.format(Locale.US,"%s/floating_ips/%s", ApiHelper.API_URL, ip);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization", String.format("Bearer %s", currentAccount.getToken()));
+        client.delete(url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                requiresRefresh();
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                if(statusCode == 401){
+                    ApiHelper.showAccessDenied();
+                }
+            }
+
+        });
     }
 
     public boolean isRefreshing() {
