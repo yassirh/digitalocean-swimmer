@@ -37,6 +37,11 @@ public class FloatingIPService {
         this.context = context;
     }
 
+    public FloatingIP findById(long id) {
+        FloatingIPDao floatingIPDao = new FloatingIPDao(DatabaseHelper.getInstance(context));
+        return floatingIPDao.findById(id);
+    }
+
     public void getAllFromAPI(boolean showProgress) {
         Account currentAccount = ApiHelper.getCurrentAccount(context);
         if(currentAccount == null){

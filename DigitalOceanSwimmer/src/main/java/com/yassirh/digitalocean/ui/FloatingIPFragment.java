@@ -5,20 +5,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.FloatingIP;
+import com.yassirh.digitalocean.service.DropletService;
 import com.yassirh.digitalocean.service.FloatingIPService;
 
 import java.util.List;
 
-public class FloatingIPFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener{
+public class FloatingIPFragment extends ListFragment implements Updatable, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
 
     private FloatingIPService floatingIPService;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private FloatingIP floatingIP;
     private Handler handler = new Handler();
 
 
@@ -40,6 +48,41 @@ public class FloatingIPFragment extends ListFragment implements Updatable, Swipe
                 R.color.orange_light,
                 R.color.red_light);
         return layout;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        floatingIP = new FloatingIPService(getActivity()).findById(info.id);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.floating_ip_context, menu);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final ListView listView = getListView();
+        listView.setOnItemClickListener(this);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(listView.getChildCount() > 0){
+                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                swipeRefreshLayout.setEnabled(enable);
+            }
+        });
+        registerForContextMenu(listView);
     }
 
     @Override

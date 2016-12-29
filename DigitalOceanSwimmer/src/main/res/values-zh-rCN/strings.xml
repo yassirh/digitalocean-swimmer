@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">这是不可逆转的。我们将销毁你的快照</string>
     <string name="title_image_rename">重命名快照</string>
     <string name="are_you_sure">你确定么？</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

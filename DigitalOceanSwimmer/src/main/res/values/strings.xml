@@ -225,4 +225,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="copy_ip">Copy IP</string>
     <string name="ip_copied">IP address copied</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

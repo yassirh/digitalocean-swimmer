@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">To jest nieodwracalne. Zniszczymy Twój zrzut ekranu</string>
     <string name="title_image_rename">Zmień nazwę zrzutu ekranu</string>
     <string name="are_you_sure">Jesteś pewny?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

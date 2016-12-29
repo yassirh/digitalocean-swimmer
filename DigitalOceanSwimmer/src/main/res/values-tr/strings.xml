@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">Bu onarılamaz, anlık görüntünüz yok edilecek.</string>
     <string name="title_image_rename">Anlık görüntüyü yeniden adlandır</string>
     <string name="are_you_sure">Emin misiniz?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

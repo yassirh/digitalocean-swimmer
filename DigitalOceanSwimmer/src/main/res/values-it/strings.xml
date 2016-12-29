@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">Operazione irreversibile. Distruggeremo il tuo snapshot</string>
     <string name="title_image_rename">Rinomina snapshot</string>
     <string name="are_you_sure">Sei sicuro?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

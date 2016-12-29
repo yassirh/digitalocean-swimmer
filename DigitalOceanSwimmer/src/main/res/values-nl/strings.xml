@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">Dit is onherstelbaar. We vernietigen uw snapshot</string>
     <string name="title_image_rename">Snapshot hernoemen</string>
     <string name="are_you_sure">Weet je zeker dat je dit wilt doen?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

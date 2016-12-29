@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">C\'est irréversible. Nous détruirons votre capture instantanée</string>
     <string name="title_image_rename">Renommer la capture instantanée</string>
     <string name="are_you_sure">Êtes-vous sûr?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>

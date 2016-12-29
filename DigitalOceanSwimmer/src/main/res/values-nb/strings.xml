@@ -223,4 +223,7 @@
     <string name="destroy_image_alert">Ingen vei tilbake. Vi vil ødelegge ditt øyeblikksbilde</string>
     <string name="title_image_rename">Endre øyeblikksbilde</string>
     <string name="are_you_sure">Er du sikker?</string>
+    <string name="delete">Delete</string>
+    <string name="deassign">Deassign</string>
+    <string name="assign">Assign</string>
 </resources>
