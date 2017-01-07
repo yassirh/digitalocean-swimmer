@@ -8,5 +8,5 @@
     <color name="accent_blue">#1B7FC2</color>
     <color name="primary_dark_blue">#1B7FC2</color>
     <color name="image_active">#0080ff</color>
-    <color name="image_unactive">#f1f1f1</color>
+    <color name="image_unactive">#b3b2b2</color>
 </resources>
