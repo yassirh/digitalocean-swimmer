@@ -146,10 +146,7 @@ public class ApiHelper {
         else if(distribution.equalsIgnoreCase("Fedora")){
         	return status.equals("active") ? R.drawable.fedora_active : R.drawable.fedora;
         }
-        else if(distribution.equalsIgnoreCase("Arch Linux")){
-        	return status.equals("active") ? R.drawable.arch_linux_active : R.drawable.arch_linux;
-        }		
-        else if(distribution.equalsIgnoreCase("CoreOS")){
+       	else if(distribution.equalsIgnoreCase("CoreOS")){
         	return status.equals("active") ? R.drawable.coreos_active : R.drawable.coreos;
         }
         else if(distribution.equalsIgnoreCase("FreeBSD")){
