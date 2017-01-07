@@ -7,6 +7,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
@@ -126,6 +127,9 @@ public class ApiHelper {
         else if(image.contains("ownCloud")){
             return status.equals("active") ? R.drawable.owncloud_active : R.drawable.owncloud;
         }
+		else if(image.contains("Ruby on Rails")){
+			return status.equals("active") ? R.drawable.ruby_on_rails_active : R.drawable.ruby_on_rails;
+		}
         return getDistributionLogo(distribution, status);
     }
 
