@@ -136,6 +136,12 @@ public class ApiHelper {
 		else if(image.contains("Discourse")){
 			return status.equals("active") ? R.drawable.discourse_active : R.drawable.discourse;
 		}
+		else if(image.contains("Drone")){
+			return status.equals("active") ? R.drawable.drone_active : R.drawable.drone;
+		}
+		else if(image.contains("ELK")){
+			return status.equals("active") ? R.drawable.elk_active : R.drawable.elk;
+		}
         return getDistributionLogo(distribution, status);
     }
 
