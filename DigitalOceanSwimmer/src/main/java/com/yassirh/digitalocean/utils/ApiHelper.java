@@ -130,6 +130,12 @@ public class ApiHelper {
 		else if(image.contains("Ruby on Rails")){
 			return status.equals("active") ? R.drawable.ruby_on_rails_active : R.drawable.ruby_on_rails;
 		}
+		else if(image.contains("Cassandra")){
+			return status.equals("active") ? R.drawable.cassandra_active : R.drawable.cassandra;
+		}
+		else if(image.contains("Discourse")){
+			return status.equals("active") ? R.drawable.discourse_active : R.drawable.discourse;
+		}
         return getDistributionLogo(distribution, status);
     }
 
