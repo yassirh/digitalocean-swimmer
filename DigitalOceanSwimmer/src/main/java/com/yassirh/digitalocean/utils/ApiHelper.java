@@ -142,6 +142,12 @@ public class ApiHelper {
 		else if(image.contains("ELK")){
 			return status.equals("active") ? R.drawable.elk_active : R.drawable.elk;
 		}
+		else if(image.contains("Elixir")){
+			return status.equals("active") ? R.drawable.elixir_active : R.drawable.elixir;
+		}
+		else if(image.contains("Horizon")){
+			return status.equals("active") ? R.drawable.horizon_active : R.drawable.horizon;
+		}
         return getDistributionLogo(distribution, status);
     }
 
