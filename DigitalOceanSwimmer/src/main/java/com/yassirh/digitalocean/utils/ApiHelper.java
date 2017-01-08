@@ -148,6 +148,15 @@ public class ApiHelper {
 		else if(image.contains("Horizon")){
 			return status.equals("active") ? R.drawable.horizon_active : R.drawable.horizon;
 		}
+		else if(image.contains("MediaWiki")){
+			return status.equals("active") ? R.drawable.mediawiki_active : R.drawable.mediawiki;
+		}
+		else if(image.contains("MongoDB")){
+			return status.equals("active") ? R.drawable.mongodb_active : R.drawable.mongodb;
+		}
+		else if(image.contains("Mumble")){
+			return status.equals("active") ? R.drawable.mumble_active : R.drawable.mumble;
+		}
         return getDistributionLogo(distribution, status);
     }
 
