@@ -18,6 +18,7 @@ android {
         applicationId "com.yassirh.digitalocean"
         minSdkVersion 9
         targetSdkVersion 25
+        vectorDrawables.useSupportLibrary = true
     }
     if (System.getenv("TRAVIS")) {
         signingConfigs {
