@@ -127,10 +127,10 @@ public class ApiHelper {
         else if(image.contains("ownCloud")){
             return status.equals("active") ? R.drawable.owncloud_active : R.drawable.owncloud;
         }
-		else if(image.contains("Ruby on Rails")){
+		else if(image.contains("Ruby on Rails") || image.contains("Ruby-on-Rails")){
 			return status.equals("active") ? R.drawable.ruby_on_rails_active : R.drawable.ruby_on_rails;
 		}
-		else if(image.contains("Cassandra")){
+		else if(image.contains("Cassandra") || image.contains("cassandra")){
 			return status.equals("active") ? R.drawable.cassandra_active : R.drawable.cassandra;
 		}
 		else if(image.contains("Discourse")){
