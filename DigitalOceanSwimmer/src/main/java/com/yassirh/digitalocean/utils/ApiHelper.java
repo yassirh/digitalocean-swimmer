@@ -82,10 +82,10 @@ public class ApiHelper {
 	}
 
     public static int getImageLogo(String image, String distribution, String status){
-        if(image.contains("WordPress")){
+        if(image.contains("WordPress") || image.contains("Wordpress")){
             return status.equals("active") ? R.drawable.wordpress_active : R.drawable.wordpress;
         }
-        else if(image.contains("node")){
+        else if(image.contains("NodeJS")){
             return status.equals("active") ? R.drawable.nodejs_active : R.drawable.nodejs;
         }
         else if(image.contains("Dokku")){
@@ -102,9 +102,6 @@ public class ApiHelper {
         }
         else if(image.contains("Ghost")){
             return status.equals("active") ? R.drawable.ghost_active : R.drawable.ghost;
-        }
-        else if(image.contains("Ruby on Rails")){
-            return status.equals("active") ? R.drawable.ruby_on_rails_active : R.drawable.ruby_on_rails;
         }
         else if(image.contains("LAMP")){
             return status.equals("active") ? R.drawable.lamp_stack_active : R.drawable.lamp_stack;
@@ -156,6 +153,12 @@ public class ApiHelper {
 		}
 		else if(image.contains("Mumble")){
 			return status.equals("active") ? R.drawable.mumble_active : R.drawable.mumble;
+		}
+		else if(image.contains("PHPMyAdmin")){
+			return status.equals("active") ? R.drawable.phpmyadmin_active : R.drawable.phpmyadmin;
+		}
+		else if(image.contains("Redis")){
+			return status.equals("active") ? R.drawable.redis_active : R.drawable.redis;
 		}
         return getDistributionLogo(distribution, status);
     }
