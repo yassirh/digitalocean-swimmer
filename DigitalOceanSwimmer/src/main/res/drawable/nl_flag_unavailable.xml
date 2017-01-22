@@ -6,12 +6,13 @@
     android:viewportHeight="42">
 
     <path
-        android:fillColor="#AE1C28"
+        android:fillColor="@color/image_unactive"
+        android:fillAlpha=".7"
         android:pathData="M 0,0 H 60 V 14 H 0 Z" />
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M 0,14 H 60 V 28 H 0 Z" />
     <path
-        android:fillColor="#21468B"
+        android:fillColor="@color/image_unactive"
         android:pathData="M 0,28 H 60 V 42 H 0 Z" />
 </vector>
