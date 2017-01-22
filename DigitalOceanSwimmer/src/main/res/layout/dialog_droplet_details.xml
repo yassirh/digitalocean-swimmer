@@ -47,7 +47,6 @@
            	android:id="@+id/flagImageView"
 	        android:layout_width="54dp"
 	        android:layout_height="wrap_content"
-	        android:src="@drawable/us_flag"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true" />
 
