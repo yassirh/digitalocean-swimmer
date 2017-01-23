@@ -12,10 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements Updatable {
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
+    private FloatingActionButton addFAB;
+    private boolean addFABOpened = false;
 
     private String[] navigationTitles;
 
@@ -115,7 +119,10 @@ public class MainActivity extends AppCompatActivity implements Updatable {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ActionBar supportActionBar = getSupportActionBar();
+            if(supportActionBar != null) {
+                supportActionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
         navigationTitles = getResources().getStringArray(R.array.main_navigation_array);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,7 +133,32 @@ public class MainActivity extends AppCompatActivity implements Updatable {
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(drawerToggle);
+
+        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
+
+        final FloatingActionButton dropletFAB = (FloatingActionButton) findViewById(R.id.dropletFAB);
+        dropletFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewDropletActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        addFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(addFABOpened){
+                    addFAB.setImageResource(R.drawable.plus_sign);
+                    dropletFAB.hide();
+                } else {
+                    addFAB.setImageResource(R.drawable.cross);
+                    dropletFAB.show();
+                }
+                addFABOpened = !addFABOpened;
+            }
+        });
 
         AccountService accountService = new AccountService(this);
         if (!accountService.hasAccounts()) {
@@ -334,7 +366,10 @@ public class MainActivity extends AppCompatActivity implements Updatable {
 
     @Override
     public void setTitle(CharSequence title) {
-        getSupportActionBar().setTitle(title);
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null){
+            supportActionBar.setTitle(title);
+        }
     }
 
     @Override
