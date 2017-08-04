@@ -3,7 +3,7 @@
 
 # DigitalOcean Swimmer App
 
-[![Google Play](https://cloud.githubusercontent.com/assets/16354543/11904684/0667026e-a5c2-11e5-9f53-4614cc53e01f.png)](https://play.google.com/store/apps/details?id=com.yassirh.digitalocean)
+[![Google Play](https://cloud.githubusercontent.com/assets/23243656/19977341/8d6d4be6-a1f3-11e6-9f10-bf53a4e43bf1.png)](https://play.google.com/store/apps/details?id=com.yassirh.digitalocean)
 
 # Description
 
