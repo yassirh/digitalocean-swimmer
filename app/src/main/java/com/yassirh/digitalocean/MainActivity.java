@@ -1,5 +1,7 @@
-package yassirh.com.digitalocean;
+package com.yassirh.digitalocean;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private long lastBackPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,14 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (lastBackPressed + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+            } else {
+                View view = findViewById(android.R.id.content);
+                Snackbar.make(view, R.string.message_press_again_to_exit, Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+            lastBackPressed = System.currentTimeMillis();
         }
     }
 
@@ -90,8 +101,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_about){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://yassirh.com/digitalocean_swimmer/"));
+            startActivity(browserIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
