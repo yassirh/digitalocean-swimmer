@@ -21,36 +21,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private TableHelper accountTable = new AccountTable();
 	private TableHelper networkTable = new NetworkTable();
 	private TableHelper floatingIPTable = new FloatingIPTable();
-	
-	static DatabaseHelper sDatabaseHelper;
+
     private Context context;
 	
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 	}
-	
-	
-	public static DatabaseHelper getInstance(Context context) {
-		if (sDatabaseHelper == null) {
-			sDatabaseHelper = new DatabaseHelper(context);
-		}
-		return sDatabaseHelper;
-	}
-	
-	public static SQLiteDatabase getWritableDatabaseInstance() {
-		if (sDatabaseHelper == null) {
-            sDatabaseHelper = new DatabaseHelper(MyApplication.getAppContext());
-		}
-		return sDatabaseHelper.getWritableDatabase();
-	}
-	
-	/*public static SQLiteDatabase getReadableDatabaseInstance() {
-		if (sDatabaseHelper == null) {
-            sDatabaseHelper = new DatabaseHelper(MyApplication.getAppContext());
-		}
-		return sDatabaseHelper.getReadableDatabase();
-	}*/
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {

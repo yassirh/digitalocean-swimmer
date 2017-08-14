@@ -14,10 +14,10 @@ public abstract class SqlDao<T> {
 	protected SQLiteDatabase db;
 	
 	public SqlDao(){
-		db = DatabaseHelper.getWritableDatabaseInstance();
 	}
 	
 	public List<T> getAll(String orderBy) {
+		if(db == null) db = getDatabaseHelper().getWritableDatabase();
 		List<T> collection = new ArrayList<>();
 		Cursor cursor = db.query(getTableHelper().TABLE_NAME,
 				getTableHelper().getAllColumns(), null, null, orderBy, null, null);

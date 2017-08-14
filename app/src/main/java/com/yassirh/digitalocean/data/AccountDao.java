@@ -13,7 +13,6 @@ public class AccountDao extends SqlDao<Account> {
 	private DatabaseHelper mDatabaseHelper;
 
 	public AccountDao(DatabaseHelper databaseHelper) {
-		super();
 		this.mDatabaseHelper = databaseHelper;
 	}
 
