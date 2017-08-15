@@ -43,6 +43,7 @@ public class AddAccountActivity extends AppCompatActivity {
                 accountNameEditText.setText(uri.getQueryParameter("account_name"));
                 refreshToken = uri.getQueryParameter("refresh_token");
                 expiresIn.add(Calendar.SECOND, Integer.parseInt(uri.getQueryParameter("expires_in")));
+                // TODO : assign the email value
             }
         } catch (Exception ignored) {
         }

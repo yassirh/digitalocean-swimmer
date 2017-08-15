@@ -31,12 +31,12 @@ public class SwitchAccountDialogFragment extends DialogFragment implements Adapt
         View view = inflater.inflate(R.layout.dialog_switch_account, container);
         accounts = new ArrayList<Account>();
         getDialog().setTitle(getString(R.string.switch_account));
-        accounts.add(new Account(ADD_EXISTING_ACCOUNT_ID,getString(R.string.add_existing_account),"","",null,false));
-        accounts.add(new Account(CREATE_NEW_ACCOUNT_ID,getString(R.string.create_new_account),"","",null,false));
+        accounts.add(new Account(ADD_EXISTING_ACCOUNT_ID, getString(R.string.add_existing_account), "", "", "", null, false));
+        accounts.add(new Account(CREATE_NEW_ACCOUNT_ID, getString(R.string.create_new_account), "", "", "", null, false));
         accounts.addAll(ApiHelper.getAllAccounts(getActivity()));
 
         AccountAdapter accountAdapter = new AccountAdapter(getActivity(), accounts);
-        ListView accountsListView = (ListView)view.findViewById(R.id.accountsListView);
+        ListView accountsListView = (ListView) view.findViewById(R.id.accountsListView);
         accountsListView.setAdapter(accountAdapter);
         accountsListView.setOnItemClickListener(this);
 
@@ -46,16 +46,16 @@ public class SwitchAccountDialogFragment extends DialogFragment implements Adapt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(id == CREATE_NEW_ACCOUNT_ID){
+        if (id == CREATE_NEW_ACCOUNT_ID) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.digitalocean.com/?refcode=8ebfd919c850"));
             startActivity(browserIntent);
-        }else if(id == ADD_EXISTING_ACCOUNT_ID){
+        } else if (id == ADD_EXISTING_ACCOUNT_ID) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cloud.digitalocean.com/v1/oauth/authorize?" +
                     "client_id=76d93180752d757185733a318cec4af9c2f4c681ac6264924294facab3ea54ff&" +
                     "redirect_uri=https://yassirh.com/digitalocean_swimmer/generate_token.php" +
                     "&response_type=code&scope=read write"));
             startActivity(intent);
-        }else{
+        } else {
             ApiHelper.selectAccount(getActivity(), accounts.get(position));
         }
         this.dismiss();

@@ -15,8 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.service.AccountService;
+import com.yassirh.digitalocean.utils.ApiHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity
             SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
             switchAccountDialogFragment.show(fm, "switch_account");
         }
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView accountNameTextView = (TextView)headerView.findViewById(R.id.accountNameTextView);
+        TextView accountEmailTextView = (TextView)headerView.findViewById(R.id.accountEmailTextView);
+        Account currentAccount = ApiHelper.getCurrentAccount(this);
+        accountNameTextView.setText(currentAccount.getName());
+        accountEmailTextView.setText(currentAccount.getEmail());
     }
 
     @Override
