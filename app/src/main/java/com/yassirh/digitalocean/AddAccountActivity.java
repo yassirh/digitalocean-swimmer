@@ -22,7 +22,7 @@ public class AddAccountActivity extends AppCompatActivity {
     private EditText accountNameEditText;
     private EditText tokenEditText;
     private Calendar expiresIn = Calendar.getInstance();
-    String refreshToken = "";
+    String refreshToken = "", email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class AddAccountActivity extends AppCompatActivity {
                 accountNameEditText.setText(uri.getQueryParameter("account_name"));
                 refreshToken = uri.getQueryParameter("refresh_token");
                 expiresIn.add(Calendar.SECOND, Integer.parseInt(uri.getQueryParameter("expires_in")));
-                // TODO : assign the email value
+                email = uri.getQueryParameter("email");
             }
         } catch (Exception ignored) {
         }
@@ -57,6 +57,7 @@ public class AddAccountActivity extends AppCompatActivity {
         if (uri != null && uri.toString().startsWith("callback://com.yassirh.digitalocean")) {
             tokenEditText.setText(uri.getQueryParameter("code"));
             accountNameEditText.setText(uri.getQueryParameter("account_name"));
+            email = uri.getQueryParameter("email");
         }
     }
 
@@ -80,6 +81,7 @@ public class AddAccountActivity extends AppCompatActivity {
             account.setToken(tokenEditText.getText().toString());
             account.setExpiresIn(expiresIn.getTime());
             account.setRefreshToken(refreshToken);
+            account.setEmail(email);
             account.setSelected(true);
             ApiHelper.selectAccount(this, account);
             startActivity(new Intent(this, MainActivity.class));

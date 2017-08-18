@@ -29,7 +29,7 @@ public class SwitchAccountDialogFragment extends DialogFragment implements Adapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_switch_account, container);
-        accounts = new ArrayList<Account>();
+        accounts = new ArrayList<>();
         getDialog().setTitle(getString(R.string.switch_account));
         accounts.add(new Account(ADD_EXISTING_ACCOUNT_ID, getString(R.string.add_existing_account), "", "", "", null, false));
         accounts.add(new Account(CREATE_NEW_ACCOUNT_ID, getString(R.string.create_new_account), "", "", "", null, false));

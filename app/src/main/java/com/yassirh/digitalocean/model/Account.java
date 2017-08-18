@@ -10,7 +10,7 @@ public class Account {
     private String refreshToken;
     private Date expiresIn;
     private boolean selected;
-    private int email;
+    private String email;
 
     public Account() {
     }
@@ -19,6 +19,7 @@ public class Account {
                    Date expiresIn, boolean selected) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.token = token;
         this.expiresIn = expiresIn;
         this.refreshToken = refreshToken;
@@ -73,11 +74,11 @@ public class Account {
         this.expiresIn = expiresIn;
     }
 
-    public int getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(int email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 }

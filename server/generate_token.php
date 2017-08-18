@@ -19,5 +19,5 @@ curl_close($ch);
 
 $json = json_decode($result, TRUE);
 
-header(sprintf("Location:callback://com.yassirh.digitalocean?code=%s&account_name=%s&refresh_token=%s&expires_in=%s",
-			$json["access_token"], rawurlencode($json["info"]["name"]), $json["refresh_token"], $json["expires_in"]));
+header(sprintf("Location:callback://com.yassirh.digitalocean?code=%s&account_name=%s&refresh_token=%s&expires_in=%s&email=%s&uuid=%s",
+                        $json["access_token"], rawurlencode($json["info"]["name"]), $json["refresh_token"], $json["expires_in"], $json["info"]["email"], $json["info"]["uuid"]));
