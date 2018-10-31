@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_droplets"
+            android:icon="@drawable/droplets"
+            android:title="@string/droplets" />
+        <item
+            android:id="@+id/nav_domains"
+            android:icon="@drawable/domains"
+            android:title="@string/domains" />
+        <item
+            android:id="@+id/nav_images"
+            android:icon="@drawable/images"
+            android:title="@string/images" />
+        <item
+            android:id="@+id/nav_sshkeys"
+            android:icon="@drawable/keys"
+            android:title="@string/ssh_keys" />
+        <item
+            android:id="@+id/nav_regions"
+            android:icon="@drawable/regions"
+            android:title="@string/regions" />
+        <item
+            android:id="@+id/nav_sizes"
+            android:icon="@drawable/sizes"
+            android:title="@string/sizes" />
+        <item
+            android:id="@+id/nav_floatingips"
+            android:icon="@drawable/floating"
+            android:title="@string/floating_ips" />
+    </group>
+
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="@string/settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_info_outline"
+                android:title="@string/about" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,5 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/action_visit_domain" android:title="@string/visit_domain"/>
-    <item android:id="@+id/action_add_record" android:title="@string/add_record"/>
-    <item android:id="@+id/action_destroy" android:title="@string/destroy"/>
-</menu>

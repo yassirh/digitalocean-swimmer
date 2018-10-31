@@ -5,3 +5,7 @@ local.properties
 build/
 bin/
 gen/
+.DS_Store
+/build
+/captures
+.externalNativeBuild

@@ -1,4 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/action_edit" android:title="@string/edit_ssh_key"/>
-    <item android:id="@+id/action_destroy" android:title="@string/destroy"/>
-</menu>

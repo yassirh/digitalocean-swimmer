@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DO Swimmer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="droplets">Droplets</string>
+    <string name="domains">Domains</string>
+    <string name="images">Images</string>
+    <string name="ssh_keys">SSH keys</string>
+    <string name="regions">Regions</string>
+    <string name="sizes">Sizes</string>
+    <string name="floating_ips">Floating IPs</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="message_press_again_to_exit">Press back button again to exit!</string>
+    <string name="add_existing_account">Add existing account</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="switch_account">Switch account</string>
+    <string name="access_denied_message">Access denied!</string>
+    <string name="title_activity_add_account">Add Account</string>
+    <string name="account_name">Account name</string>
+    <string name="save_account">Save account</string>
+    <string name="token">Token</string>
+</resources>
