@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -27,9 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -50,15 +48,9 @@ import com.yassirh.digitalocean.utils.PreferencesHelper;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements Updatable {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Updatable {
 
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private FloatingActionButton addFAB;
-    private boolean addFABOpened = false;
-
-    private String[] navigationTitles;
 
     private long lastBackPressed;
     Fragment fragment = new Fragment();
@@ -74,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements Updatable {
     Thread t = new Thread(new Runnable() {
         @Override
         public void run() {
+            // FIXME : figure out a better way to do this
             for (; ; ) {
                 try {
                     Thread.sleep(1000);
@@ -116,49 +109,24 @@ public class MainActivity extends AppCompatActivity implements Updatable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
             ActionBar supportActionBar = getSupportActionBar();
-            if(supportActionBar != null) {
+            if (supportActionBar != null) {
                 supportActionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-        navigationTitles = getResources().getStringArray(R.array.main_navigation_array);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        drawerList.setAdapter(new NavigationDrawerAdapter(this, navigationTitles));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
-
-        final FloatingActionButton dropletFAB = (FloatingActionButton) findViewById(R.id.dropletFAB);
-        dropletFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NewDropletActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        addFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(addFABOpened){
-                    addFAB.setImageResource(R.drawable.plus_sign);
-                    dropletFAB.hide();
-                } else {
-                    addFAB.setImageResource(R.drawable.cross);
-                    dropletFAB.show();
-                }
-                addFABOpened = !addFABOpened;
-            }
-        });
 
         AccountService accountService = new AccountService(this);
         if (!accountService.hasAccounts()) {
@@ -170,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements Updatable {
         ActionService.trackActions(this);
 
         if (savedInstanceState == null) {
-            selectItem(0);
             update(this);
             t.start();
         }
@@ -273,8 +240,8 @@ public class MainActivity extends AppCompatActivity implements Updatable {
                 getResources().getString(R.string.create_domain);
                 builder.setView(view);
 
-                final EditText domainNameEditText = (EditText) view.findViewById(R.id.domainNameEditText);
-                final Spinner dropletSpinner = (Spinner) view.findViewById(R.id.dropletSpinner);
+                final EditText domainNameEditText = view.findViewById(R.id.domainNameEditText);
+                final Spinner dropletSpinner = view.findViewById(R.id.dropletSpinner);
                 dropletSpinner.setAdapter(new DropletAdapter(this, dropletService1.getAllDroplets()));
                 builder.setPositiveButton(R.string.ok, new OnClickListener() {
 
@@ -322,52 +289,55 @@ public class MainActivity extends AppCompatActivity implements Updatable {
         }
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            currentSelected = position;
-            selectItem(position);
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        Fragment fragment = null;
+
+        Class fragmentClass;
+
+        if (id == R.id.nav_droplets) {
+            this.setTitle("Droplets");
+            fragmentClass = DropletsFragment.class;
+        } else if (id == R.id.nav_domains) {
+            this.setTitle("Domains");
+            fragmentClass = DomainsFragment.class;
+        } else if (id == R.id.nav_images) {
+            this.setTitle("Images");
+            fragmentClass = ImagesFragment.class;
+        } else if (id == R.id.nav_sizes) {
+            this.setTitle("Size");
+            fragmentClass = SizesFragment.class;
+        } else if (id == R.id.nav_regions) {
+            this.setTitle("Regions");
+            fragmentClass = RegionsFragment.class;
+        } else {
+            fragmentClass = Fragment.class;
         }
-    }
 
-
-    private void selectItem(int position) {
-
-        switch (position) {
-            case DrawerPositions.DROPLETS_FRAGMENT_POSITION:
-                fragment = new DropletsFragment();
-                break;
-            case DrawerPositions.DOMAINS_FRAGMENT_POSITION:
-                fragment = new DomainsFragment();
-                break;
-            case DrawerPositions.IMAGES_FRAGMENT_POSITION:
-                fragment = new ImagesFragment();
-                break;
-            case DrawerPositions.REGIONS_FRAGMENT_POSITION:
-                fragment = new RegionsFragment();
-                break;
-            case DrawerPositions.SIZES_FRAGMENT_POSITION:
-                fragment = new SizesFragment();
-                break;
-            case DrawerPositions.SSHKEYS_FRAGMENT_POSITION:
-                fragment = new SSHKeyFragment();
-                break;
-            case DrawerPositions.FLOATING_IPS_POSITION:
-                fragment = new FloatingIPFragment();
-                break;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-        drawerList.setItemChecked(position, true);
-        setTitle(navigationTitles[position]);
-        drawerLayout.closeDrawer(drawerList);
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
+
 
     @Override
     public void setTitle(CharSequence title) {
         ActionBar supportActionBar = getSupportActionBar();
-        if(supportActionBar != null){
+        if (supportActionBar != null) {
             supportActionBar.setTitle(title);
         }
     }
@@ -375,14 +345,12 @@ public class MainActivity extends AppCompatActivity implements Updatable {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
-        selectItem(currentSelected);
         update(this);
     }
 

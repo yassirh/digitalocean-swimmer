@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Droplets">
+        <menu>
+            <item
+                android:id="@+id/nav_droplets"
+                android:checkable="true"
+                android:icon="@drawable/droplets"
+                android:title="Droplets" />
+        </menu>
+    </item>
+
+    <item android:title="Networking">
+        <menu>
+            <item
+                android:id="@+id/nav_domains"
+                android:checkable="true"
+                android:icon="@drawable/domains"
+                android:title="Domains" />
+            <item
+                android:id="@+id/nav_floatingips"
+                android:checkable="true"
+                android:icon="@drawable/floating"
+                android:title="Floating IPs" />
+            <item
+                android:id="@+id/nav_firewalls"
+                android:checkable="true"
+                android:icon="@drawable/domains"
+                android:title="Firewalls" />
+        </menu>
+    </item>
+
+    <item android:title="Security">
+        <menu>
+            <item
+                android:id="@+id/nav_certificates"
+                android:checkable="true"
+                android:icon="@drawable/keys"
+                android:title="Certificates" />
+            <item
+                android:id="@+id/nav_keys"
+                android:checkable="true"
+                android:icon="@drawable/keys"
+                android:title="SSH Keys" />
+        </menu>
+    </item>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_images"
+                android:checkable="true"
+                android:icon="@drawable/images"
+                android:title="Images" />
+            <item
+                android:id="@+id/nav_regions"
+                android:checkable="true"
+                android:icon="@drawable/regions"
+                android:title="Regions" />
+            <item
+                android:id="@+id/nav_sizes"
+                android:checkable="true"
+                android:icon="@drawable/sizes"
+                android:title="Sizes" />
+        </menu>
+    </item>
+</menu>
