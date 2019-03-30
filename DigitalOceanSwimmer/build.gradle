@@ -10,14 +10,14 @@ def manifestVersionName() {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.yassirh.digitalocean"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 28
         vectorDrawables.useSupportLibrary = true
     }
     if (System.getenv("TRAVIS")) {
@@ -60,7 +60,7 @@ android {
                         def outputFile = output.outputFile
                         def versionName = manifestVersionName()
                         if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                            output.outputFile = new File(props['apkOutputDir'], outputFile.name.replace('.apk', "-" + versionName + ".apk"))
+                            output.outputFileName = new File(props['apkOutputDir'], outputFile.name.replace('.apk', "-" + versionName + ".apk"))
                         }
                     }
                 }
@@ -78,8 +78,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.loopj.android:android-async-http:1.4.9'
-    compile "org.apache.httpcomponents:httpcore:4.3.2"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation "org.apache.httpcomponents:httpcore:4.3.2"
 }
