@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -126,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigateTo(R.id.nav_droplets);
 
 
         AccountService accountService = new AccountService(this);
@@ -294,24 +297,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        return navigateTo(id);
+    }
 
+    private boolean navigateTo(int menuId) {
         Fragment fragment = null;
 
         Class fragmentClass;
 
-        if (id == R.id.nav_droplets) {
+        if (menuId == R.id.nav_droplets) {
             this.setTitle("Droplets");
             fragmentClass = DropletsFragment.class;
-        } else if (id == R.id.nav_domains) {
+        } else if (menuId == R.id.nav_domains) {
             this.setTitle("Domains");
             fragmentClass = DomainsFragment.class;
-        } else if (id == R.id.nav_images) {
+        } else if (menuId == R.id.nav_images) {
             this.setTitle("Images");
             fragmentClass = ImagesFragment.class;
-        } else if (id == R.id.nav_sizes) {
+        } else if (menuId == R.id.nav_sizes) {
             this.setTitle("Size");
             fragmentClass = SizesFragment.class;
-        } else if (id == R.id.nav_regions) {
+        } else if (menuId == R.id.nav_regions) {
             this.setTitle("Regions");
             fragmentClass = RegionsFragment.class;
         } else {
@@ -357,7 +363,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void update(Context context) {
         try {
-            ((Updatable) fragment).update(context);
+            if (fragment instanceof Updatable) {
+                ((Updatable) fragment).update(context);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

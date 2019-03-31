@@ -23,13 +23,15 @@
             <item
                 android:id="@+id/nav_floatingips"
                 android:checkable="true"
+                android:enabled="false"
                 android:icon="@drawable/floating"
-                android:title="Floating IPs" />
+                android:title="Floating IPs (Coming Soon)" />
             <item
                 android:id="@+id/nav_firewalls"
                 android:checkable="true"
+                android:enabled="false"
                 android:icon="@drawable/domains"
-                android:title="Firewalls" />
+                android:title="Firewalls (Coming Soon)" />
         </menu>
     </item>
 
@@ -38,13 +40,31 @@
             <item
                 android:id="@+id/nav_certificates"
                 android:checkable="true"
+                android:enabled="false"
                 android:icon="@drawable/keys"
-                android:title="Certificates" />
+                android:title="Certificates (Coming Soon)" />
             <item
                 android:id="@+id/nav_keys"
                 android:checkable="true"
                 android:icon="@drawable/keys"
                 android:title="SSH Keys" />
+        </menu>
+    </item>
+
+    <item android:title="Storage">
+        <menu>
+            <item
+                android:id="@+id/nav_blockstorage"
+                android:checkable="true"
+                android:enabled="false"
+                android:icon="@drawable/keys"
+                android:title="Block storage (Coming Soon)" />
+            <item
+                android:id="@+id/nav_databases"
+                android:checkable="true"
+                android:enabled="false"
+                android:icon="@drawable/keys"
+                android:title="Databases (Coming Soon)" />
         </menu>
     </item>
 
