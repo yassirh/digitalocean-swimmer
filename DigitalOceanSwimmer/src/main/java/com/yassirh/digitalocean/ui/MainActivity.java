@@ -28,11 +28,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yassirh.digitalocean.R;
+import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
 import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.ActionService;
@@ -43,7 +46,9 @@ import com.yassirh.digitalocean.service.ImageService;
 import com.yassirh.digitalocean.service.RegionService;
 import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
+import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.AppRater;
+import com.yassirh.digitalocean.utils.MyApplication;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
 
@@ -130,13 +135,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigateTo(R.id.nav_droplets);
 
-
         AccountService accountService = new AccountService(this);
         if (!accountService.hasAccounts()) {
             FragmentManager fm = getSupportFragmentManager();
             SwitchAccountDialogFragment switchAccountDialogFragment = new SwitchAccountDialogFragment();
             switchAccountDialogFragment.show(fm, "switch_account");
         }
+
+        Account currentAccount = ApiHelper.getCurrentAccount(MyApplication.getAppContext());
+        TextView accountTextView = navigationView.getHeaderView(0).findViewById(R.id.accountTextView);
+        accountTextView.setText(currentAccount.getName());
+
 
         ActionService.trackActions(this);
 
@@ -357,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.syncState();
         update(this);
     }
 

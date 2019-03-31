@@ -30,8 +30,20 @@
                 android:id="@+id/nav_firewalls"
                 android:checkable="true"
                 android:enabled="false"
-                android:icon="@drawable/domains"
+                android:icon="@drawable/firewall"
                 android:title="Firewalls (Coming Soon)" />
+            <item
+                android:id="@+id/nav_cdns"
+                android:checkable="true"
+                android:enabled="false"
+                android:icon="@drawable/cdns"
+                android:title="CDNs (Coming Soon)" />
+            <item
+                android:id="@+id/nav_loadbalancers"
+                android:checkable="true"
+                android:enabled="false"
+                android:icon="@drawable/loadbalancers"
+                android:title="Load Balancers (Coming Soon)" />
         </menu>
     </item>
 
@@ -41,7 +53,7 @@
                 android:id="@+id/nav_certificates"
                 android:checkable="true"
                 android:enabled="false"
-                android:icon="@drawable/keys"
+                android:icon="@drawable/certificate"
                 android:title="Certificates (Coming Soon)" />
             <item
                 android:id="@+id/nav_keys"
@@ -57,13 +69,13 @@
                 android:id="@+id/nav_blockstorage"
                 android:checkable="true"
                 android:enabled="false"
-                android:icon="@drawable/keys"
+                android:icon="@drawable/blockstorage"
                 android:title="Block storage (Coming Soon)" />
             <item
                 android:id="@+id/nav_databases"
                 android:checkable="true"
                 android:enabled="false"
-                android:icon="@drawable/keys"
+                android:icon="@drawable/database"
                 android:title="Databases (Coming Soon)" />
         </menu>
     </item>

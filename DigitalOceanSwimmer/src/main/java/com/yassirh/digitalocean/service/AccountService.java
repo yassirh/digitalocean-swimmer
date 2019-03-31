@@ -19,27 +19,27 @@ import com.yassirh.digitalocean.utils.PreferencesHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 public class AccountService {
-	
-	private Context context;
-		
-	public AccountService(Context context) {
-		this.context = context;
-	}
-	
-	
-	public void getNewToken() {
-		final Account currentAccount = ApiHelper.getCurrentAccount(context);
-		if(currentAccount == null){
-			return;
-		}
-		
-		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(String.format(Locale.US, "https://yassirh.com/digitalocean_swimmer/generate_refresh_token.php?refresh_token=%s", currentAccount.getRefreshToken()), new AsyncHttpResponseHandler(){
+
+    private Context context;
+
+    public AccountService(Context context) {
+        this.context = context;
+    }
+
+    public void getNewToken() {
+        final Account currentAccount = ApiHelper.getCurrentAccount(context);
+        if (currentAccount == null) {
+            return;
+        }
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(String.format(Locale.US, "https://yassirh.com/digitalocean_swimmer/generate_refresh_token.php?refresh_token=%s", currentAccount.getRefreshToken()), new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
@@ -59,19 +59,19 @@ public class AccountService {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-				if(statusCode == 401){
-					ApiHelper.showAccessDenied();
-				}
-			}
-			
-		});
-	}
+                if (statusCode == 401) {
+                    ApiHelper.showAccessDenied();
+                }
+            }
 
-	public boolean hasAccounts() {
-		AccountDao accountDao = new AccountDao(DatabaseHelper.getInstance(context));
-		List<Account> accounts = accountDao.getAll(null);
-		return accounts.size() > 0;
-	}
+        });
+    }
+
+    public boolean hasAccounts() {
+        AccountDao accountDao = new AccountDao(DatabaseHelper.getInstance(context));
+        List<Account> accounts = accountDao.getAll(null);
+        return accounts.size() > 0;
+    }
 
     public void clearData() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(context);
