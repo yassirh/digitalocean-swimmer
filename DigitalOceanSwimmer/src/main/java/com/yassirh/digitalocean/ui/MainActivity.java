@@ -363,6 +363,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (menuId == R.id.nav_regions) {
             this.setTitle("Regions");
             fragmentClass = RegionsFragment.class;
+        } else if (menuId == R.id.nav_keys) {
+            this.setTitle("SSH Keys");
+            fragmentClass = SSHKeyFragment.class;
         } else {
             fragmentClass = Fragment.class;
         }
