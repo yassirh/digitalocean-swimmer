@@ -26,7 +26,6 @@ import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,7 +39,6 @@ import android.widget.Toast;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
-import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.ActionService;
 import com.yassirh.digitalocean.service.DomainService;
@@ -310,12 +308,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @TargetApi(Build.VERSION_CODES.P)
     private void displayBiometricPromptIfPossible() {
         if (BiometricUtils.isSdkVersionSupported()
+                && BiometricUtils.isBiometricsEnabled(this)
                 && BiometricUtils.isPermissionGranted(this)
                 && BiometricUtils.isFingerprintAvailable(this)
                 && BiometricUtils.isHardwareSupported(this)) {
             BiometricPrompt build = new BiometricPrompt.Builder(getApplicationContext())
-                    .setTitle("Fingerprint Authentication")
-                    .setDescription("Touch the fingerprint sensor.")
+                    .setTitle("Authentication")
                     .setNegativeButton("Cancel", getApplication().getMainExecutor(), new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DO Swimmer</string>
-    <string name="app_name_version" translatable="false">3.0.0</string>
+    <string name="app_name_version" translatable="false">3.0.1</string>
     <string-array name="main_navigation_array">
         <item>Droplets</item>
         <item>Domains</item>
@@ -232,4 +232,6 @@
     <string name="no_floating_ips">No floating ips</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="pref_enable_biometrics">Enable biometrics</string>
+    <string name="summary_pref_enable_biometrics">Only works if you have enrolled fingerprints or registered iris</string>
 </resources>

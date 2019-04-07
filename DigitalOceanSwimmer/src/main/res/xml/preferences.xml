@@ -27,6 +27,10 @@
             android:key="pref_auto_start_droplets"
             android:summary="@string/summary_auto_start_droplets"
             android:title="@string/pref_auto_start_droplets" />
+        <CheckBoxPreference
+            android:key="pref_enable_biometrics"
+            android:summary="@string/summary_pref_enable_biometrics"
+            android:title="@string/pref_enable_biometrics" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/application_title" >
         <Preference
