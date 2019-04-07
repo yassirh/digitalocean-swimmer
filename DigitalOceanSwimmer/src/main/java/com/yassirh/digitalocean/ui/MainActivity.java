@@ -350,21 +350,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (menuId == R.id.nav_droplets) {
             this.setTitle("Droplets");
+            currentSelected = DrawerPositions.DROPLETS_FRAGMENT_POSITION;
             fragmentClass = DropletsFragment.class;
         } else if (menuId == R.id.nav_domains) {
             this.setTitle("Domains");
+            currentSelected = DrawerPositions.DOMAINS_FRAGMENT_POSITION;
             fragmentClass = DomainsFragment.class;
         } else if (menuId == R.id.nav_images) {
             this.setTitle("Images");
             fragmentClass = ImagesFragment.class;
+            currentSelected = DrawerPositions.IMAGES_FRAGMENT_POSITION;
         } else if (menuId == R.id.nav_sizes) {
             this.setTitle("Size");
             fragmentClass = SizesFragment.class;
+            currentSelected = DrawerPositions.SIZES_FRAGMENT_POSITION;
         } else if (menuId == R.id.nav_regions) {
             this.setTitle("Regions");
+            currentSelected = DrawerPositions.REGIONS_FRAGMENT_POSITION;
             fragmentClass = RegionsFragment.class;
         } else if (menuId == R.id.nav_keys) {
             this.setTitle("SSH Keys");
+            currentSelected = DrawerPositions.SSHKEYS_FRAGMENT_POSITION;
             fragmentClass = SSHKeyFragment.class;
         } else {
             fragmentClass = Fragment.class;
