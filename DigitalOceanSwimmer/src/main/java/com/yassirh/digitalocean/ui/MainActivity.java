@@ -1,5 +1,6 @@
 package com.yassirh.digitalocean.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -8,8 +9,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.biometrics.BiometricPrompt;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
@@ -21,14 +25,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ import android.widget.Toast;
 import com.yassirh.digitalocean.R;
 import com.yassirh.digitalocean.model.Account;
 import com.yassirh.digitalocean.model.Droplet;
+import com.yassirh.digitalocean.model.SSHKey;
 import com.yassirh.digitalocean.service.AccountService;
 import com.yassirh.digitalocean.service.ActionService;
 import com.yassirh.digitalocean.service.DomainService;
@@ -48,6 +52,7 @@ import com.yassirh.digitalocean.service.SSHKeyService;
 import com.yassirh.digitalocean.service.SizeService;
 import com.yassirh.digitalocean.utils.ApiHelper;
 import com.yassirh.digitalocean.utils.AppRater;
+import com.yassirh.digitalocean.utils.BiometricUtils;
 import com.yassirh.digitalocean.utils.MyApplication;
 import com.yassirh.digitalocean.utils.MyBroadcastReceiver;
 import com.yassirh.digitalocean.utils.PreferencesHelper;
@@ -123,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 supportActionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
+        displayBiometricPromptIfPossible();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(
@@ -298,6 +304,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.P)
+    private void displayBiometricPromptIfPossible() {
+        if (BiometricUtils.isSdkVersionSupported()
+                && BiometricUtils.isPermissionGranted(this)
+                && BiometricUtils.isFingerprintAvailable(this)
+                && BiometricUtils.isHardwareSupported(this)) {
+            BiometricPrompt build = new BiometricPrompt.Builder(getApplicationContext())
+                    .setTitle("Fingerprint Authentication")
+                    .setDescription("Touch the fingerprint sensor.")
+                    .setNegativeButton("Cancel", getApplication().getMainExecutor(), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            MainActivity.this.finish();
+                        }
+                    })
+                    .build();
+            build.authenticate(new CancellationSignal(), MainActivity.this.getMainExecutor(), new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    if (errorCode == 10) {
+                        MainActivity.this.finish();
+                    }
+                }
+            });
         }
     }
 
