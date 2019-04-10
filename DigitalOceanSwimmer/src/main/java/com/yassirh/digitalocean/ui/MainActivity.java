@@ -126,7 +126,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 supportActionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-        displayBiometricPromptIfPossible();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            displayBiometricPromptIfPossible();
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(
