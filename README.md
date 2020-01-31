@@ -3,7 +3,7 @@
 
 # DigitalOcean Swimmer App
 
-[![Google Play](https://cloud.githubusercontent.com/assets/16354543/11904684/0667026e-a5c2-11e5-9f53-4614cc53e01f.png)](https://play.google.com/store/apps/details?id=com.yassirh.digitalocean)
+<a href='https://play.google.com/store/apps/details?id=com.yassirh.digitalocean'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.yassirh.digitalocean"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
 # Description
 
